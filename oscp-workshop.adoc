@@ -1914,7 +1914,7 @@ GlusterFS pods need access to the physical block devices on the host. Hence they
 CNS will virtualize locally attached block storage on the OpenShift App nodes. In order to deploy you will need to supply the installer with information about where to find these nodes and what network and which block devices to use. +
 This is done using JSON file describing the topology of your OpenShift deployment.
 
-For this purpose, create the file topology.json with the following content:
+For this purpose, create the file `topology.json` with the following content:
 [source,json]
 .topology.json
 ----
