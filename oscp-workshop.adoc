@@ -8,7 +8,7 @@ Dennis Deitermann (dennis@redhat.com)
 
 == Introduction into the Lab
 
-In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface, how to deploy applications and some administration stuff.
+In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface, how to deploy applications and get a quick view on Container Native Storage.
 
 Have fun and enjoy the Lab :-)
 
