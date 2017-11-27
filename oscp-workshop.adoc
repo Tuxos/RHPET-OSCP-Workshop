@@ -1,4 +1,4 @@
-= Manage your Containers with OpenShift - A starter guide
+= OpenShift Container Platform Partner Enablement Workshop
 Dennis Deitermann (dennis@redhat.com)
 :scrollbar:
 :data-uri:
@@ -8,9 +8,7 @@ Dennis Deitermann (dennis@redhat.com)
 
 == Introduction into the Lab
 
-In this Lab you will get a first impression of the OpenShift Container Platform. You can decide to do the *Getting started with the OpenShift CLI and the Webinterface* `or` the *Containers and Security Lab*.
-
-Unfortunately there is too less time for both Labs.
+In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface, how to deploy applications and some administration stuff.
 
 Have fun and enjoy the Lab :-)
 
