@@ -16,7 +16,7 @@ Have fun and enjoy the Lab :-)
 
 You have seven VMs for your own use. Only the Gateway VM is reachable from the internet. All others are behind a reverse proxy or can only be accessed through the ssh gateway.
 
-To get your external IP address for the Gateway VM, please goto the http://lab.rhpet.de[Seat-to-IP overview Page^] and search your Seat-id in the table.
+To get your external IP address for the Gateway VM, please goto the http://seats.rhpet.de[Seat-to-IP overview Page^] and search your Seat-id in the table.
 
 [cols="3*", options="header"]
 |===
