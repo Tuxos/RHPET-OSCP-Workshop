@@ -2417,6 +2417,7 @@ The result `my-rails-app.yml` file contains all resources for this application r
 
 ----
 [root@master ~]# oc create -f my-rails-app.yml
+
 secret "rails-pgsql-persistent" created
 service "rails-pgsql-persistent" created
 route "rails-pgsql-persistent" created
@@ -2432,6 +2433,7 @@ You can now use the OpenShift UI (while being logged in as _marina_ in the newly
 
 ----
 [root@master ~]# oc get pods -w
+
 NAME                             READY     STATUS              RESTARTS   AGE
 postgresql-1-deploy              0/1       ContainerCreating   0          11s
 rails-pgsql-persistent-1-build   0/1       ContainerCreating   0          11s
