@@ -2089,11 +2089,12 @@ You now have deployed CNS. Let's verify all components are in place. While still
 
 ----
 [root@master ~]# oc get pods -o wide
-NAME              READY     STATUS    RESTARTS   AGE       IP              NODE
-glusterfs-37vn8   1/1       Running   0          3m       192.168.0.102   node1.example.com <1>
-glusterfs-cq68l   1/1       Running   0          3m       192.168.0.103   node2.example.com <1>
-glusterfs-m9fvl   1/1       Running   0          3m       192.168.0.104   node3.example.com <1>
-heketi-1-cd032    1/1       Running   0          1m       10.130.0.4      node3.example.com <2>
+NAME                                  READY     STATUS    RESTARTS   AGE       IP              NODE
+glusterblock-provisioner-dc-1-qh3sn   1/1       Running   0          5m        10.130.0.7      node3.example.com
+glusterfs-40rx4                       1/1       Running   0          8m        192.168.0.102   node1.example.com <1>
+glusterfs-gnc4s                       1/1       Running   0          8m        192.168.0.103   node2.example.com <1>
+glusterfs-q0q0t                       1/1       Running   0          8m        192.168.0.104   node3.example.com <1>
+heketi-1-tgsc8                        1/1       Running   0          5m        10.130.0.6      node3.example.com <2>
 ----
 <1> GlusterFS pods, notice how all designated nodes run exactly one pod.
 <2> heketi API frontend pod
