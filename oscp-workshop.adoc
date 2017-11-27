@@ -2089,6 +2089,7 @@ You now have deployed CNS. Let's verify all components are in place. While still
 
 ----
 [root@master ~]# oc get pods -o wide
+
 NAME                                  READY     STATUS    RESTARTS   AGE       IP              NODE
 glusterblock-provisioner-dc-1-qh3sn   1/1       Running   0          5m        10.130.0.7      node3.example.com
 glusterfs-40rx4                       1/1       Running   0          8m        192.168.0.102   node1.example.com <1>
@@ -2115,6 +2116,7 @@ To expose heketi's API a `service` named _heketi_ has been generated in OpenShif
 
 ----
 [root@master ~]# oc get service/heketi
+
 NAME      CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
 heketi    172.30.5.231   <none>        8080/TCP   31m
 ----
@@ -2124,6 +2126,7 @@ To also use heketi outside of OpenShift in addition to the service a route has b
 [source,options="nowrap"]
 ----
 [root@master ~]# oc get route/heketi
+
 NAME      HOST/PORT                                               PATH      SERVICES   PORT      TERMINATION   WILDCARD
 heketi    heketi-container-native-storage.cloudapps.example.com             heketi     <all>                   None
 ----
@@ -2136,6 +2139,7 @@ You may verify this with a trivial health check:
 
 ----
 [root@master ~]# curl http://heketi-container-native-storage.cloudapps.example.com/hello
+
 Hello from Heketi
 ----
 
@@ -2177,11 +2181,9 @@ metadata:
   name: cns-secret
   namespace: default
 data:
-  key: bXlTM2NyM3RwYXNzdzByZA== <1>
+  key: bXlTM2NyM3RwYXNzdzByZA==
 type: kubernetes.io/glusterfs
 ----
-+
-<1> 'key' contains base64-encoded version of 'myS3cr3tpassw0rd'
 +
 . Create the secret in OpenShift with the following command:
 +
@@ -2251,6 +2253,7 @@ With above PVC we are requesting 10 GiB of non-shared storage. Instead of _ReadW
 +
 ----
 [root@master ~]# oc create -f cns-pvc.yml
+
 persistentvolumeclaim "my-container-storage" created
 ----
 +
@@ -2258,6 +2261,7 @@ persistentvolumeclaim "my-container-storage" created
 +
 ----
 [root@master ~]# oc get pvc
+
 NAME                   STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
 my-container-storage   Bound     pvc-382ac13d-4a9f-11e7-b56f-2cc2602a6dc8   10Gi       RWO           16s
 ----
@@ -2274,6 +2278,7 @@ When the claim was fulfilled successfully it is in the *Bound* state. That means
 +
 ----
 [root@master ~]# oc describe pvc/my-container-storage
+
 Name:		my-container-storage
 Namespace:	container-native-storage
 StorageClass:	container-native-storage <1>
@@ -2354,6 +2359,7 @@ TIP: The following steps can again also be done with the UI. For this purpose fo
 Log on to the system as `marina` und create a project with an arbitrary name.
 
  [root@master ~]# oc login -u marina --insecure-skip-tls-verify --server=https://master.example.com:8443
+ 
  [root@master ~]# oc new-project my-test-project
 
 To use some of the examples that ship with OpenShift enter the following command to export the template for a sample Ruby on Rails with PostgreSQL application:
