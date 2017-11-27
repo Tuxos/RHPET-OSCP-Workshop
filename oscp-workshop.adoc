@@ -10,8 +10,6 @@ Dennis Deitermann (dennis@redhat.com)
 
 In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface, how to deploy applications and some administration stuff.
 
-You will find our http://www.rhpet.de/oscp-workshop.pdf[Presentation here].
-
 Have fun and enjoy the Lab :-)
 
 === Lab Reference
