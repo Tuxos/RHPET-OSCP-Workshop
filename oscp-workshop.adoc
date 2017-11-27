@@ -2479,6 +2479,7 @@ You should also see a PVC being issued and in the _Bound_ state.
 
 ----
 [root@master ~]# oc get pvc
+
 NAME         STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
 postgresql   Bound     pvc-9bb84d88-4ac6-11e7-b56f-2cc2602a6dc8   15Gi       RWO           4m
 ----
@@ -2489,6 +2490,7 @@ Now go ahead and try out the application. The overview page in the OpenShift UI 
 
 ----
 [root@master ~]# oc get route
+
 NAME                     HOST/PORT                                                      PATH      SERVICES                 PORT      TERMINATION   WILDCARD
 rails-pgsql-persistent   rails-pgsql-persistent-my-test-project.cloudapps.example.com             rails-pgsql-persistent   <all>                   None
 ----
@@ -2510,6 +2512,7 @@ Look at the PVC to determine the PV:
 
 ----
 [root@master ~]# oc get pvc
+
 NAME         STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
 postgresql   Bound     pvc-9bb84d88-4ac6-11e7-b56f-2cc2602a6dc8   15Gi       RWO           17m
 ----
@@ -2520,6 +2523,7 @@ Look at the details of this PV:
 
 ----
 [root@master ~]# oc describe pv/pvc-9bb84d88-4ac6-11e7-b56f-2cc2602a6dc8
+
 Name:		pvc-9bb84d88-4ac6-11e7-b56f-2cc2602a6dc8 <1>
 Labels:		<none>
 StorageClass:	container-native-storage
@@ -2550,6 +2554,7 @@ Look at the GlusterFS pods running and pick one (which one is not important):
 
 ----
 [root@master ~]# oc get pods -o wide
+
 NAME                                  READY     STATUS    RESTARTS   AGE       IP              NODE
 glusterblock-provisioner-dc-1-rq945   1/1       Running   0          6m        10.130.0.7      node3.example.com
 glusterfs-0f3cp                       1/1       Running   0          9m        192.168.0.104   node3.example.com
@@ -2562,6 +2567,7 @@ Remember the IP address of the pod you select. Log on to GlusterFS pod with a re
 
 ----
 [root@master ~]# oc rsh glusterfs-37vn8
+
 sh-4.2#
 ----
 
@@ -2608,6 +2614,7 @@ You can even look at this yourself:
 
 ----
 sh-4.2# ls -ahl /var/lib/heketi/mounts/vg_0246fd563709384a3cbc3f3bbeeb87a9/brick_684a01f8993f241a92db02b117e0b912/brick
+
 total 16K
 drwxrwsr-x.   5 root       2001   57 Jun  6 14:44 .
 drwxr-xr-x.   3 root       root   19 Jun  6 14:44 ..
@@ -2674,6 +2681,7 @@ Next deploy the example application:
 
 ----
 [root@master ~]# oc new-app openshift/php:7.0~https://github.com/christianh814/openshift-php-upload-demo --name=file-uploader
+
 --> Found image a1ebebb (6 weeks old) in image stream "openshift/php" under tag "7.0" for "openshift/php:7.0"
 
     Apache 2.4 with PHP 7.0
@@ -2703,6 +2711,7 @@ Wait for the application to be deployed with the suggest command:
 
 ----
 [root@master ~]# oc logs -f bc/file-uploader
+
 Cloning "https://github.com/christianh814/openshift-php-upload-demo" ...
 	Commit:	7508da63d78b4abc8d03eac480ae930beec5d29d (Update index.html)
 	Author:	Christian Hernandez <christianh814@users.noreply.github.com>
@@ -2720,6 +2729,7 @@ When the build is completed ensure the pods are running:
 
 ----
 [root@master ~]# oc get pods
+
 NAME                             READY     STATUS      RESTARTS   AGE
 file-uploader-1-build            0/1       Completed   0          2m
 file-uploader-1-k2v0d            1/1       Running     0          1m
@@ -2734,6 +2744,7 @@ Check the route that has been created:
 
 ----
 [root@master ~]# oc get route
+
 NAME                     HOST/PORT                                                      PATH      SERVICES                 PORT       TERMINATION   WILDCARD
 file-uploader            file-uploader-my-test-project.cloudapps.example.com                      file-uploader            8080-tcp                 None
 ...
@@ -2754,9 +2765,13 @@ After uploading a file validate it has been stored locally in the container by f
 
 ----
 sh-4.2$ cd uploaded
+
 sh-4.2$ pwd
+
 /opt/app-root/src/uploaded
+
 sh-4.2$ ls -lh
+
 total 16K
 -rw-r--r--. 1 1000080000 root 16K May 26 09:32 cns-deploy-4.0.0-15.el7rhgs.x86_64.rpm.gz
 ----
@@ -2785,6 +2800,7 @@ Watch the additional pods getting spawned:
 
 ----
 [root@master ~]# oc get pods
+
 NAME                             READY     STATUS      RESTARTS   AGE
 file-uploader-1-3cgh1            1/1       Running     0          20s
 file-uploader-1-3hckj            1/1       Running     0          20s
@@ -2799,6 +2815,7 @@ When you log on to one of the new instances you will see they have no data.
 
 ----
 [root@master ~]# oc rsh file-uploader-1-3cgh1
+
 sh-4.2$ cd uploaded
 sh-4.2$ pwd
 /opt/app-root/src/uploaded
@@ -2837,6 +2854,7 @@ Let's look at the result:
 
 ----
 [root@master ~]# oc get pvc
+
 NAME                STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
 my-shared-storage   Bound     pvc-62aa4dfe-4ad2-11e7-b56f-2cc2602a6dc8   10Gi       RWX           22s
 ...
@@ -2854,6 +2872,7 @@ You can watch it like this:
 
 ----
 [root@master ~]# oc logs dc/file-uploader -f
+
 --> Scaling up file-uploader-2 from 0 to 3, scaling down file-uploader-1 from 3 to 0 (keep 3 pods available, don't exceed 4 pods)
     Scaling file-uploader-2 up to 1
     Scaling file-uploader-1 down to 2
@@ -2868,6 +2887,7 @@ The new config `file-uploader-2` will have 3 pods all sharing the same storage.
 
 ----
 [root@master ~]# oc get pods
+
 NAME                             READY     STATUS      RESTARTS   AGE
 file-uploader-1-build            0/1       Completed   0          18m
 file-uploader-2-jd22b            1/1       Running     0          1m
@@ -2881,19 +2901,29 @@ Try it out in your application: upload new files and watch them being visible fr
 
 ----
 [root@master ~]# oc rsh file-uploader-2-jd22b
+
 sh-4.2$ ls -lh uploaded
+
 total 16K
 -rw-r--r--. 1 1000080000 root 16K May 26 10:21 cns-deploy-4.0.0-15.el7rhgs.x86_64.rpm.gz
+
 sh-4.2$ exit
+
 exit
 [root@master ~]# oc rsh file-uploader-2-kw9lq
+
 sh-4.2$ ls -lh uploaded
+
 -rw-r--r--. 1 1000080000 root 16K May 26 10:21 cns-deploy-4.0.0-15.el7rhgs.x86_64.rpm.gz
+
 sh-4.2$ exit
+
 exit
 [root@master ~]# oc rsh file-uploader-2-xbz24
+
 sh-4.2$ ls -lh uploaded
 -rw-r--r--. 1 1000080000 root 16K May 26 10:21 cns-deploy-4.0.0-15.el7rhgs.x86_64.rpm.gz
+
 sh-4.2$ exit
 ----
 
