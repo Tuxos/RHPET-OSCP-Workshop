@@ -1,0 +1,1815 @@
+= Manage your Containers with OpenShift - A starter guide
+Dennis Deitermann (dennis@redhat.com)
+:scrollbar:
+:data-uri:
+:toc: left
+:numbered:
+:icons: font
+
+== Introduction into the Lab
+
+In this Lab you will get a first impression of the OpenShift Container Platform. You can decide to do the *Getting started with the OpenShift CLI and the Webinterface* `or` the *Containers and Security Lab*.
+
+Unfortunately there is too less time for both Labs.
+
+Have fun and enjoy the Lab :-)
+
+=== Lab Reference
+
+You have seven VMs for your own use. Only the Gateway VM is reachable from the internet. All others are behind a reverse proxy or can only be accessed through the ssh gateway.
+
+To get your external IP address for the Gateway VM, please goto the http://lab.rhpet.de[Seat-to-IP overview Page^] and search your Seat-id in the table.
+
+[cols="3*", options="header"]
+|===
+| VM Name| internal FQDN | internal IP
+| SSH Gateway & Proxy Server | gw.example.com | 192.168.0.250, Ports 22&80&443 are open
+| Master | master.example.com | 192.168.0.100, Port 8443 is open
+| Infranode | infranode.example.com | 192.168.0.101
+| App Node 1 | node1.example.com | 192.168.0.102
+| App Node 2 | node2.example.com | 192.168.0.103
+| App Node 3 | node3.example.com | 192.168.0.104
+| CloudForms | cf.example.com | 192.168.0.200, Port 80&443 are open
+|===
+
+[cols="3*", options="header"]
+|===
+| Name | Password | Role
+| rhpet | ask the instructor | ssh user to connect to the gateway VM
+| root | r3dh4t1! | root user for all VMs
+| admin | r3dh4t1! | OSCP & CloudForms Administrator & Auth user for the Proxy
+| marina | r3dh4t1! | Developer/User
+| andrew  | r3dh4t1! | Developer/User
+|=== 
+
+=== How to access the Lab Environment
+
+First login to the ssh gateway with the user `rhpet`:
+
+To obtain your ip address from the Gateway http://lab.rhpet.de[here^].
+
+Login into the ssh gateway with the user `rhpet` and the password you got from the instructor.
+
+----
+[user@yourhost ~]$ ssh rhpet@<your gateway ip address>
+
+The authenticity of host '104.199.108.30 (104.199.108.30)' can't be established.
+ECDSA key fingerprint is SHA256:bsDGeuXiG1zpM3RlsN+RlaAPRaDSi6Y/sJoBP2IXNqU.
+ECDSA key fingerprint is MD5:5f:b2:e7:c4:05:c2:37:10:1c:1f:a8:32:a8:ca:5a:38.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '104.199.108.30' (ECDSA) to the list of known hosts.
+
+----------------------------------------------------------
+ Welcome to the Manage your Container with OpenShift Lab
+
+ Have fun and enjoy the Red Hat Forum 2017 in Vienna :-)
+----------------------------------------------------------
+
+Last login: Mon Oct 23 01:07:02 2017 from ipbcc3d64f.dynamic.kabel-deutschland.de
+[rhpet@gw ~]$
+----
+
+TIP: Alternatively, if you have no ssh client, you can use the shell-in-a-box service. It is running on the Gateway on port 443. But be aware that some web browsers do not support direct Copy & Paste (you can use right click and then *Paste from browser*). So it might be more convenient to use a normal ssh client. This link works if you have configured the proxy server: https://gw.example.com[SSH Login into the gateway VM^]. As an alternetive you can type in "https://<your gateway ip address>" in your browser.
+
+Then get the power of root:
+----
+[rhpet@gw ~]$ su -
+----
+The root pw is `r3dh4t1!`
+
+For HTTP & HTTPS connections we need to configure a Proxy in your Webbrowser. We tested it with Firefox.
+Please go to `Settings` → `Advanced` → `Network` → `Settings`
+
+image::http://www.rhpet.de/pictures/Firefox-Proxy.png[Firefox Proxy configuration]
+
+Please use your gateway IP address, port 80 and check the checkbox at "Use this proxy server for all protocols".
+
+Username for the Proxy is: `admin` +
+Password for the Proxy is: `r3dh4t1!`
+
+The proxy works fine if you see the https://master.example.com:8443/[OpenShift login screen^]. Please accept the selfsigned certificate.
+
+== OpenShift Introduction
+
+=== What is OpenShift ?
+
+OpenShift Online is Red Hat’s public cloud application development and hosting platform that automates the provisioning, management and scaling of applications so that you can focus on writing the code for your business, startup, or big idea.
+
+Here is a Videos explaining OpenShift: +
+https://youtu.be/D_Lj0rObunI[Introduction into OpenShift^] +
+https://www.youtube.com/watch?v=aZ40GobvA1c[What is PaaS?^]
+
+Official documentation for https://docs.openshift.com/container-platform/3.5/welcome/index.html[OpenShift Container Platform^]
+
+=== Overview
+
+OpenShift v3 is a layered system designed to expose underlying Docker-formatted container image and Kubernetes concepts as accurately as possible, with a focus on easy composition of applications by a developer. For example, install Ruby, push code, and add MySQL.
+
+Unlike OpenShift v2, more flexibility of configuration is exposed after creation in all aspects of the model. The concept of an application as a separate object is removed in favor of more flexible composition of "services", allowing two web containers to reuse a database or expose a database directly to the edge of the network.
+
+=== What are the Layers?
+
+The Docker service provides the abstraction for packaging and creating Linux-based, lightweight container images. Kubernetes provides the cluster management and orchestrates containers on multiple hosts.
+
+OpenShift Container Platform adds:
+
+* Source code management, builds, and deployments for developers
+
+* Managing and promoting images at scale as they flow through your system
+
+* Application management at scale
+
+* Team and user tracking for organizing a large developer organization
+
+image::http://www.rhpet.de/pictures/OpenShift-Architecture.png[OpenShift Architecture]
+
+=== Core Concepts
+
+The following topics provide high-level, architectural information on core concepts and objects you will encounter when using OpenShift Container Platform. Many of these objects come from Kubernetes, which is extended by OpenShift Container Platform to provide a more feature-rich development lifecycle platform.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/containers_and_images.html#architecture-core-concepts-containers-and-images[Containers and images^] are the building blocks for deploying your applications.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/pods_and_services.html[Pods and services^] allow for containers to communicate with each other and proxy connections.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/projects_and_users.html[Projects and users^] provide the space and means for communities to organize and manage their content together.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/builds_and_image_streams.html[Builds and image streams^] allow you to build working images and react to new images.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/deployments.html[Deployments^] add expanded support for the software development and deployment lifecycle.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/routes.html[Routes^] announce your service to the world.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/templates.html[Templates^] allow for many objects to be created at once based on customized parameters.
+
+Click on the links above if you want more information about the respective topic.
+
+== Getting started with the OpenShift CLI and the Webinterface
+
+With the OpenShift Container Platform command line interface (CLI), you can create applications and manage OpenShift Container Platform projects from a terminal. The CLI is ideal in situations where you are:
+
+* Working directly with project source code.
+
+* Scripting OpenShift Container Platform operations.
+
+* Restricted by bandwidth resources and cannot use the web console.
+
+The CLI is available using the `oc` command:
+----
+$ oc <command>
+----
+
+=== Basic Setup and Login
+
+The `oc login` command is the best way to initially set up the CLI, and it serves as the entry point for most users. The interactive flow helps you establish a session to an OpenShift Container Platform server with the provided credentials. The information is automatically saved in a CLI configuration file that is then used for subsequent commands.
+
+Login into the master host and the login into OpenShift as `admin` user with the password `r3dh4t1!`:
+----
+[root@gw ~]# ssh master
+Last login: Thu Jun  8 10:10:12 2017 from 192.168.0.250
+----
+ 
+----
+[root@master ~]# oc login https://master.example.com:8443
+
+Authentication required for https://master.example.com:8443 (openshift)
+Username: admin
+Password: r3dh4t1!
+Login successful.
+
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+  * default
+    kube-system
+    logging
+    management-infra
+    openshift
+    openshift-infra
+
+Using project "default".
+----
+
+You can log out of CLI using the `oc logout` command. But we don't do this now.
+
+=== Projects
+
+A project in OpenShift Container Platform contains multiple objects to make up a logical application.
+
+Most oc commands run in the context of a project. The `oc login` selects a default project during initial setup to be used with subsequent commands. Use the following command to display the project currently in use:
+
+----
+[root@master ~]# oc project
+
+Using project "default" on server "https://master.example.com:8443".
+----
+
+If you have access to multiple projects, use the following syntax to switch to a particular project by specifying the project name:
+----
+[root@master ~]# oc project default
+
+Already on project "default" on server "https://master.example.com:8443".
+----
+
+The `oc status` command shows a high level overview of the project currently in use, with its components and their relationships, as shown in the following example:
+----
+[root@master ~]# oc status
+
+In project default on server https://master.example.com:8443
+
+https://docker-registry-default.cloudapps.example.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
+  dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.5.5.8
+    deployment #1 deployed 5 months ago - 1 pod
+
+svc/kubernetes - 172.30.0.1 ports 443, 53->8053, 53->8053
+
+https://registry-console-default.cloudapps.example.com (passthrough) to pod port registry-console (svc/registry-console)
+  dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:3.5
+    deployment #1 deployed 4 months ago - 1 pod (warning: 1 restarts)
+
+svc/router - 172.30.49.219 ports 80, 443, 1936
+  dc/router deploys docker.io/openshift3/ose-haproxy-router:v3.5.5.8
+    deployment #1 deployed 5 months ago - 1 pod
+
+2 warnings identified, use 'oc status -v' to see details.
+----
+
+If you want to learn more about the `oc` command, please look at the following documentation: +
+https://docs.openshift.com/container-platform/3.5/cli_reference/basic_cli_operations.html[Developer CLI Operations^] +
+https://docs.openshift.com/container-platform/3.5/cli_reference/admin_cli_operations.html[Administrator CLI Operations^]
+
+=== Verify Your OpenShift Environment
+
+On the master host run `oc get nodes` to check the status of your OpenShift hosts:
+----
+[root@master ~]# oc get nodes
+
+NAME                    STATUS                     AGE
+infranode.example.com   Ready                      159d
+master.example.com      Ready,SchedulingDisabled   159d
+node1.example.com       Ready                      159d
+node2.example.com       Ready                      159d
+node3.example.com       Ready                      159d
+----
+
+Check if the installer has deployed the router and the registry containers:
+----
+[root@master ~]# oc get pods
+
+NAME                       READY     STATUS    RESTARTS   AGE
+docker-registry-1-5gvfn    1/1       Running   1          37m
+registry-console-1-tbwwj   1/1       Running   1          138d
+router-1-xq3r6             1/1       Running   8          159d
+----
+
+=== Configure OpenShift
+
+In this section, you check the labels and do some intial configuration.
+
+=== Labels
+
+Labels are used to organize, group, or select API objects. For example, pods are "tagged" with labels, and then services use label selectors to identify the pods they proxy to. This makes it possible for services to reference groups of pods, even treating pods with potentially different containers as related entities.
+
+Most objects can include labels in their metadata. So labels can be used to group arbitrarily-related objects; for example, all of the pods, services, replication controllers, and deployment configurations of a particular application can be grouped.
+
+Labels are simple key/value pairs, as in the following example:
+----
+labels:
+  key1: value1
+  key2: value2
+----
+
+Consider:
+
+* A pod consisting of an *nginx* container, with the label *role=webserver*.
+
+* A pod consisting of an *Apache httpd* container, with the same label *role=webserver*.
+
+A service or replication controller that is defined to use pods with the *role=webserver* label treats both of these pods as part of the same group.
+
+=== Check Regions and Zones
+
+We already labeled your nodes.
+
+Check the labels of the nodes:
+----
+[root@master ~]# oc get nodes --show-labels
+
+NAME                    STATUS                     AGE       LABELS
+infranode.example.com   Ready                      159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=infranode.example.com,region=infra,zone=infranodes
+master.example.com      Ready,SchedulingDisabled   159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=master.example.com,region=master
+node1.example.com       Ready                      159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node1.example.com,region=primary,zone=east
+node2.example.com       Ready                      159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node2.example.com,region=primary,zone=west
+node3.example.com       Ready                      159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node3.example.com,region=primary,zone=north
+----
+
+You now have a running OpenShift environment across five hosts with one master and four nodes, divided into three regions: master, infra and primary and three zones: east, west and north.
+
+Check that registry and router are running on the infranode:
+----
+[root@master ~]# oc get pods -o wide
+
+NAME                       READY     STATUS    RESTARTS   AGE       IP              NODE
+docker-registry-1-5gvfn    1/1       Running   1          38m       10.128.0.11     infranode.example.com
+registry-console-1-tbwwj   1/1       Running   1          138d      10.128.0.12     infranode.example.com
+router-1-xq3r6             1/1       Running   8          159d      192.168.0.101   infranode.example.com
+----
+
+As you can see, all infrastructure pods are running on the infranode, because we configured a default node selector for this.
+Please have a look https://blog.openshift.com/deploying-applications-to-specific-nodes/[here^] if you want more information.
+
+=== Registry
+
+The Registry is a stateless, highly scalable server side application that stores and lets you distribute Container images.
+OpenShift Container Platform can utilize any server implementing the Docker registry API as a source of images, including the Docker Hub, private registries run by third parties, and the integrated OpenShift Container Platform registry.
+
+==== Integrated OpenShift Container Registry
+
+OpenShift Container Platform provides an integrated container registry called OpenShift Container Registry (OCR) that adds the ability to automatically provision new image repositories on demand. This provides users with a built-in location for their application builds to push the resulting images.
+
+Whenever a new image is pushed to OCR, the registry notifies OpenShift Container Platform about the new image, passing along all the information about it, such as the namespace, name, and image metadata. Different pieces of OpenShift Container Platform react to new images, creating new builds and deployments.
+
+==== Check integrated Registry
+
+In this lab scenario, infranode is the target for both the registry and the default router.
+
+To check the URL of the docker registry run `oc status`:
+----
+[root@master ~]# oc status
+
+In project default on server https://master.example.com:8443
+
+https://docker-registry-default.cloudapps.example.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
+  dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.5.5.8
+    deployment #1 deployed 5 months ago - 1 pod
+
+svc/kubernetes - 172.30.0.1 ports 443, 53->8053, 53->8053
+
+https://registry-console-default.cloudapps.example.com (passthrough) to pod port registry-console (svc/registry-console)
+  dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:3.5
+    deployment #1 deployed 4 months ago - 1 pod
+
+svc/router - 172.30.49.219 ports 80, 443, 1936
+  dc/router deploys docker.io/openshift3/ose-haproxy-router:v3.5.5.8
+    deployment #1 deployed 5 months ago - 1 pod
+
+1 warning identified, use 'oc status -v' to see details.
+----
+
+Test the status of the registry with the curl command to communicate with the registrys service port, `curl -v https://registry-console-default.cloudapps.example.com --insecure`.
+----
+[root@master ~]# curl -v https://registry-console-default.cloudapps.example.com --insecure | grep "Red Hat Container Registry"
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* About to connect() to registry-console-default.cloudapps.example.com port 443 (#0)
+*   Trying 192.168.0.101...
+* Connected to registry-console-default.cloudapps.example.com (192.168.0.101) port 443 (#0)
+* Initializing NSS with certpath: sql:/etc/pki/nssdb
+* skipping SSL peer certificate verification
+* SSL connection using TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+* Server certificate:
+* 	subject: CN=registry-console-1-tbwwj
+* 	start date: Jun 08 11:03:26 2017 GMT
+* 	expire date: Mai 15 11:03:27 2117 GMT
+* 	common name: registry-console-1-tbwwj
+* 	issuer: CN=registry-console-1-tbwwj
+> GET / HTTP/1.1
+> User-Agent: curl/7.29.0
+> Host: registry-console-default.cloudapps.example.com
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Content-Security-Policy: default-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:
+< Transfer-Encoding: chunked
+< Cache-Control: no-cache, no-store
+< 
+{ [data not shown]
+var environment = {"page":{"title":"Red Hat Container Registry","connect":true},"hostname":"registry-console-1-tbwwj","os-release":{"NAME":"Red Hat Container Registry","ID":"registry","PRETTY_NAME":"Red Hat Container Registry"},"OAuth":{"URL":"https://master.example.com:8443//oauth/authorize?client_id=cockpit-oauth-client&response_type=token","ErrorParam":null,"TokenParam":null}};
+100 42229    0 42229    0     0   212k      0 --:--:-- --:--:-- --:--:--  213k
+* Connection #0 to host registry-console-default.cloudapps.example.com left intact
+----
+
+Everything seems fine :-)
+
+=== Resource Management Lab
+
+In this lab, you learn how to manage OpenShift Container Platform resources.
+
+* *Manage Users, Projects, and Quotas*
++
+In this section, you create projects and test the use of quotas and limits.
+
+* *Create Services and Routes*
++
+In this section, you manually create services and routes for pods and review the changes to a service when scaling an application.
+
+* *Explore Containers*
++
+In this section, you run commands within active pods and explore the `docker-registry` and `Default Router` containers.
+
+==== Manage Users, Projects, and Quotas
+
+===== Create Project
+
+On the master host, run `oadm` to create and assign the administrative user `andrew` to a project:
+
+----
+[root@master ~]# oadm new-project resourcemanagement --display-name="Resources Management" \
+--description="This is the project we use to learn about resource management" \
+--admin=andrew  --node-selector='region=primary'
+
+Created project resourcemanagement
+----
+
+[NOTE]
+`andrew` can create his own project with the `oc new-project` command, an option you will experiment with later in this course. Note that defining the `--node-selector` is optional.
+
+==== View Resources in Web Console
+
+Now have a look at the web console.
+
+. Open your web browser and go to https://master.example.com:8443[https://master.example.com:8443^]
++
+[NOTE]
+====
+The web console could take up to 90 seconds to become available after a restart of the master.
+====
+
+. When prompted, type the username and password, as follows:
+** *Username*: `andrew`
+** *Password*: `r3dh4t1!`
+
+. In the web console, click the *Resources Management* project.
++
+[NOTE]
+The project is empty because it has no apps. You change that as part of this lab. 
+
+===== Apply Quota to Project
+
+A resource quota, defined by a ResourceQuota object, provides constraints that limit aggregate resource consumption per project. It can limit the quantity of objects that can be created in a project by type, as well as the total amount of compute resources and storage that may be consumed by resources in that project.
+
+. On the master host create a quota definition file:
++
+----
+[root@master ~]# cat << EOF > quota.json
+{
+  "apiVersion": "v1",
+  "kind": "ResourceQuota",
+  "metadata": {
+    "name": "test-quota"
+  },
+  "spec": {
+    "hard": {
+      "memory": "512Mi",
+      "cpu": "20",
+      "pods": "3",
+      "services": "5",
+      "replicationcontrollers":"5",
+      "resourcequotas":"1"
+    }
+  }
+}
+EOF
+----
+
+. On the master host, do the following:
+.. Run `oc create` to apply the file you just created:
++
+----
+[root@master ~]# oc create -f quota.json --namespace=resourcemanagement
+
+resourcequota "test-quota" created
+----
+
+.. Verify that the quota exists:
++
+----
+[root@master ~]# oc get quota -n resourcemanagement
+
+NAME         AGE
+test-quota   11s
+----
+
+.. Verify the limits and examine the usage:
++
+[tabsize=8]
+----
+[root@master ~]# oc describe quota test-quota -n resourcemanagement
+
+Name:			test-quota
+Namespace:		resourcemanagement
+Resource		Used	Hard
+--------		----	----
+cpu			0	20
+memory			0	512Mi
+pods			0	3
+replicationcontrollers	0	5
+resourcequotas		1	1
+services		0	5
+----
++
+
+. On the web console, click the *Resource Management* project.
+
+. Click the *Resources* tab
+
+. Click *Quota* for information about the quota set.
+
+==== Apply Limit Ranges to Project
+
+For quotas to be effective, you must create _limit ranges_. They allocate the maximum, minimum, and default memory and CPU at both the pod and container level. Deployments to projects with a quota set will fail, if there are no default limits set for containers and pods. Pod and Containers with no limits are called unbound and are forbidden to run in quota projects.
+
+. Create the `limits.json` file:
++
+----
+[root@master ~]# cat << EOF > limits.json
+{
+    "kind": "LimitRange",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "limits",
+        "creationTimestamp": null
+    },
+    "spec": {
+        "limits": [
+            {
+                "type": "Pod",
+                "max": {
+                    "cpu": "500m",
+                    "memory": "750Mi"
+                },
+                "min": {
+                    "cpu": "10m",
+                    "memory": "5Mi"
+                }
+            },
+            {
+                "type": "Container",
+                "max": {
+                    "cpu": "500m",
+                    "memory": "750Mi"
+                },
+                "min": {
+                    "cpu": "10m",
+                    "memory": "5Mi"
+                },
+                "default": {
+                    "cpu": "100m",
+                    "memory": "100Mi"
+                }
+            }
+        ]
+    }
+}
+EOF
+----
+
+. On the master host, run `oc create` against the `limits.json` file and the
+ `resourcemanagement` project:
++
+----
+[root@master ~]# oc create -f limits.json --namespace=resourcemanagement
+
+limitrange "limits" created
+----
+
+. Review your limit ranges:
++
+----
+[root@master ~]# oc describe limitranges limits -n resourcemanagement
+
+Name:		limits
+Namespace:	resourcemanagement
+Type		Resource	Min	Max	Default Request	Default Limit	Max Limit/Request Ratio
+----		--------	---	---	---------------	-------------	-----------------------
+Pod		cpu		10m	500m	-		-		-
+Pod		memory		5Mi	750Mi	-		-		-
+Container	cpu		10m	500m	100m		100m		-
+Container	memory		5Mi	750Mi	100Mi		100Mi		-
+----
+
+==== Test Quota and Limit Settings
+
+NOTE: You are running commands as the Linux users `andrew` and `root` in a lab environment. As a user it is unusual to use the `oc` command directly on the master. It is common to install `oc` on your workstation or notebook. You can get the OpenShift client tools for your operating system https://docs.openshift.com/container-platform/3.5/cli_reference/get_started_cli.html[here^].
+
+. Now we switch to the OS user `andrew` and login into OpenShift with the OpenShift user `andrew`. 
+
+.. When prompted, type the username and password:
+** *Username*: `andrew`
+** *Password*: `r3dh4t1!`
++
+----
+[root@master ~]# su - andrew
+[andrew@master ~]$ oc login https://master.example.com:8443 -u andrew
+----
+
+* The output is as follows:
++
+----
+Login successful.
+
+You have one project on this server: "resourcemanagement"
+
+Using project "resourcemanagement".
+Welcome! See 'oc help' to get started.
+----
++
+NOTE: This lab shows you the manual, step-by-step method of creating each object. This is done only for educational purpose. There are easier ways to create deployments and all the required objects. The most powerful way to create apps on OpenShift is the `oc new-app` command, which is covered later in this lab.
+
+. Create the `hello-pod.json` pod definition file:
++
+----
+[andrew@master ~]$ cat <<EOF > hello-pod.json
+{
+  "kind": "Pod",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "hello-openshift",
+    "creationTimestamp": null,
+    "labels": {
+      "name": "hello-openshift"
+    }
+  },
+  "spec": {
+    "containers": [
+      {
+        "name": "hello-openshift",
+        "image": "openshift/hello-openshift:v1.5.1",
+        "ports": [
+          {
+            "containerPort": 8080,
+            "protocol": "TCP"
+          }
+        ],
+        "resources": {
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "imagePullPolicy": "IfNotPresent",
+        "capabilities": {},
+        "securityContext": {
+          "capabilities": {},
+          "privileged": false
+        }
+      }
+    ],
+    "restartPolicy": "Always",
+    "dnsPolicy": "ClusterFirst",
+    "serviceAccount": ""
+  },
+  "status": {}
+}
+EOF
+----
+
+===== Run Pod
+
+Here, you create a simple pod without a _route_ or _service_:
+
+Create and verify the `hello-openshift` pod:
+----
+[andrew@master ~]$ oc create -f hello-pod.json
+
+pod "hello-openshift" created
+----
+Wait a few seconds until the pod is up and running. (~40 seconds are needed) You can use `oc get pods -w` to see it directly when the status is changing.
+----
+[andrew@master ~]$ oc get pods
+
+NAME              READY     STATUS    RESTARTS   AGE
+hello-openshift   1/1       Running   0          41s
+----
+
+Run `oc describe` for details on your pod:
+----
+[andrew@master ~]$ oc describe pod hello-openshift
+
+Name:			hello-openshift
+Namespace:		resourcemanagement
+Security Policy:	restricted
+Node:			node2.example.com/192.168.0.103
+Start Time:		Tue, 25 Apr 2017 19:15:01 -0400
+Labels:			name=hello-openshift
+Status:			Running
+IP:			10.130.0.2
+Controllers:		<none>
+Containers:
+  hello-openshift:
+    Container ID:	docker://2674481be26d544323fa637c1cc5ba36a5eaafd4707f7735b2620045c495cb07
+    Image:		openshift/hello-openshift:v1.5.1
+    Image ID:		docker-pullable://docker.io/openshift/hello-openshift@sha256:7ce9d7b0c83a3abef41e0db590c5aa39fb05793315c60fd907f2c609997caf11
+    Port:		8080/TCP
+    Limits:
+      cpu:	100m
+      memory:	100Mi
+    Requests:
+      cpu:		100m
+      memory:		100Mi
+    State:		Running
+      Started:		Tue, 25 Apr 2017 19:15:39 -0400
+    Ready:		True
+    Restart Count:	0
+    Volume Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ylt00 (ro)
+    Environment Variables:	<none>
+Conditions:
+  Type		Status
+  Initialized 	True
+  Ready 	True
+  PodScheduled 	True
+Volumes:
+  default-token-ylt00:
+    Type:	Secret (a volume populated by a Secret)
+    SecretName:	default-token-ylt00
+QoS Class:	Guaranteed
+Tolerations:	<none>
+Events:
+  FirstSeen	LastSeen	Count	From				SubobjectPath			Type		Reason		Message
+  ---------	--------	-----	----				-------------			--------	------		-------
+  2m		2m		1	{default-scheduler }						Normal		Scheduled	Successfully assigned hello-openshift to node2.example.com
+  1m		1m		1	{kubelet node2.example.com}	spec.containers{hello-openshift}	Normal		Pulling		pulling image "openshift/hello-openshift:v1.5.1"
+  1m		1m		1	{kubelet node2.example.com}	spec.containers{hello-openshift}	Normal		Pulled		Successfully pulled image "openshift/hello-openshift:v1.5.1"
+  1m		1m		1	{kubelet node2.example.com}	spec.containers{hello-openshift}	Normal		Created		Created container with docker id 2674481be26d; Security:[seccomp=unconfined]
+  1m		1m		1	{kubelet node2.example.com}	spec.containers{hello-openshift}	Normal		Started		Started container with docker id 2674481be26d
+----
+
+Test that your pod is responding with `Hello OpenShift`: (note that the root password for node1 is also `r3dh4t1!`)
+----
+[andrew@master ~]$ oc describe pod hello-openshift|grep IP:|awk '{print $2}'
+
+10.130.0.4
+
+[andrew@master ~]# ssh root@node1 'curl -s http://10.130.0.4:8080'
+
+root@node1's password: r3dh4t1!
+----
+
+* This output denotes a correct response:
++
+----
+Hello OpenShift!
+----
+
+We must ssh into an other node, because we don´t have direct access to the pod network on the master node.
+
+Delete all the objects in your `hello-pod.json` definition file, which, at this point, is the pod only:
+
+----
+[andrew@master ~]$ oc delete -f hello-pod.json
+
+pod "hello-openshift" deleted
+----
+
+TIP: You can also delete a pod using the following command format: #oc delete pod <PODNAME>.
+
+Create a new definition file that launches four `hello-openshift` pods:
+
+----
+[andrew@master ~]$ cat << EOF > hello-many-pods.json
+{
+  "metadata":{
+    "name":"quota-pod-deployment-test"
+  },
+  "kind":"List",
+  "apiVersion":"v1",
+  "items":[
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "hello-openshift-1",
+        "creationTimestamp": null,
+        "labels": {
+          "name": "hello-openshift"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "hello-openshift",
+            "image": "openshift/hello-openshift:v1.5.1",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "10m",
+                "memory": "16Mi"
+              }
+            },
+            "terminationMessagePath": "/dev/termination-log",
+            "imagePullPolicy": "IfNotPresent",
+            "capabilities": {},
+            "securityContext": {
+              "capabilities": {},
+              "privileged": false
+            }
+          }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccount": ""
+      },
+      "status": {}
+    },
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "hello-openshift-2",
+        "creationTimestamp": null,
+        "labels": {
+          "name": "hello-openshift"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "hello-openshift",
+            "image": "openshift/hello-openshift:v1.5.1",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "10m",
+                "memory": "16Mi"
+              }
+            },
+            "terminationMessagePath": "/dev/termination-log",
+            "imagePullPolicy": "IfNotPresent",
+            "capabilities": {},
+            "securityContext": {
+              "capabilities": {},
+              "privileged": false
+            }
+          }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccount": ""
+      },
+      "status": {}
+    },
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "hello-openshift-3",
+        "creationTimestamp": null,
+        "labels": {
+          "name": "hello-openshift"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "hello-openshift",
+            "image": "openshift/hello-openshift:v1.5.1",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "10m",
+                "memory": "16Mi"
+              }
+            },
+            "terminationMessagePath": "/dev/termination-log",
+            "imagePullPolicy": "IfNotPresent",
+            "capabilities": {},
+            "securityContext": {
+              "capabilities": {},
+              "privileged": false
+            }
+          }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccount": ""
+      },
+      "status": {}
+    },
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "hello-openshift-4",
+        "creationTimestamp": null,
+        "labels": {
+          "name": "hello-openshift"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "hello-openshift",
+            "image": "openshift/hello-openshift:v1.5.1",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "10m",
+                "memory": "16Mi"
+              }
+            },
+            "terminationMessagePath": "/dev/termination-log",
+            "imagePullPolicy": "IfNotPresent",
+            "capabilities": {},
+            "securityContext": {
+              "capabilities": {},
+              "privileged": false
+            }
+          }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccount": ""
+      },
+      "status": {}
+    }
+  ]
+}
+EOF
+----
+
+Create the items in the `hello-many-pods.json` file:
+
+----
+[andrew@master ~]$ oc create -f hello-many-pods.json
+
+pod "hello-openshift-1" created
+pod "hello-openshift-2" created
+pod "hello-openshift-3" created
+Error from server (Forbidden): pods "hello-openshift-4" is forbidden: exceeded quota: test-quota, requested: pods=1, used: pods=3, limited: pods=3
+----
+
+[NOTE]
+Because you defined a quota before, `oc create` created three pods only instead of four.
+
+Delete the object in the `hello-many-pods.json` definition file:
+
+----
+[andrew@master ~]$ oc delete -f hello-many-pods.json
+
+pod "hello-openshift-1" deleted
+pod "hello-openshift-2" deleted
+pod "hello-openshift-3" deleted
+Error from server (NotFound): pods "hello-openshift-4" not found
+----
+
+==== Create Services and Routes
+
+As `andrew`, create a project called `scvslab`:
+
+----
+
+[andrew@master ~]$ oc new-project svcslab --display-name="Services Lab" --description="This is the project we use to learn about services"
+----
+
+The output looks like this:
+
+----
+Now using project "svcslab" on server "https://master.example.com:8443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    $ oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-hello-world.git
+
+to build a new hello-world application in Ruby.
+----
+
+Create the `hello-service.json` file:
+
+----
+[andrew@master ~]$ cat <<EOF > hello-service.json
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "hello-service",
+    "labels": {
+      "name": "hello-openshift"
+    }
+  },
+  "spec": {
+    "selector": {
+      "name":"hello-openshift"
+    },
+    "ports": [
+      {
+        "protocol": "TCP",
+        "port": 8888,
+        "targetPort": 8080
+      }
+    ]
+  }
+}
+EOF
+----
+
+Create the `hello-service` service:
+
+----
+[andrew@master ~]$ oc create -f hello-service.json
+
+service "hello-service" created
+----
+
+Display the services that are running in the current project:
+
+----
+[andrew@master ~]$ oc get services
+
+NAME            CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+hello-service   172.30.213.165   <none>        8888/TCP   5s
+----
+
+Examine the details of your service. Note the following:
+** *Selector*: Describes which pods the service selects or lists.
+** *Endpoints*: Displays all the pods that are currently listed (none in your current project).
+
+----
+[andrew@master ~]$ oc describe service hello-service
+
+Name:			hello-service
+Namespace:		svcslab
+Labels:			name=hello-openshift
+Selector:		name=hello-openshift
+Type:			ClusterIP
+IP:			172.30.213.165
+Port:			<unset>	8888/TCP
+Endpoints:		<none>
+Session Affinity:	None
+No events.
+----
+
+Create pods according to the `hello-many-pods.json` definition file:
+
+----
+[andrew@master ~]$ oc create -f hello-many-pods.json
+
+pod "hello-openshift-1" created
+pod "hello-openshift-2" created
+pod "hello-openshift-3" created
+pod "hello-openshift-4" created
+----
+
+Wait a few seconds and check the service again.
+
+* The pods that share the label `name=hello-openshift` are all listed:
+
+----
+[andrew@master ~]$ oc describe service hello-service
+
+Name:			hello-service
+Namespace:		svcslab
+Labels:			name=hello-openshift
+Selector:		name=hello-openshift
+Type:			ClusterIP
+IP:			172.30.213.165
+Port:			<unset>	8888/TCP
+Endpoints:		10.1.2.2:8080,10.1.2.3:8080,10.1.3.2:8080 + 1 more...
+Session Affinity:	None
+No events.
+----
+
+Test that your service is working:
+
+----
+
+[andrew@master ~]$ oc describe service hello-service|grep IP:|awk '{print $2}'
+
+172.30.18.176
+
+[andrew@master ~]$ ssh root@node1 'curl -s http://172.30.18.176:8888'
+
+root@node1's password: r3dh4t1!
+
+Hello OpenShift!
+----
+
+==== Explore Containers and Routes
+
+Next, take a look at the route and registry containers.
+
+===== Create Applications As Examples
+
+As `andrew`, create a project called `explore-example`:
+----
+[andrew@master ~]$ oc new-project explore-example --display-name="Explore Example" --description="This is the project we use to learn about connecting to pods"
+
+Now using project "explore-example" on server "https://master.example.com:8443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-ex.git
+
+to build a new example application in Ruby.
+----
+
+Applying the same image as before, run `oc new-app` to deploy `hello-openshift`:
+----
+[andrew@master ~]$ oc new-app --docker-image=openshift/hello-openshift:v1.5.1 -l "todelete=yes"
+
+--> Found Docker image fb15b0b (4 weeks old) from Docker Hub for "openshift/hello-openshift:v1.5.1"
+
+    * An image stream will be created as "hello-openshift:v1.5.1" that will track this image
+    * This image will be deployed in deployment config "hello-openshift"
+    * Ports 8080/tcp, 8888/tcp will be load balanced by service "hello-openshift"
+      * Other containers can access this service through the hostname "hello-openshift"
+    * WARNING: Image "openshift/hello-openshift:v1.5.1" runs as the 'root' user which may not be permitted by your cluster administrator
+
+--> Creating resources with label todelete=yes ...
+    imagestream "hello-openshift" created
+    deploymentconfig "hello-openshift" created
+    service "hello-openshift" created
+--> Success
+    Run 'oc status' to view your app.
+----
+
+Verify that `oc new-app` has created a pod and the service.
+
+----
+[andrew@master ~]$ oc get svc
+
+NAME              CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+hello-openshift   172.30.24.220   <none>        8080/TCP,8888/TCP   37s
+----
+
+Wait until the Conatiner Status is Running. (it takes minute)
+----
+[andrew@master ~]$ oc get pods
+
+NAME                      READY     STATUS    RESTARTS   AGE
+hello-openshift-1-g3xow   1/1       Running   0          2m
+
+----
+
+Expose the service and create a route for the application:
+----
+[andrew@master ~]$ oc expose service hello-openshift --hostname=explore.cloudapps.example.com
+
+route "hello-openshift" exposed
+----
+
+Check if the route works fine:
+----
+[andrew@master ~]$ curl http://explore.cloudapps.example.com
+
+Hello OpenShift!
+----
+
+Now it works without the ssh, because we have an external route to the container.
+
+In a later section, you explore the `docker-registry` container. To save time, start an S2I build now to push an image into the registry:
+
+----
+[andrew@master ~]$ oc new-app https://github.com/openshift/sinatra-example -l "todelete=yes"
+
+--> Found image 27e89d9 (4 weeks old) in image stream "ruby" in project "openshift" under tag "2.3" for "ruby"
+
+    Ruby 2.3
+    --------
+    Platform for building and running Ruby 2.3 applications
+
+    Tags: builder, ruby, ruby23, rh-ruby23
+
+    * The source repository appears to match: ruby
+    * A source build using source code from https://github.com/openshift/sinatra-example will be created
+      * The resulting image will be pushed to image stream "sinatra-example:latest"
+    * This image will be deployed in deployment config "sinatra-example"
+    * Port 8080/tcp will be load balanced by service "sinatra-example"
+      * Other containers can access this service through the hostname "sinatra-example"
+
+--> Creating resources with label todelete=yes ...
+    imagestream "sinatra-example" created
+    buildconfig "sinatra-example" created
+    deploymentconfig "sinatra-example" created
+    service "sinatra-example" created
+--> Success
+    Build scheduled, use 'oc logs -f bc/sinatra-example' to track its progress.
+    Run 'oc status' to view your app.
+----
+
+===== Connect to Default Router Container
+
+Get back to root:
+----
+[andrew@master ~]$ exit
+----
+
+. As `root`, make sure to use the default project. Open a Shell into the container with `oc rsh`
+ command along with the default router's pod name.
+
+----
+[root@master ~]# oc project default
+
+Now using project "default" on server "https://master.example.com:8443".
+----
+
+----
+[root@master ~]# oc get pods
+
+NAME                      READY     STATUS    RESTARTS   AGE
+docker-registry-1-26xs7    1/1       Running   9          28d
+registry-console-1-tbwwj   1/1       Running   5          8d
+router-1-xq3r6             1/1       Running   12         28d
+----
+
+----
+[root@master ~]# oc rsh router-1-xq3r6 
+----
+
+This prompt is displayed:
+----
+sh-4.2$ 
+----
+
+You are now running `bash` inside the container.
+
+. Do the following:
+.. Run `id`.
+.. Run `pwd` and `ls` and note the directory you are in.
+.. Run `grep hello-openshift` on the `haproxy.config` file.
+.. Run `cat haproxy.config` to have a look on your configuration file.
++
+----
+sh-4.2$ id
+
+uid=1000020000 gid=0(root) groups=0(root),1000020000
+----
++
+----
+sh-4.2$ pwd
+
+/var/lib/haproxy/conf
+----
++
+----
+sh-4.2$ ls
+
+cert_config.map		 os_edge_http_be.map	     os_sni_passthrough.map
+default_pub_keys.pem	 os_http_be.map		     os_tcp_be.map
+error-page-503.http	 os_reencrypt.map	     os_wildcard_domain.map
+haproxy-config.template  os_route_http_expose.map
+haproxy.config		 os_route_http_redirect.map
+----
++
+----
+sh-4.2$ grep hello-openshift haproxy.config 
+
+backend be_http_explore-example_hello-openshift
+
+sh-4.2$ ps -ef
+
+UID         PID   PPID  C STIME TTY          TIME CMD
+1000020+      1      0  0 21:33 ?        00:00:02 /usr/bin/openshift-router
+1000020+    294      1  0 22:09 ?        00:00:00 /usr/sbin/haproxy -f /var/lib/
+1000020+    298      0  0 22:09 ?        00:00:00 /bin/sh
+1000020+    305    298  0 22:10 ?        00:00:00 ps -ef
+----
+.. Examine the haproxy.config more closely. This could look something like this like this:
++
+[subs=+macros]
+----
+sh-4.2$ grep -A 40 hello-openshift haproxy.config | sed '/^ *$/d'
+
+backend be_http_explore-example_hello-openshift
+  mode http
+  option redispatch
+  option forwardfor
+  balance leastconn
+  timeout check 5000ms
+  http-request set-header X-Forwarded-Host %[req.hdr(host)]
+  http-request set-header X-Forwarded-Port %[dst_port]
+  http-request set-header X-Forwarded-Proto http if !{ ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  cookie 7cf54b74789cba0ee0faded0db7f5e0f insert indirect nocache httponly
+  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)]
+pass:quotes[  *server*] 456a8f857d60f0a14165ad58cff18e10 10.128.2.32:8080 check inter 5000ms cookie 456a8f857d60f0a14165ad58cff18e10 weight 100
+----
++
+You see that you have only one endpoint defined. (The line which starts with server)
++
+.. Exit the bash in the container to return to the root@master shell
++
+----
+sh-4.2$ exit
+
+[root@master ~]# _
+----
+. As `andrew`, scale `hello-openshift` to have five replicas of its pod:
++
+----
+[root@master ~]# su - andrew
+----
++
+----
+[andrew@master ~]$ oc get deploymentconfig
+
+NAME              REVISION   REPLICAS   TRIGGERED BY
+hello-openshift   1          1          config,image(hello-openshift:v1.5.1)
+sinatra-example   1          1          config,image(sinatra-example:latest)
+----
++
+----
+[andrew@master ~]$ oc scale dc hello-openshift --replicas=5
+
+deploymentconfig "hello-openshift" scaled
+----
+
+. As `root` go back to the router container and view the `haproxy.config` file again:
++
+[subs=+macros]
+----
+[andrew@master ~]$ exit
+----
++
+----
+[root@master ~]# oc rsh router-1-xq3r6
+----
++
+----
+sh-4.2$ grep -A 70 hello-openshift haproxy.config | sed '/^ *$/d'
+
+backend be_http_explore-example_hello-openshift
+  mode http
+  option redispatch
+  option forwardfor
+  balance leastconn
+  timeout check 5000ms
+  http-request set-header X-Forwarded-Host %[req.hdr(host)]
+  http-request set-header X-Forwarded-Port %[dst_port]
+  http-request set-header X-Forwarded-Proto http if !{ ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  cookie 7cf54b74789cba0ee0faded0db7f5e0f insert indirect nocache httponly
+  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)]
+pass:quotes[  *server* 456a8f857d60f0a14165ad58cff18e10 10.128.2.32:8080 check inter 5000ms cookie 456a8f857d60f0a14165ad58cff18e10 weight 100
+  *server* 465c8af937146549fb2d68aa3adfde77 10.128.2.36:8080 check inter 5000ms cookie 465c8af937146549fb2d68aa3adfde77 weight 100
+  *server* a19dc1b5f57a5cfe76f752ad8aa6c3a5 10.130.0.20:8080 check inter 5000ms cookie a19dc1b5f57a5cfe76f752ad8aa6c3a5 weight 100
+  *server* 111eec0d645bb0897b3a9425563167b9 10.131.0.18:8080 check inter 5000ms cookie 111eec0d645bb0897b3a9425563167b9 weight 100
+  *server*] aa8e80663b91a03be37ee9d33c3bc9c5 10.131.0.19:8080 check inter 5000ms cookie aa8e80663b91a03be37ee9d33c3bc9c5 weight 100
+----
+
+* All of your pods within the `haproxy` configuration are listed.
+
+NOTE: Remember, the router routes proxy connections to the pods directly and not through the service. The router uses the service only to obtain a list of the pod endpoints (IP addresses).
+
+Leave the container an switch to andrew:
+----
+sh-4.2$ exit
+
+exit
+[root@master ~]# su - andrew
+----
+
+==== Explore Registry Container
+
+There are two containers that deal with registry related services. There is the docker-registry and there is the registry-console. We are looking at the docker-registry in this section. We will take a quick look at the https://registry-console-default.cloudapps.example.com[Registry-Console^] at a later time.
+
+Please ensure that your build from earlier is complete.
+
+. As user `*andrew*`, check the logs of the build that we stared a while back:
++
+----
+
+[andrew@master ~]$ oc logs builds/sinatra-example-1
+
+Cloning "https://github.com/openshift/sinatra-example" ...
+	Commit:	ff65a82271fffc60d4129bccde9c42ded49a199d (Merge pull request #11 from corey112358/patch-1)
+	Author:	Ben Parees <bparees@users.noreply.github.com>
+	Date:	Wed Jul 22 00:20:36 2015 -0400
+
+---> Installing application source ...
+---> Building your Ruby application from source ...
+---> Running 'bundle install --deployment --without development:test' ...
+Fetching gem metadata from https://rubygems.org/..........
+Fetching version metadata from https://rubygems.org/..
+Installing rack 1.6.0
+Installing rack-protection 1.5.3
+Installing tilt 1.4.1
+Installing sinatra 1.4.5
+Using bundler 1.10.6
+Bundle complete! 1 Gemfile dependency, 5 gems now installed.
+Gems in the groups development and test were not installed.
+Bundled gems are installed into ./bundle.
+---> Cleaning up unused ruby gems ...
+
+
+Pushing image 172.30.17.242:5000/explore-example/sinatra-example:latest ...
+Pushed 0/5 layers, 3% complete
+Pushed 1/5 layers, 24% complete
+Pushed 2/5 layers, 43% complete
+Pushed 3/5 layers, 75% complete
+Pushed 3/5 layers, 98% complete
+Pushed 4/5 layers, 98% complete
+Pushed 5/5 layers, 100% complete
+Push successful
+----
++
+Notice the last few lines here. The *Push successful* indicates that the new container image was put into your internal registry.
++
+. As `root`, start a shell inside the Container Context by running `oc rsh` along with the `docker-registry` pod name:
++
+----
+[root@master ~]# oc rsh docker-registry-1-<your registry id>
+----
+
+. Do the following:
+.. Run `id`.
+.. Run `pwd` and `ls` and note the directory you are in.
+.. Run `cat config.yml`  to verify your configuration file.
++
+----
+sh-4.2$ id
+
+uid=1000010000 gid=0(root) groups=0(root),1000010000
+----
++
+----
+sh-4.2$ pwd
+
+/
+----
++
+----
+sh-4.2$ ls
+
+bin   config.yml  etc	lib    media  opt   registry  run   srv  tmp  var
+boot  dev	  home	lib64  mnt    proc  root      sbin  sys  usr
+----
++
+----
+sh-4.2$ cat config.yml
+
+version: 0.1
+log:
+  level: debug
+http:
+  addr: :5000
+storage:
+  cache:
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /registry
+  delete:
+    enabled: true
+auth:
+  openshift:
+    realm: openshift
+
+    # tokenrealm is a base URL to use for the token-granting registry endpoint.
+    # If unspecified, the scheme and host for the token redirect are determined from the incoming request.
+    # If specified, a scheme and host must be chosen that all registry clients can resolve and access:
+    #
+    # tokenrealm: https://example.com:5000
+middleware:
+  registry:
+    - name: openshift
+  repository:
+    - name: openshift
+      options:
+        acceptschema2: false
+        pullthrough: true
+	mirrorpullthrough: true
+        enforcequota: false
+        projectcachettl: 1m
+        blobrepositorycachettl: 10m
+  storage:
+    - name: openshift
+----
++
+. View the repositories and images that are available:
++
+----
+sh-4.2$ cd /registry/docker/registry/v2/repositories
+----
++
+----
+sh-4.2$ ls
+
+explore-example
+----
++
+----
+sh-4.2$ ls explore-example/sinatra-example/_layers/
+
+sha256
+----
++
+----
+sh-4.2$ ls explore-example/sinatra-example/_layers/sha256/
+
+02cbff0982e427fee158df11d35632f38410ee7e8b48212e681ecf3e60660ce4
+5a865e48f2fdb4c48700b9aa800ecd8d0aff8611bec51fb4ab0f70ba09a0fb8e
+89af3ab0c8b470502e9ed73ce6fa83f97e89a033f2553e9ba4e8a153c52a6373
+9cc048a8a74a05eabd2f114d56d759435b8e2d76091e40edbff1d137b08de613
+a778b52f148e84ec73f4ad7f7a1e67690dd0a36ddf1ed2926ad223901d196bf7
+d65e4475a277c626c504de9433b98c30350e4cb940feb858b8563a6031e809a5
+----
++
+. As user `andrew`, look at one of the pods you started earlier:
++
+----
+[andrew@master ~]$ oc get pods
+
+NAME                      READY     STATUS      RESTARTS   AGE
+hello-openshift-1-4ywxh   1/1       Running     0          7m
+hello-openshift-1-5vsyl   1/1       Running     0          7m
+hello-openshift-1-9ivns   1/1       Running     0          19m
+hello-openshift-1-byte3   1/1       Running     0          7m
+hello-openshift-1-riupx   1/1       Running     0          7m
+sinatra-example-1-build   0/1       Completed   0          17m
+sinatra-example-1-ebuiu   1/1       Running     0          14m
+----
+
+. Connect to the container:
++
+----
+[andrew@master ~]$ oc exec -ti sinatra-example-1-ebuiu "/bin/bash"
+
+bash-4.2$
+----
+
+. Explore the container:
+.. Run `id`.
+.. Run `pwd` and `ls` and note the directory you are in.
+.. Run `ps -ef` to see what processes are running.
++
+----
+
+bash-4.2$ id
+
+uid=1000060000 gid=0(root) groups=0(root),1000060000
+
+bash-4.2$ pwd
+
+/opt/app-root/src
+
+bash-4.2$ ls
+
+Gemfile       README.md  config.ru	  example-mustache	 public
+Gemfile.lock  app.rb	 example-model	  example-views		 tmp
+README	      bundle	 example-modular  example-views-modular
+
+bash-4.2$ ps -ef
+
+UID         PID   PPID  C STIME TTY          TIME CMD
+1000050+      1      0  0 22:41 ?        00:00:01 ruby /opt/app-root/src/bundle/
+1000050+     33      0  0 22:51 ?        00:00:00 /bin/bash
+1000050+     62     33  0 22:51 ?        00:00:00 ps -ef
+----
++
+[NOTE]
+Your pod names and output differ slightly.
+
+=== Creating Applications Lab
+
+This lab includes the following sections:
+
+* *Deploy Application on Web Console*
++
+In this section, you deploy an application from a code repository and follow the build logs on the OpenShift Container Platform web console and CLI.
+
+* *Customize Build Script*
+
+- Create an application from a forked Git repository, inject a custom build script, and start a rebuild from the web console.
+
+- Review your custom script messages in the logs.
+
+==== Deploy Application on Web Console
+
+Here, you connect to and become familiar with the web console, create a project and an application, and scale a deployment and the topology view.
+
+===== Connect To and Explore Web Console
+
+. Use your browser to go to the OpenShift web console at `https://master.example.com:8443[https://master.example.com:8443^]`.
+
+. Log in as `andrew` with the password `r3dh4t1!`.
+
+. Take a few minutes to browse your projects.
+
+===== Create New Project
+
+. Click *Projects* and select *View all projects* to return to the Projects view.
+
+. Click the blue *New Project* button in the top right corner.
+
+. Give the new project a name, display name, and description:
+* *Name*: `my-ruby-project`
+* *Display Name*: `My Ruby Example Project`
+* *Description*: An explanation of your choice
+
+Once the project is in place, the *Add to Project* screen is displayed.
+
+==== Create New Application
+
+. In the *Add to Project* screen, type `ruby` in the search field of the *Browse Catalog* Tab to filter the available instant apps, templates, and builder images.
+
+. We choose the plain Ruby Application here
+. Set the version to `2.2` 
+. Click "Select"
+
+. Specify the name and Git repository URL:
+* *Name*: `my-ruby-hello-world`.
+* *Git Repository URL*: `https://github.com/openshift/ruby-hello-world`.
+
+. Click *Show advanced options for source, routes, builds, and deployments.* and select the following options:
+.. Notice that you get a route per default for your application.
+.. Note that you can decide if Builds or Deployments should start automatically.
+.. Change the scaling parameter to 3.
+.. Create a label for app by the name of `environment` and the value of `dev`.
+
+. Accept and create the application.
+
+. Click *Continue to Overview* to go to the application's *Overview* screen.
+
+. Click *View Log* to verify that a build is in progress. (this needs some time)
+
+. Review the log as the build progresses.
+
+. Wait for the build to complete and use a browser to navigate to the
+ application route: http://my-ruby-hello-world-my-ruby-project.cloudapps.example.com[http://my-ruby-hello-world-my-ruby-project.cloudapps.example.com^]
+//.. The database for our application isn't running, so expect to see the web
+// page mention that.
++
+[TIP]
+====
+* You can also use the command line to create a new application: `oc new-app https://github.com/openshift/ruby-hello-world -l  environment=dev`.
+
+* To change scaling from the command line, use `oc scale`.
+====
+
+==== Scale Deployment 
+
+. Go back to your application's *Overview* screen by clicking *Overview* at the upper left side.
+
+. Observe the circle that shows the current number of pods, which is 3. You can increase that number by clicking the `^` button next to it.
+
+. Click the `^` button twice to increase the number of replicas to 5.
+
+. Go to *Applications* and select *Pods* to take a look at your new pods.
+
+. Go back to your application's *Overview* screen by clicking *Overview* again.
+
+
+=== Templates Lab
+
+This lab includes the following sections:
+
+* *Create and Upload Template*
++
+In this section, you create a template for a two-tier application (front end and database), upload it into the shared namespace (the `openshift` project), and ensure that users can deploy it from the web console.
+
+* *Use Templates and Template Parameters*
++
+In this section, you create two separate template instances in two separate projects and establish a front-end-to-database-back-end connection by means of template parameters.
+
+[NOTE] 
+.Templates are a complex 
+====
+Templates allow an easy way to define all the required objects of an complex to be sepcified together and made available in Catalogs. Please see our link:https://access.redhat.com/documentation/en-us/openshift_container_platform/3.5/html-single/developer_guide/#dev-guide-templates[OpenShift Documentation on Templates^] for more information.
+====
+
+==== Create and Upload Template
+
+===== Install Template
+
+The example in this section shows an application and a service with two pods: a front-end web tier and a back-end database tier. This application uses auto-generated parameters and other sleek features of OpenShift Container Platform.  Note that this application contains predefined connectivity between the front-end and back-end components as part of its YAML definition. You add further resources in a later lab.
+
+This example is, in effect, a "quick start" -- a predefined application that comes in a template and that you can immediately use or customize.
+
+. As `root` on the master host, download the template's definition file:
++
+----
+[root@master ~]# wget http://people.redhat.com/~llange/yaml/Template_Example.yml
+----
+
+. Create the template object in the shared `openshift` project. This is also referred to as _uploading_ the template.
++
+----
+[root@master ~]# oc create -f Template_Example.yml -n openshift
+
+template "a-quickstart-keyvalue-application" created
+----
+NOTE: The `Template_Example.yml` file defines a template. You just added it to the openshift project. This make your template available throughout your OpenShift cluster. If you want to just have this temlate available for certain projects, put it directly into the project namespace and refrain from adding it to the `openshift` project.
+
+The OpenShift Container Platform comes with a long list of preconfigured templates available for usage. You can take a look at the installed list with the following `oc` command. This list had 117 entries, that is why we did not include the output here. 
+
+----
+[root@master ~]# oc get templates -n openshift 
+
+... <many lines> ...
+sso70-postgresql-persistent                     Application template for SSO 7.0 PostgreSQL applications with persistent storage   33 (17 blank)     8
+----
+
+Do not be alarmed by the complexity of Templates. You can even create templates from existing Objects. Please see our Documentation on 
+link:https://access.redhat.com/documentation/en-us/openshift_container_platform/3.5/html-single/developer_guide/#export-as-template[How to Create a Template from existing Objects^].
+
+===== Create Instant App from Template
+
+. On your browser, connect to the OpenShift web console at `https://master.example.com:8443[https://master.example.com:8443]`:
+.. Log in as `andrew` with the password `r3dh4t1!`.
+
+. Click the blue *New Project* button in the top right corner.
+
+. Specify the project name, display name, and description:
+* *Name*: `instant-app`
+* *Display Name*: `instant app example project`
+* *Description*: `A demonstration of an instant app or template`.
++
+[TIP]
+====
+Alternatively, perform this step from the command line:
+----
+[root@master ~]# oadm new-project instant-app --display-name="instant app example project" --description='A demonstration of an instant-app/template' --node-selector='region=primary' --admin=andrew
+----
+====
+
+. From the `instant-app` project's *Overview* screen, click *Add to project*.
++
+. Click the `ruby` tile to display ruby based applications and builder images
++
+[NOTE]
+Here you find the instant application, a special kind of template with the `instant-app` tag. The idea behind an instant application is that, when you create a template instance, you already have a fully functional application. In this example, your instant application is just a simple web page for key-value storage and retrieval.
++
+. Select *a-quickstart-keyvalue-application*.
++
+The template configuration screen is displayed. Here, you can specify certain options for instantiating the application components:
++
+.. Set the `ADMIN_PASSWORD` parameter to your favorite password.
+.. Add a label named `version` with the value `1`.
+
+. Click *Create* to instantiate the services, pods, replication controllers, etc.
+
+* The build starts immediately.
+. Wait for the build to finish. You can browse the build logs to follow the progress.
+
+[NOTE]
+Our Application is currently still missing heath checks for all containers. You will deal with health checks later in this lab. If you are an experienced OpenShift User feel free to build a template with health checks included.
+
+===== Use Application
+
+After the build is complete and both frontend and database are up and running, visit your application at `http://example-route-instant-app.cloudapps.example.com/[http://example-route-instant-app.cloudapps.example.com/^]`.
+
+[NOTE]
+Be sure to use HTTP and _not_ HTTPS. HTTPS does not work for this example because the form submission was coded with HTTP links.
+
+== Short intro into CloudForms
+
+CloudForms is the designated Operations Tool for the Openshift Container Platform. But CloudForms is much more than just a tool to look at and manage OpenShift. It originally found it's way into the Red Hat portfolio though the acquisition of the company ManageIQ. It was primarily a virtualisation management tool in the beginning. The big differentiator to other existing tools was the main focus on *Operational Visibility* or *Insight* as it is called back in the day.
+
+CloudForms is a manager of managers. It talks to the APIs of other management infrastructures. These are called providers.
+
+.CloudForms can be the central manager for all these infrastructures
+* AWS
+* Google Cloud
+* Azure
+* Red Hat OpenStack
+* Microsoft System Center VMM
+* Red Hat Virtualization
+* VmWare vCenter
+* Ansible Tower
+* *Red Hat OpenShift Container Platform*
+
+image::http://people.redhat.com/~llange/labimg/CloudForms-Overview1.png[]
+
+=== Connect to CloudForms
+
+We did deploy a CloudForms 4.5 for you as part of this Lab. Open your Browser and connect to it via https://cf.example.com[https://cf.example.com^]. 
+
+. Log into the CloudForms Interface using the User `admin` and the password `r3dh4t1!`. 
++
+You will find the main navigation panel on the right hand side. Hover over `Compute`, move to `Containers` and Click on `Overview` in the 3rd side panel. This will bring you to the Container Dashboard. This is an Overview over all configured OpenShift environments.
++
+image::http://people.redhat.com/~llange/labimg/CloudForms-Container-Provider-Dashboardv2.png[Container Dashboard]
++
+The container dashboard give a quick overview of the known / configured OpenShift Cluster Environments. The section at the top of the board lists the number of known Objects. Below this are several usage statistics. These are filled only if the hawkular metric stack is set up in your OpenShift Container Platform. Note that it will take up to 24h after configuring the Hawkular part of the provider setup in CloudForms until the usage information is displayed.
++
+CloudForms offers another tool called *Topology*. This view might be familiar to you if you know OpenStack Horizon. The Topology view can be quite full and overwhelming if your cluster is bigger or has many applications.  
++
+. Go to Compute -> Containers -> Click on Topology.
++
+image::http://people.redhat.com/~llange/labimg/CloudForms-Container-Topology.png[]
++
+If this view is too full use the service icons to toggle visibilty of the respective objects. You could also use the search field to grey out every object not matching your search. 
++
+The nice thing about the topology view is that every object is displayed with a status indicator. In our case every object has a green border. It an object has a failed state, you will see it with a red boarder instead. You could chose to display object names, or hover over the object with the mouse cursor to see name, type and status of that object. A double click on the object will bring you to the details page of that object in CloudForms.
+
+== The End
+
+Thanks a lot for attending the *OpenShift Container Platform Workshop*, we hope you enjoyed it.
+
+Have a good day :-)
