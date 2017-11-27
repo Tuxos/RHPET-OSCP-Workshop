@@ -1765,47 +1765,6 @@ After the build is complete and both frontend and database are up and running, v
 [NOTE]
 Be sure to use HTTP and _not_ HTTPS. HTTPS does not work for this example because the form submission was coded with HTTP links.
 
-== Short intro into CloudForms
-
-CloudForms is the designated Operations Tool for the Openshift Container Platform. But CloudForms is much more than just a tool to look at and manage OpenShift. It originally found it's way into the Red Hat portfolio though the acquisition of the company ManageIQ. It was primarily a virtualisation management tool in the beginning. The big differentiator to other existing tools was the main focus on *Operational Visibility* or *Insight* as it is called back in the day.
-
-CloudForms is a manager of managers. It talks to the APIs of other management infrastructures. These are called providers.
-
-.CloudForms can be the central manager for all these infrastructures
-* AWS
-* Google Cloud
-* Azure
-* Red Hat OpenStack
-* Microsoft System Center VMM
-* Red Hat Virtualization
-* VmWare vCenter
-* Ansible Tower
-* *Red Hat OpenShift Container Platform*
-
-image::http://people.redhat.com/~llange/labimg/CloudForms-Overview1.png[]
-
-=== Connect to CloudForms
-
-We did deploy a CloudForms 4.5 for you as part of this Lab. Open your Browser and connect to it via https://cf.example.com[https://cf.example.com^]. 
-
-. Log into the CloudForms Interface using the User `admin` and the password `r3dh4t1!`. 
-+
-You will find the main navigation panel on the right hand side. Hover over `Compute`, move to `Containers` and Click on `Overview` in the 3rd side panel. This will bring you to the Container Dashboard. This is an Overview over all configured OpenShift environments.
-+
-image::http://people.redhat.com/~llange/labimg/CloudForms-Container-Provider-Dashboardv2.png[Container Dashboard]
-+
-The container dashboard give a quick overview of the known / configured OpenShift Cluster Environments. The section at the top of the board lists the number of known Objects. Below this are several usage statistics. These are filled only if the hawkular metric stack is set up in your OpenShift Container Platform. Note that it will take up to 24h after configuring the Hawkular part of the provider setup in CloudForms until the usage information is displayed.
-+
-CloudForms offers another tool called *Topology*. This view might be familiar to you if you know OpenStack Horizon. The Topology view can be quite full and overwhelming if your cluster is bigger or has many applications.  
-+
-. Go to Compute -> Containers -> Click on Topology.
-+
-image::http://people.redhat.com/~llange/labimg/CloudForms-Container-Topology.png[]
-+
-If this view is too full use the service icons to toggle visibilty of the respective objects. You could also use the search field to grey out every object not matching your search. 
-+
-The nice thing about the topology view is that every object is displayed with a status indicator. In our case every object has a green border. It an object has a failed state, you will see it with a red boarder instead. You could chose to display object names, or hover over the object with the mouse cursor to see name, type and status of that object. A double click on the object will bring you to the details page of that object in CloudForms.
-
 == Container Native Storage Lab
 
 === Overview
@@ -2930,6 +2889,51 @@ sh-4.2$ exit
 That's it. You have successfully provided shared storage to pods throughout the entire system, therefore avoiding the need for data to be replicated at the application level to each pod.
 
 With CNS this is available wherever OpenShift is deployed with no external dependency.
+
+== Short intro into CloudForms
+
+CloudForms is the designated Operations Tool for the Openshift Container Platform. But CloudForms is much more than just a tool to look at and manage OpenShift. It originally found it's way into the Red Hat portfolio though the acquisition of the company ManageIQ. It was primarily a virtualisation management tool in the beginning. The big differentiator to other existing tools was the main focus on *Operational Visibility* or *Insight* as it is called back in the day.
+
+CloudForms is a manager of managers. It talks to the APIs of other management infrastructures. These are called providers.
+
+.CloudForms can be the central manager for all these infrastructures
+* AWS
+* Google Cloud
+* Azure
+* Red Hat OpenStack
+* Microsoft System Center VMM
+* Red Hat Virtualization
+* VmWare vCenter
+* Ansible Tower
+* *Red Hat OpenShift Container Platform*
+
+image::http://people.redhat.com/~llange/labimg/CloudForms-Overview1.png[]
+
+=== Connect to CloudForms
+
+We did deploy a CloudForms 4.5 for you as part of this Lab. Open your Browser and connect to it via https://cf.example.com[https://cf.example.com^]. 
+
+. Log into the CloudForms Interface using the User `admin` and the password `r3dh4t1!`. 
++
+You will find the main navigation panel on the right hand side. Hover over `Compute`, move to `Containers` and Click on `Overview` in the 3rd side panel. This will bring you to the Container Dashboard. This is an Overview over all configured OpenShift environments.
++
+image::http://people.redhat.com/~llange/labimg/CloudForms-Container-Provider-Dashboardv2.png[Container Dashboard]
++
+The container dashboard give a quick overview of the known / configured OpenShift Cluster Environments. The section at the top of the board lists the number of known Objects. Below this are several usage statistics. These are filled only if the hawkular metric stack is set up in your OpenShift Container Platform. Note that it will take up to 24h after configuring the Hawkular part of the provider setup in CloudForms until the usage information is displayed.
++
+CloudForms offers another tool called *Topology*. This view might be familiar to you if you know OpenStack Horizon. The Topology view can be quite full and overwhelming if your cluster is bigger or has many applications.  
++
+. Go to Compute -> Containers -> Click on Topology.
++
+image::http://people.redhat.com/~llange/labimg/CloudForms-Container-Topology.png[]
++
+If this view is too full use the service icons to toggle visibilty of the respective objects. You could also use the search field to grey out every object not matching your search. 
++
+The nice thing about the topology view is that every object is displayed with a status indicator. In our case every object has a green border. It an object has a failed state, you will see it with a red boarder instead. You could chose to display object names, or hover over the object with the mouse cursor to see name, type and status of that object. A double click on the object will bring you to the details page of that object in CloudForms.
+
+For more information about https://www.redhat.com/en/technologies/management/cloudforms[CloudForms please click here^].
+rms
+The CloudForms https://access.redhat.com/documentation/en-us/red_hat_cloudforms/[Documentation is here^].
 
 == The End
 
