@@ -2360,6 +2360,8 @@ Log on to the system as `marina` und create a project with an arbitrary name.
 
  [root@master ~]# oc login -u marina --insecure-skip-tls-verify --server=https://master.example.com:8443
  
+The password for `marina` is `r3dh4t1!`. 
+ 
  [root@master ~]# oc new-project my-test-project
 
 To use some of the examples that ship with OpenShift enter the following command to export the template for a sample Ruby on Rails with PostgreSQL application:
