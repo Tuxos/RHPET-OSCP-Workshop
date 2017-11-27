@@ -2130,7 +2130,7 @@ heketi    heketi-container-native-storage.cloudapps.example.com             heke
 
 Hence, heketi will be available via:
 
-Heketi Service URL:: http://heketi-container-native-storage.cloudapps.example.com/
+Heketi Service URL:: http://heketi-container-native-storage.cloudapps.example.com[http://heketi-container-native-storage.cloudapps.example.com^]
 
 You may verify this with a trivial health check:
 
