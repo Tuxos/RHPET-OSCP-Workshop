@@ -1,6 +1,6 @@
 # RHPET-OSCP-Workshop
 
-Labguide for the Red Hat Partner Enablement Training for OpenShift Container Platform Jumpstart.
+Labguide for the Red Hat Partner Enablement Training for OpenShift Container Platform Workshop.
 
 The Lab itself is provided through Ravello.
 
