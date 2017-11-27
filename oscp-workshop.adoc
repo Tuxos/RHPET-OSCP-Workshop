@@ -2566,7 +2566,7 @@ heketi-1-rzj9d                        1/1       Running   0          6m        1
 Remember the IP address of the pod you select. Log on to GlusterFS pod with a remote terminal session like so:
 
 ----
-[root@master ~]# oc rsh glusterfs-37vn8
+[root@master ~]# oc rsh glusterfs-0f3cp
 
 sh-4.2#
 ----
@@ -2576,6 +2576,7 @@ Let's list all known volumes:
 
 ----
 sh-4.2# gluster volume list
+
 heketidbstorage <1>
 vol_e8fe7f46fedf7af7628feda0dcbf2f60 <2>
 ----
