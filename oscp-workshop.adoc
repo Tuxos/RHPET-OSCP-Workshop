@@ -2932,7 +2932,7 @@ If this view is too full use the service icons to toggle visibilty of the respec
 The nice thing about the topology view is that every object is displayed with a status indicator. In our case every object has a green border. It an object has a failed state, you will see it with a red boarder instead. You could chose to display object names, or hover over the object with the mouse cursor to see name, type and status of that object. A double click on the object will bring you to the details page of that object in CloudForms.
 
 For more information about https://www.redhat.com/en/technologies/management/cloudforms[CloudForms please click here^].
-rms
+
 The CloudForms https://access.redhat.com/documentation/en-us/red_hat_cloudforms/[Documentation is here^].
 
 == The End
