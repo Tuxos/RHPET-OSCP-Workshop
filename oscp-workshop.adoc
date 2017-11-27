@@ -10,7 +10,7 @@ Dennis Deitermann (dennis@redhat.com)
 
 In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface, how to deploy applications and some administration stuff.
 
-You will find our http://www.rhpet.de/oscp-workshop.pdf[Presentation here.]
+You will find our http://www.rhpet.de/oscp-workshop.pdf[Presentation here].
 
 Have fun and enjoy the Lab :-)
 
@@ -18,7 +18,7 @@ Have fun and enjoy the Lab :-)
 
 You have seven VMs for your own use. Only the Gateway VM is reachable from the internet. All others are behind a reverse proxy or can only be accessed through the ssh gateway.
 
-To get your external IP address for the Gateway VM, please goto the http://seats.rhpet.de[Seat-to-IP overview Page^] and search your Seat-id in the table.
+To get your external IP address for the Gateway VM, please goto the http://seats.rhpet.de[Seat-to-IP overview Page^] and search your Seat-id.
 
 [cols="3*", options="header"]
 |===
@@ -46,7 +46,7 @@ To get your external IP address for the Gateway VM, please goto the http://seats
 
 First login to the ssh gateway with the user `rhpet`:
 
-To obtain your ip address from the Gateway http://lab.rhpet.de[here^].
+To obtain your ip address from the Gateway http://seats.rhpet.de[here^].
 
 Login into the ssh gateway with the user `rhpet` and the password you got from the instructor.
 
