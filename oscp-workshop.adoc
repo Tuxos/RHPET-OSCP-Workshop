@@ -1,4 +1,4 @@
-= OpenShift Container Platform Partner Enablement Workshop
+= OpenShift Container Platform Partner Enablement Workshop - SVA Edition
 Dennis Deitermann (dennis@redhat.com)
 :scrollbar:
 :data-uri:
