@@ -1,4 +1,6 @@
-= Die OpenShift Welt - Erste Schritte in praktischen Übungen
+image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
+
+= Erste Schritte in OpenShift
 Dennis Deitermann (dennis@redhat.com)
 :scrollbar:
 :data-uri:
@@ -6,11 +8,9 @@ Dennis Deitermann (dennis@redhat.com)
 :numbered:
 :icons: font
 
-image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
-
 == Introduction into the Lab
 
-In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface, how to deploy applications and get a quick view on Container Native Storage.
+In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface and how to deploy an application.
 
 Have fun and enjoy the Lab :-)
 
