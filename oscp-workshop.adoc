@@ -1,5 +1,3 @@
-image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
-
 = Erste Schritte in OpenShift
 Dennis Deitermann (dennis@redhat.com)
 :scrollbar:
@@ -7,6 +5,8 @@ Dennis Deitermann (dennis@redhat.com)
 :toc: left
 :numbered:
 :icons: font
+
+image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
 
 == Introduction into the Lab
 
