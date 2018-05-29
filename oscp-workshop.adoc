@@ -6,7 +6,7 @@ Dennis Deitermann (dennis@redhat.com)
 :numbered:
 :icons: font
 
-image::http://www.rhpet.de/pictures/forum_vie2017.jpg[Red Hat Forum 2017 - Vienna]
+image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
 
 == Introduction into the Lab
 
