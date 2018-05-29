@@ -1,10 +1,12 @@
-= OpenShift Container Platform Partner Enablement Workshop
+= Die OpenShift Welt - Erste Schritte in praktischen Übungen
 Dennis Deitermann (dennis@redhat.com)
 :scrollbar:
 :data-uri:
 :toc: left
 :numbered:
 :icons: font
+
+image::http://www.rhpet.de/pictures/forum_vie2017.jpg[Red Hat Forum 2017 - Vienna]
 
 == Introduction into the Lab
 
