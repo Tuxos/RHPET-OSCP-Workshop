@@ -1,4 +1,4 @@
-= Erste Schritte in OpenShift
+= Erste Schritte in OpenShift 3.9
 Dennis Deitermann (dennis@redhat.com)
 :scrollbar:
 :data-uri:
@@ -18,7 +18,7 @@ Have fun and enjoy the Lab :-)
 
 You have seven VMs for your own use. Only the Gateway VM is reachable from the internet. All others are behind a reverse proxy or can only be accessed through the ssh gateway.
 
-To get your external IP address for the Gateway VM, please goto the http://seats.rhpet.de[Seat-to-IP overview Page^] and search your Seat-id.
+To get your GUID and external IP address for the Gateway VM, please goto the http://seats.rhpet.de[Seat-to-GUID overview Page^] and search your Seat-id.
 
 [cols="3*", options="header"]
 |===
