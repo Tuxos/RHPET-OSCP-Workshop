@@ -1745,7 +1745,7 @@ Additional Services (don`t forget to replace the GUID string with your GUID from
 
 Web: http://gogs-lab-infra.devapps-GUID.generic.opentlc.com
 
-Username: `student`  
+Username: `student` +
 Password: `openshift`
 
 *Nexus Maven Repository*
