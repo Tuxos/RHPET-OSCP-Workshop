@@ -20,50 +20,37 @@ Have fun and we hope you enjoy the Lab :-)
 
 === How to access the Lab Environment
 
-First login to the ssh gateway with the user `rhpet`:
+To obtain your IP address from the SSH gateway please look for your Seat ID http://seats.rhpet.de[here^].
 
-To obtain your ip address from the Gateway http://seats.rhpet.de[here^].
-
-Login into the ssh gateway with the user `rhpet` and the password you got from the instructor.
+Login into the ssh gateway with the user `root` and the password you finde in the <<Appendix: Lab Environment Information>>.
 
 ----
-[user@yourhost ~]$ ssh rhpet@<your gateway ip address>
-
-The authenticity of host '104.199.108.30 (104.199.108.30)' can't be established.
-ECDSA key fingerprint is SHA256:bsDGeuXiG1zpM3RlsN+RlaAPRaDSi6Y/sJoBP2IXNqU.
-ECDSA key fingerprint is MD5:5f:b2:e7:c4:05:c2:37:10:1c:1f:a8:32:a8:ca:5a:38.
+[user@yourhost ~]$ ssh root@<your SSH Gateway IP adress>
+The authenticity of host '129.213.14.33 (129.213.14.33)' can't be established.
+ECDSA key fingerprint is SHA256:ztRJAqdV6iu+yRrrP42PaGm107SEMPdYVjGXZuL3EAo.
+ECDSA key fingerprint is MD5:23:22:d1:14:fa:1d:84:29:ea:dd:02:9f:94:b8:a8:87.
 Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added '104.199.108.30' (ECDSA) to the list of known hosts.
+Warning: Permanently added '129.213.14.33' (ECDSA) to the list of known hosts.
+root@129.213.14.33's password: 
+Last login: Tue May 29 15:17:13 2018 from 24.134.87.109
+#####################################################################################
+##                                                                                 ##
+##          Welcome to Red Hat Openshift Container Platform 3.9 workshop           ##
+##                                                                                 ##
+#####################################################################################
+Information about Your current environment:
 
-----------------------------------------------------------
- Welcome to the Manage your Container with OpenShift Lab
+Your GUID: 6180
+OCP WEB UI access via IP: https://masterprod-6180.generic.opentlc.com:8443
+Wildcard FQDN for apps: *.apps-6180.generic.opentlc.com
 
- Have fun and enjoy the Red Hat Forum 2017 in Vienna :-)
-----------------------------------------------------------
 
-Last login: Mon Oct 23 01:07:02 2017 from ipbcc3d64f.dynamic.kabel-deutschland.de
-[rhpet@gw ~]$
+[root@workstation-6180 ~]# 
 ----
 
-TIP: Alternatively, if you have no ssh client, you can use the shell-in-a-box service. It is running on the Gateway on port 443. But be aware that some web browsers do not support direct Copy & Paste (you can use right click and then *Paste from browser*). So it might be more convenient to use a normal ssh client. This link works if you have configured the proxy server: https://gw.example.com[SSH Login into the gateway VM^]. As an alternetive you can type in "https://<your gateway ip address>" in your browser.
+##### TIP: Alternatively, if you have no ssh client, you can use the shell-in-a-box service. It is running on the Gateway on port 443. But be aware that some web browsers do not support direct Copy & Paste (you can use right click and then *Paste from browser*). So it might be more convenient to use a normal ssh client. This link works if you have configured the proxy server: https://gw.example.com[SSH Login into the gateway VM^]. As an alternetive you can type in "https://<your gateway ip address>" in your browser.
 
-Then get the power of root:
-----
-[rhpet@gw ~]$ su -
-----
-The root pw is `r3dh4t1!`
-
-For HTTP & HTTPS connections we need to configure a Proxy in your Webbrowser. We tested it with Firefox.
-Please go to `Settings` → `Advanced` → `Network` → `Settings`
-
-image::http://www.rhpet.de/pictures/Firefox-Proxy.png[Firefox Proxy configuration]
-
-Please use your gateway IP address, port 80 and check the checkbox at "Use this proxy server for all protocols".
-
-Username for the Proxy is: `admin` +
-Password for the Proxy is: `r3dh4t1!`
-
-The proxy works fine if you see the https://master.example.com:8443/[OpenShift login screen^]. Please accept the selfsigned certificate.
+You can connect to the OpenShift Webinterface with a click on the OpenShift Webinterface Link on the http://seats.rhpet.de[Seats to GUID page^]. Please accept the selfsigned certificate.
 
 == Getting started with the OpenShift CLI and the Webinterface
 
@@ -84,31 +71,41 @@ $ oc <command>
 
 The `oc login` command is the best way to initially set up the CLI, and it serves as the entry point for most users. The interactive flow helps you establish a session to an OpenShift Container Platform server with the provided credentials. The information is automatically saved in a CLI configuration file that is then used for subsequent commands.
 
-Login into the master host and the login into OpenShift as `admin` user with the password `r3dh4t1!`:
+Login into OpenShift Dev environment as `admin` user with the password `openshift` (master-dev.example.com is the FQDN from the masternode of the OpenShift Dev enivronment. Look into the <<Appendix: Lab Environment Information>> for more information on IP addresses and FQDNs):
 ----
-[root@gw ~]# ssh master
-Last login: Thu Jun  8 10:10:12 2017 from 192.168.0.250
-----
- 
-----
-[root@master ~]# oc login https://master.example.com:8443
+[root@workstation-6180 ~]# oc login https://master-dev.example.com:8443
+The server uses a certificate signed by an unknown authority.
+You can bypass the certificate check, but any data you send to the server could be intercepted by others.
+Use insecure connections? (y/n): y
 
-Authentication required for https://master.example.com:8443 (openshift)
+Authentication required for https://master-dev.example.com:8443 (openshift)
 Username: admin
-Password: r3dh4t1!
+Password: 
 Login successful.
 
 You have access to the following projects and can switch between them with 'oc project <projectname>':
 
+    cicd
   * default
+    dev
+    kube-public
+    kube-service-catalog
     kube-system
+    lab-infra
     logging
     management-infra
     openshift
+    openshift-ansible-service-broker
     openshift-infra
+    openshift-node
+    openshift-template-service-broker
+    openshift-web-console
+    stage
 
 Using project "default".
 ----
+
+You will see a lot of projects already installed. Normally you see much fewer projects in a fresh installed OpenShift environment.
 
 You can log out of CLI using the `oc logout` command. But we don't do this now.
 
@@ -119,67 +116,66 @@ A project in OpenShift Container Platform contains multiple objects to make up a
 Most oc commands run in the context of a project. The `oc login` selects a default project during initial setup to be used with subsequent commands. Use the following command to display the project currently in use:
 
 ----
-[root@master ~]# oc project
+[root@workstation-6180 ~]# oc project
 
-Using project "default" on server "https://master.example.com:8443".
+Using project "default" on server "https://master-dev.example.com:8443".
 ----
 
 If you have access to multiple projects, use the following syntax to switch to a particular project by specifying the project name:
 ----
-[root@master ~]# oc project default
+[root@workstation-6180 ~]# oc project default
 
-Already on project "default" on server "https://master.example.com:8443".
+Already on project "default" on server "https://master-dev.example.com:8443".
 ----
 
 The `oc status` command shows a high level overview of the project currently in use, with its components and their relationships, as shown in the following example:
 ----
-[root@master ~]# oc status
+[root@workstation-6180 ~]# oc status
 
-In project default on server https://master.example.com:8443
+In project default on server https://master-dev.example.com:8443
 
-https://docker-registry-default.cloudapps.example.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
-  dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.5.5.8
-    deployment #1 deployed 5 months ago - 1 pod
+https://docker-registry-default.devapps-6180.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
+  dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.9.14 
+    deployment #1 deployed 8 weeks ago - 1 pod
 
-svc/kubernetes - 172.30.0.1 ports 443, 53->8053, 53->8053
+svc/kubernetes - 172.30.0.1 ports 443->8443, 53->8053, 53->8053
 
-https://registry-console-default.cloudapps.example.com (passthrough) to pod port registry-console (svc/registry-console)
-  dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:3.5
-    deployment #1 deployed 4 months ago - 1 pod (warning: 1 restarts)
+http://registry-console-default.devapps-6180.generic.opentlc.com to pod port registry-console (svc/registry-console)
+  dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:v3.9 
+    deployment #1 deployed 8 weeks ago - 1 pod
 
-svc/router - 172.30.49.219 ports 80, 443, 1936
-  dc/router deploys docker.io/openshift3/ose-haproxy-router:v3.5.5.8
-    deployment #1 deployed 5 months ago - 1 pod
+svc/router - 172.30.185.0 ports 80, 443, 1936
+  dc/router deploys docker.io/openshift3/ose-haproxy-router:v3.9.14 
+    deployment #1 deployed 8 weeks ago - 1 pod
 
-2 warnings identified, use 'oc status -v' to see details.
+3 warnings identified, use 'oc status -v' to see details.
 ----
 
 If you want to learn more about the `oc` command, please look at the following documentation: +
-https://docs.openshift.com/container-platform/3.5/cli_reference/basic_cli_operations.html[Developer CLI Operations^] +
-https://docs.openshift.com/container-platform/3.5/cli_reference/admin_cli_operations.html[Administrator CLI Operations^]
+https://docs.openshift.com/container-platform/3.9/cli_reference/basic_cli_operations.html[Developer CLI Operations^] +
+https://docs.openshift.com/container-platform/3.9/cli_reference/admin_cli_operations.html[Administrator CLI Operations^]
 
 === Verify Your OpenShift Environment
 
-On the master host run `oc get nodes` to check the status of your OpenShift hosts:
+Run `oc get nodes` to check the status of your OpenShift Dev environment hosts:
 ----
-[root@master ~]# oc get nodes
+[root@workstation-6180 ~]# oc get nodes
 
-NAME                    STATUS                     AGE
-infranode.example.com   Ready                      159d
-master.example.com      Ready,SchedulingDisabled   159d
-node1.example.com       Ready                      159d
-node2.example.com       Ready                      159d
-node3.example.com       Ready                      159d
+NAME                     STATUS    ROLES     AGE       VERSION
+master-dev.example.com   Ready     master    56d       v1.9.1+a0ce1bc657
+node01dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
+node02dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
+node03dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
 ----
 
-Check if the installer has deployed the router and the registry containers:
+Check with `oc get pods` if the installer has deployed the router and the registry containers:
 ----
-[root@master ~]# oc get pods
+[root@workstation-6180 ~]# oc get pods
 
 NAME                       READY     STATUS    RESTARTS   AGE
-docker-registry-1-5gvfn    1/1       Running   1          37m
-registry-console-1-tbwwj   1/1       Running   1          138d
-router-1-xq3r6             1/1       Running   8          159d
+docker-registry-1-gjm5v    1/1       Running   21         56d
+registry-console-1-gwdpv   1/1       Running   20         56d
+router-1-pdrms             1/1       Running   22         56d
 ----
 
 === Configure OpenShift
@@ -213,30 +209,28 @@ We already labeled your nodes.
 
 Check the labels of the nodes:
 ----
-[root@master ~]# oc get nodes --show-labels
-
-NAME                    STATUS                     AGE       LABELS
-infranode.example.com   Ready                      159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=infranode.example.com,region=infra,zone=infranodes
-master.example.com      Ready,SchedulingDisabled   159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=master.example.com,region=master
-node1.example.com       Ready                      159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node1.example.com,region=primary,zone=east
-node2.example.com       Ready                      159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node2.example.com,region=primary,zone=west
-node3.example.com       Ready                      159d      beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node3.example.com,region=primary,zone=north
+[root@workstation-6180 ~]# oc get nodes --show-labels
+NAME                     STATUS    ROLES     AGE       VERSION             LABELS
+master-dev.example.com   Ready     master    56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=master-dev.example.com,node-role.kubernetes.io/master=true,openshift-infra=apiserver,region=infra,zone=default
+node01dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node01dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
+node02dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node02dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
+node03dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node03dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
 ----
 
-You now have a running OpenShift environment across five hosts with one master and four nodes, divided into three regions: master, infra and primary and three zones: east, west and north.
+You now have a running OpenShift environment across four hosts with one master and three nodes, divided into two regions: infra and primary and two zones: default and main.
 
-Check that registry and router are running on the infranode:
+Check where the registry, registry-console and router is running: (please keep in mind: in a normal OpenShift environment you will have an own infranode for that and not running infrastructure components on the master or app nodes):
 ----
-[root@master ~]# oc get pods -o wide
+[root@workstation-6180 ~]# oc get pods -o wide
 
-NAME                       READY     STATUS    RESTARTS   AGE       IP              NODE
-docker-registry-1-5gvfn    1/1       Running   1          38m       10.128.0.11     infranode.example.com
-registry-console-1-tbwwj   1/1       Running   1          138d      10.128.0.12     infranode.example.com
-router-1-xq3r6             1/1       Running   8          159d      192.168.0.101   infranode.example.com
+NAME                       READY     STATUS    RESTARTS   AGE       IP             NODE
+docker-registry-1-gjm5v    1/1       Running   21         56d       10.128.0.117   master-dev.example.com
+registry-console-1-gwdpv   1/1       Running   20         56d       10.129.0.107   node02dev.example.com
+router-1-pdrms             1/1       Running   22         56d       192.168.1.10   master-dev.example.com
 ----
 
-As you can see, all infrastructure pods are running on the infranode, because we configured a default node selector for this.
-Please have a look https://blog.openshift.com/deploying-applications-to-specific-nodes/[here^] if you want more information.
+If you want all infrastructure pods are running on a special infranode, you must configure a default node selector for this.
+Please have a look https://blog.openshift.com/deploying-applications-to-specific-nodes/[here^] if you want to have more information about this.
 
 === Registry
 
@@ -255,62 +249,32 @@ In this lab scenario, infranode is the target for both the registry and the defa
 
 To check the URL of the docker registry run `oc status`:
 ----
-[root@master ~]# oc status
+[root@workstation-6180 ~]# oc status -v
 
-In project default on server https://master.example.com:8443
+In project default on server https://master-dev.example.com:8443
 
-https://docker-registry-default.cloudapps.example.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
-  dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.5.5.8
-    deployment #1 deployed 5 months ago - 1 pod
+https://docker-registry-default.devapps-6180.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
+  dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.9.14 
+    deployment #1 deployed 8 weeks ago - 1 pod
 
-svc/kubernetes - 172.30.0.1 ports 443, 53->8053, 53->8053
+svc/kubernetes - 172.30.0.1 ports 443->8443, 53->8053, 53->8053
 
-https://registry-console-default.cloudapps.example.com (passthrough) to pod port registry-console (svc/registry-console)
-  dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:3.5
-    deployment #1 deployed 4 months ago - 1 pod
+http://registry-console-default.devapps-6180.generic.opentlc.com to pod port registry-console (svc/registry-console)
+  dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:v3.9 
+    deployment #1 deployed 8 weeks ago - 1 pod
 
-svc/router - 172.30.49.219 ports 80, 443, 1936
-  dc/router deploys docker.io/openshift3/ose-haproxy-router:v3.5.5.8
-    deployment #1 deployed 5 months ago - 1 pod
+svc/router - 172.30.185.0 ports 80, 443, 1936
+  dc/router deploys docker.io/openshift3/ose-haproxy-router:v3.9.14 
+    deployment #1 deployed 8 weeks ago - 1 pod
 
-1 warning identified, use 'oc status -v' to see details.
+Warnings:
+  * pod/docker-registry-1-gjm5v has restarted 21 times
+  * pod/router-1-pdrms has restarted 22 times
+
+View details with 'oc describe <resource>/<name>' or list everything with 'oc get all'.
 ----
 
-Test the status of the registry with the curl command to communicate with the registrys service port, `curl -v https://registry-console-default.cloudapps.example.com --insecure`.
-----
-[root@master ~]# curl -v https://registry-console-default.cloudapps.example.com --insecure | grep "Red Hat Container Registry"
-
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* About to connect() to registry-console-default.cloudapps.example.com port 443 (#0)
-*   Trying 192.168.0.101...
-* Connected to registry-console-default.cloudapps.example.com (192.168.0.101) port 443 (#0)
-* Initializing NSS with certpath: sql:/etc/pki/nssdb
-* skipping SSL peer certificate verification
-* SSL connection using TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-* Server certificate:
-* 	subject: CN=registry-console-1-tbwwj
-* 	start date: Jun 08 11:03:26 2017 GMT
-* 	expire date: Mai 15 11:03:27 2117 GMT
-* 	common name: registry-console-1-tbwwj
-* 	issuer: CN=registry-console-1-tbwwj
-> GET / HTTP/1.1
-> User-Agent: curl/7.29.0
-> Host: registry-console-default.cloudapps.example.com
-> Accept: */*
-> 
-< HTTP/1.1 200 OK
-< Content-Security-Policy: default-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:
-< Transfer-Encoding: chunked
-< Cache-Control: no-cache, no-store
-< 
-{ [data not shown]
-var environment = {"page":{"title":"Red Hat Container Registry","connect":true},"hostname":"registry-console-1-tbwwj","os-release":{"NAME":"Red Hat Container Registry","ID":"registry","PRETTY_NAME":"Red Hat Container Registry"},"OAuth":{"URL":"https://master.example.com:8443//oauth/authorize?client_id=cockpit-oauth-client&response_type=token","ErrorParam":null,"TokenParam":null}};
-100 42229    0 42229    0     0   212k      0 --:--:-- --:--:-- --:--:--  213k
-* Connection #0 to host registry-console-default.cloudapps.example.com left intact
-----
-
-Everything seems fine :-)
+Everything seems fine (you can ignore the warnings at this time ;-).
 
 === Resource Management Lab
 
@@ -332,18 +296,15 @@ In this section, you run commands within active pods and explore the `docker-reg
 
 ===== Create Project
 
-On the master host, run `oadm` to create and assign the administrative user `andrew` to a project:
-
+On the master host, run `oc adm` to create and assign the administrative user `student` to the project:
 ----
-[root@master ~]# oadm new-project resourcemanagement --display-name="Resources Management" \
---description="This is the project we use to learn about resource management" \
---admin=andrew  --node-selector='region=primary'
+[root@workstation-6180 ~]# oc adm new-project resourcemanagement --display-name="Resources Management" --description="This is the project we use to learn about resource management" --admin=student  --node-selector='region=primary'
 
 Created project resourcemanagement
 ----
 
 [NOTE]
-`andrew` can create his own project with the `oc new-project` command, an option you will experiment with later in this course. Note that defining the `--node-selector` is optional.
+`student` can create his own project with the `oc new-project` command, an option you will experiment with later in this course. Note that defining the `--node-selector` is optional.
 
 ==== View Resources in Web Console
 
