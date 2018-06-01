@@ -1716,7 +1716,7 @@ You have nine VMs for your own use. Only the SSH Gateway and the Masternodes are
 
 To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP address for the SSH Gateway VM, please goto the http://seats.rhpet.de[Seat-to-GUID overview Page^] and search your Seat-ID.
 
-[cols="4*", options="header"]
+[cols="1,2,2,2", options="header"]
 |===
 | VM Name| external FQDN | internal FQDN | internal IP
 | SSH Gateway | workstation-GUID.generic.opentlc.com | none | 192.168.0.5 & 192.168.1.5
