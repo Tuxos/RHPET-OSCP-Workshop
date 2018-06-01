@@ -624,7 +624,7 @@ Events:
   Normal  Started                2m    kubelet, node01dev.example.com  Started container
 ----
 
-Test that your pod is responding with `Hello OpenShift`: (note that the root password for node1 is also `r3dh4t1!`)
+Test that your pod is responding with `Hello OpenShift`:
 ----
 [root@workstation-835d~]# oc describe pod hello-openshift|grep IP:|awk '{print $2}'
 
@@ -913,9 +913,9 @@ NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 hello-service   ClusterIP   172.30.69.150   <none>        8888/TCP   34s
 ----
 
-Examine the details of your service. Note the following:
-** *Selector*: Describes which pods the service selects or lists.
-** *Endpoints*: Displays all the pods that are currently listed (none in your current project).
+Examine the details of your service. Note the following: +
+*Selector*: Describes which pods the service selects or lists. +
+*Endpoints*: Displays all the pods that are currently listed (none in your current project).
 
 ----
 [root@workstation-835d~]# oc describe service hello-service
