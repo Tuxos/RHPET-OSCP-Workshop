@@ -1738,7 +1738,9 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 | student | openshift | Developer & GIT User 
 |=== 
 
-=== Additional Services (don't forget to replace the GUID string with your GUID from http://seats.rhpet.de[here^]):
+=== Additional Services
+
+Don't forget to replace the GUID string with your GUID from http://seats.rhpet.de[here^]):
 
 *GIT Server*
 
