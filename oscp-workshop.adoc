@@ -48,8 +48,6 @@ Wildcard FQDN for apps: *.apps-6180.generic.opentlc.com
 [root@workstation-6180 ~]# 
 ----
 
-##### TIP: Alternatively, if you have no ssh client, you can use the shell-in-a-box service. It is running on the Gateway on port 443. But be aware that some web browsers do not support direct Copy & Paste (you can use right click and then *Paste from browser*). So it might be more convenient to use a normal ssh client. This link works if you have configured the proxy server: https://gw.example.com[SSH Login into the gateway VM^]. As an alternetive you can type in "https://<your gateway ip address>" in your browser.
-
 You can connect to the OpenShift Webinterface with a click on the OpenShift Webinterface Link on the http://seats.rhpet.de[Seats to GUID page^]. Please accept the selfsigned certificate.
 
 == Getting started with the OpenShift CLI and the Webinterface
@@ -310,16 +308,16 @@ Created project resourcemanagement
 
 Now have a look at the web console.
 
-. Open your web browser and go to https://master.example.com:8443[https://master.example.com:8443^]
+. Open your web browser and go to the http://seats.rpet.de[Seats to GUID page] and click on your OpenShift Webinterface link.
 +
-[NOTE]
+[WARNING]
 ====
-The web console could take up to 90 seconds to become available after a restart of the master.
+Please get sure that the Link the the one from *your* Seat ID.
 ====
 
 . When prompted, type the username and password, as follows:
-** *Username*: `andrew`
-** *Password*: `r3dh4t1!`
+** *Username*: `stundet`
+** *Password*: `openshift`
 
 . In the web console, click the *Resources Management* project.
 +
@@ -330,10 +328,10 @@ The project is empty because it has no apps. You change that as part of this lab
 
 A resource quota, defined by a ResourceQuota object, provides constraints that limit aggregate resource consumption per project. It can limit the quantity of objects that can be created in a project by type, as well as the total amount of compute resources and storage that may be consumed by resources in that project.
 
-. On the master host create a quota definition file:
+. Create a quota definition file:
 +
 ----
-[root@master ~]# cat << EOF > quota.json
+[root@workstation-6180 ~]# cat << EOF > quota.json
 {
   "apiVersion": "v1",
   "kind": "ResourceQuota",
@@ -354,11 +352,10 @@ A resource quota, defined by a ResourceQuota object, provides constraints that l
 EOF
 ----
 
-. On the master host, do the following:
-.. Run `oc create` to apply the file you just created:
+. Run `oc create` to apply the file you just created:
 +
 ----
-[root@master ~]# oc create -f quota.json --namespace=resourcemanagement
+[root@workstation-6180 ~]# oc create -f quota.json --namespace=resourcemanagement
 
 resourcequota "test-quota" created
 ----
@@ -366,28 +363,28 @@ resourcequota "test-quota" created
 .. Verify that the quota exists:
 +
 ----
-[root@master ~]# oc get quota -n resourcemanagement
+[root@workstation-6180 ~]# oc get quota -n resourcemanagement
 
 NAME         AGE
-test-quota   11s
+test-quota   47s
 ----
 
 .. Verify the limits and examine the usage:
 +
 [tabsize=8]
 ----
-[root@master ~]# oc describe quota test-quota -n resourcemanagement
+[root@workstation-6180 ~]# oc describe quota test-quota -n resourcemanagement
 
-Name:			test-quota
-Namespace:		resourcemanagement
-Resource		Used	Hard
---------		----	----
-cpu			0	20
-memory			0	512Mi
-pods			0	3
-replicationcontrollers	0	5
-resourcequotas		1	1
-services		0	5
+Name:                   test-quota
+Namespace:              resourcemanagement
+Resource                Used  Hard
+--------                ----  ----
+cpu                     0     20
+memory                  0     512Mi
+pods                    0     3
+replicationcontrollers  0     5
+resourcequotas          1     1
+services                0     5
 ----
 +
 
@@ -404,7 +401,7 @@ For quotas to be effective, you must create _limit ranges_. They allocate the ma
 . Create the `limits.json` file:
 +
 ----
-[root@master ~]# cat << EOF > limits.json
+[root@workstation-6180 ~]# cat << EOF > limits.json
 {
     "kind": "LimitRange",
     "apiVersion": "v1",
@@ -446,11 +443,11 @@ For quotas to be effective, you must create _limit ranges_. They allocate the ma
 EOF
 ----
 
-. On the master host, run `oc create` against the `limits.json` file and the
+. Run `oc create` against the `limits.json` file and the
  `resourcemanagement` project:
 +
 ----
-[root@master ~]# oc create -f limits.json --namespace=resourcemanagement
+[root@workstation-6180 ~]# oc create -f limits.json --namespace=resourcemanagement
 
 limitrange "limits" created
 ----
@@ -458,31 +455,30 @@ limitrange "limits" created
 . Review your limit ranges:
 +
 ----
-[root@master ~]# oc describe limitranges limits -n resourcemanagement
+[root@workstation-6180 ~]# oc describe limitranges limits -n resourcemanagement
 
-Name:		limits
-Namespace:	resourcemanagement
-Type		Resource	Min	Max	Default Request	Default Limit	Max Limit/Request Ratio
-----		--------	---	---	---------------	-------------	-----------------------
-Pod		cpu		10m	500m	-		-		-
-Pod		memory		5Mi	750Mi	-		-		-
-Container	cpu		10m	500m	100m		100m		-
-Container	memory		5Mi	750Mi	100Mi		100Mi		-
+Name:       limits
+Namespace:  resourcemanagement
+Type        Resource  Min  Max    Default Request  Default Limit  Max Limit/Request Ratio
+----        --------  ---  ---    ---------------  -------------  -----------------------
+Pod         memory    5Mi  750Mi  -                -              -
+Pod         cpu       10m  500m   -                -              -
+Container   cpu       10m  500m   100m             100m           -
+Container   memory    5Mi  750Mi  100Mi            100Mi          -
 ----
 
 ==== Test Quota and Limit Settings
 
-NOTE: You are running commands as the Linux users `andrew` and `root` in a lab environment. As a user it is unusual to use the `oc` command directly on the master. It is common to install `oc` on your workstation or notebook. You can get the OpenShift client tools for your operating system https://docs.openshift.com/container-platform/3.5/cli_reference/get_started_cli.html[here^].
+NOTE: You are running commands as `root` in a lab environment. It is unusual to use the `oc` command as root. It is common to install `oc` on your workstation or notebook. You can get the OpenShift client tools for your operating system https://docs.openshift.com/container-platform/3.9/cli_reference/get_started_cli.html[here^].
 
-. Now we switch to the OS user `andrew` and login into OpenShift with the OpenShift user `andrew`. 
+. Now we switch to the the OpenShift user `student`. 
 
 .. When prompted, type the username and password:
-** *Username*: `andrew`
-** *Password*: `r3dh4t1!`
+** *Username*: `student`
+** *Password*: `openshift`
 +
 ----
-[root@master ~]# su - andrew
-[andrew@master ~]$ oc login https://master.example.com:8443 -u andrew
+[root@workstation-6180 ~]$ oc login https://master-dev.example.com:8443 -u student
 ----
 
 * The output is as follows:
@@ -490,10 +486,21 @@ NOTE: You are running commands as the Linux users `andrew` and `root` in a lab e
 ----
 Login successful.
 
-You have one project on this server: "resourcemanagement"
+You have access to the following projects and can switch between them with 'oc project <projectname>':
 
-Using project "resourcemanagement".
-Welcome! See 'oc help' to get started.
+  * cicd
+    dev
+    resourcemanagement
+    stage
+
+Using project "cicd".
+----
++
+. Change to the project resourcemanagement:
+----
+[root@workstation-6180 ~]# oc project resourcemanagement
+
+Now using project "resourcemanagement" on server "https://master-dev.example.com:8443".
 ----
 +
 NOTE: This lab shows you the manual, step-by-step method of creating each object. This is done only for educational purpose. There are easier ways to create deployments and all the required objects. The most powerful way to create apps on OpenShift is the `oc new-app` command, which is covered later in this lab.
@@ -501,7 +508,7 @@ NOTE: This lab shows you the manual, step-by-step method of creating each object
 . Create the `hello-pod.json` pod definition file:
 +
 ----
-[andrew@master ~]$ cat <<EOF > hello-pod.json
+[root@workstation-6180 ~]$ cat <<EOF > hello-pod.json
 {
   "kind": "Pod",
   "apiVersion": "v1",
@@ -549,69 +556,73 @@ Here, you create a simple pod without a _route_ or _service_:
 
 Create and verify the `hello-openshift` pod:
 ----
-[andrew@master ~]$ oc create -f hello-pod.json
+[root@workstation-6180 ~]$ oc create -f hello-pod.json
 
 pod "hello-openshift" created
 ----
-Wait a few seconds until the pod is up and running. (~40 seconds are needed) You can use `oc get pods -w` to see it directly when the status is changing.
+Wait a few seconds until the pod is up and running. (~20 seconds are needed) You can use `oc get pods -w` to see it directly when the status is changing.
 ----
-[andrew@master ~]$ oc get pods
+[root@workstation-6180 ~]# oc get pods
 
 NAME              READY     STATUS    RESTARTS   AGE
-hello-openshift   1/1       Running   0          41s
+hello-openshift   1/1       Running   0          20s
 ----
 
 Run `oc describe` for details on your pod:
 ----
-[andrew@master ~]$ oc describe pod hello-openshift
+[root@workstation-6180 ~]# oc describe pod hello-openshift
 
-Name:			hello-openshift
-Namespace:		resourcemanagement
-Security Policy:	restricted
-Node:			node2.example.com/192.168.0.103
-Start Time:		Tue, 25 Apr 2017 19:15:01 -0400
-Labels:			name=hello-openshift
-Status:			Running
-IP:			10.130.0.2
-Controllers:		<none>
+Name:         hello-openshift
+Namespace:    resourcemanagement
+Node:         node01dev.example.com/192.168.1.11
+Start Time:   Fri, 01 Jun 2018 14:12:51 -0400
+Labels:       name=hello-openshift
+Annotations:  kubernetes.io/limit-ranger=LimitRanger plugin set: cpu, memory request for container hello-openshift; cpu, memory limit for container hello-openshift
+              openshift.io/scc=restricted
+Status:       Running
+IP:           10.131.0.108
 Containers:
   hello-openshift:
-    Container ID:	docker://2674481be26d544323fa637c1cc5ba36a5eaafd4707f7735b2620045c495cb07
-    Image:		openshift/hello-openshift:v1.5.1
-    Image ID:		docker-pullable://docker.io/openshift/hello-openshift@sha256:7ce9d7b0c83a3abef41e0db590c5aa39fb05793315c60fd907f2c609997caf11
-    Port:		8080/TCP
+    Container ID:   docker://ee60fea0f0ff83047ba222b37fe3b9207e44a61bfe656e3b4ffe6ba17c4cd32f
+    Image:          openshift/hello-openshift:v1.5.1
+    Image ID:       docker-pullable://docker.io/openshift/hello-openshift@sha256:38d25a17becd423e0c6d846fc434336bb872d7be02a3357cc90fef153bc894f2
+    Port:           8080/TCP
+    State:          Running
+      Started:      Fri, 01 Jun 2018 14:12:56 -0400
+    Ready:          True
+    Restart Count:  0
     Limits:
-      cpu:	100m
-      memory:	100Mi
+      cpu:     100m
+      memory:  100Mi
     Requests:
-      cpu:		100m
-      memory:		100Mi
-    State:		Running
-      Started:		Tue, 25 Apr 2017 19:15:39 -0400
-    Ready:		True
-    Restart Count:	0
-    Volume Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ylt00 (ro)
-    Environment Variables:	<none>
+      cpu:        100m
+      memory:     100Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-4w99t (ro)
 Conditions:
-  Type		Status
-  Initialized 	True
-  Ready 	True
-  PodScheduled 	True
+  Type           Status
+  Initialized    True 
+  Ready          True 
+  PodScheduled   True 
 Volumes:
-  default-token-ylt00:
-    Type:	Secret (a volume populated by a Secret)
-    SecretName:	default-token-ylt00
-QoS Class:	Guaranteed
-Tolerations:	<none>
+  default-token-4w99t:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-4w99t
+    Optional:    false
+QoS Class:       Guaranteed
+Node-Selectors:  region=primary
+Tolerations:     node.kubernetes.io/memory-pressure:NoSchedule
 Events:
-  FirstSeen	LastSeen	Count	From				SubobjectPath			Type		Reason		Message
-  ---------	--------	-----	----				-------------			--------	------		-------
-  2m		2m		1	{default-scheduler }						Normal		Scheduled	Successfully assigned hello-openshift to node2.example.com
-  1m		1m		1	{kubelet node2.example.com}	spec.containers{hello-openshift}	Normal		Pulling		pulling image "openshift/hello-openshift:v1.5.1"
-  1m		1m		1	{kubelet node2.example.com}	spec.containers{hello-openshift}	Normal		Pulled		Successfully pulled image "openshift/hello-openshift:v1.5.1"
-  1m		1m		1	{kubelet node2.example.com}	spec.containers{hello-openshift}	Normal		Created		Created container with docker id 2674481be26d; Security:[seccomp=unconfined]
-  1m		1m		1	{kubelet node2.example.com}	spec.containers{hello-openshift}	Normal		Started		Started container with docker id 2674481be26d
+  Type    Reason                 Age   From                            Message
+  ----    ------                 ----  ----                            -------
+  Normal  Scheduled              2m    default-scheduler               Successfully assigned hello-openshift to node01dev.example.com
+  Normal  SuccessfulMountVolume  2m    kubelet, node01dev.example.com  MountVolume.SetUp succeeded for volume "default-token-4w99t"
+  Normal  Pulling                2m    kubelet, node01dev.example.com  pulling image "openshift/hello-openshift:v1.5.1"
+  Normal  Pulled                 2m    kubelet, node01dev.example.com  Successfully pulled image "openshift/hello-openshift:v1.5.1"
+  Normal  Created                2m    kubelet, node01dev.example.com  Created container
+  Normal  Started                2m    kubelet, node01dev.example.com  Started container
+
 ----
 
 Test that your pod is responding with `Hello OpenShift`: (note that the root password for node1 is also `r3dh4t1!`)
@@ -1718,7 +1729,7 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 
 [cols="2,3,2,2", options="header"]
 |===
-| VM Name| external FQDN | internal FQDN | internal IP
+| Name| external FQDN | internal FQDN | internal IP
 | SSH Gateway | workstation-GUID.generic.opentlc.com | none | 192.168.0.5 & 192.168.1.5
 | Dev Master | masterdev-GUID.generic.opentlc.com | master-dev.example.com | 192.168.1.10
 | Dev App Node 1 | none | node01dev.example.com | 192.168.1.11
@@ -1740,7 +1751,7 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 
 === Additional Services
 
-Don't forget to replace the GUID string with your GUID from http://seats.rhpet.de[here^]):
+Don't forget to replace the GUID string with your `GUID` from http://seats.rhpet.de[here^].
 
 *GIT Server*
 
