@@ -127,21 +127,21 @@ Already on project "default" on server "https://master-prod.example.com:8443".
 
 The `oc status` command shows a high level overview of the project currently in use, with its components and their relationships, as shown in the following example:
 ----
-[root@workstation-835d~]# oc status
+[root@workstation-835d ~]# oc status
 
 In project default on server https://master-prod.example.com:8443
 
-https://docker-registry-default.devapps-6180.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
+https://docker-registry-default.apps-835d.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
   dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.9.14 
     deployment #1 deployed 8 weeks ago - 1 pod
 
 svc/kubernetes - 172.30.0.1 ports 443->8443, 53->8053, 53->8053
 
-http://registry-console-default.devapps-6180.generic.opentlc.com to pod port registry-console (svc/registry-console)
+http://registry-console-default.apps-835d.generic.opentlc.com to pod port registry-console (svc/registry-console)
   dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:v3.9 
     deployment #1 deployed 8 weeks ago - 1 pod
 
-svc/router - 172.30.185.0 ports 80, 443, 1936
+svc/router - 172.30.38.74 ports 80, 443, 1936
   dc/router deploys docker.io/openshift3/ose-haproxy-router:v3.9.14 
     deployment #1 deployed 8 weeks ago - 1 pod
 
@@ -206,12 +206,13 @@ We already labeled your nodes.
 
 Check the labels of the nodes:
 ----
-[root@workstation-835d~]# oc get nodes --show-labels
-NAME                     STATUS    ROLES     AGE       VERSION             LABELS
-master-prod.example.com   Ready     master    56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=master-dev.example.com,node-role.kubernetes.io/master=true,openshift-infra=apiserver,region=infra,zone=default
-node01prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node01dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
-node02prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node02dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
-node03prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node03dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
+[root@workstation-835d ~]# oc get nodes --show-labels
+
+NAME                      STATUS    ROLES     AGE       VERSION             LABELS
+master-prod.example.com   Ready     master    58d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=master-prod.example.com,node-role.kubernetes.io/master=true,openshift-infra=apiserver,region=infra,zone=default
+node01prod.example.com    Ready     compute   58d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node01prod.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
+node02prod.example.com    Ready     compute   58d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node02prod.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
+node03prod.example.com    Ready     compute   58d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node03prod.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
 ----
 
 You have a running OpenShift environment across four hosts with one master and three nodes, divided into two regions: infra and primary and two zones: default and main.
@@ -227,7 +228,7 @@ router-1-pdrms             1/1       Running   22         56d       192.168.1.10
 ----
 
 If you want all infrastructure pods are running on a special infranode, you must configure a default node selector for this.
-Please have a look https://blog.openshift.com/deploying-applications-to-specific-nodes/[here^] if you want to have more information about this.
+Please have a look https://blog.openshift.com/deploying-applications-to-specific-nodes/[here^] if you want to have more information about this. In our ab, this is already done for you.
 
 === Registry
 
@@ -246,27 +247,28 @@ In this lab scenario, infranode is the target for both the registry and the defa
 
 To check the URL of the docker registry run `oc status`:
 ----
-[root@workstation-835d~]# oc status -v
+[root@workstation-835d ~]# oc status -v
 
 In project default on server https://master-prod.example.com:8443
 
-https://docker-registry-default.devapps-6180.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
+https://docker-registry-default.apps-835d.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
   dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.9.14 
     deployment #1 deployed 8 weeks ago - 1 pod
 
 svc/kubernetes - 172.30.0.1 ports 443->8443, 53->8053, 53->8053
 
-http://registry-console-default.devapps-6180.generic.opentlc.com to pod port registry-console (svc/registry-console)
+http://registry-console-default.apps-835d.generic.opentlc.com to pod port registry-console (svc/registry-console)
   dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:v3.9 
     deployment #1 deployed 8 weeks ago - 1 pod
 
-svc/router - 172.30.185.0 ports 80, 443, 1936
+svc/router - 172.30.38.74 ports 80, 443, 1936
   dc/router deploys docker.io/openshift3/ose-haproxy-router:v3.9.14 
     deployment #1 deployed 8 weeks ago - 1 pod
 
 Warnings:
-  * pod/docker-registry-1-gjm5v has restarted 21 times
-  * pod/router-1-pdrms has restarted 22 times
+  * pod/docker-registry-1-97k7b has restarted 22 times
+  * pod/registry-console-1-sffxp has restarted 21 times
+  * pod/router-1-5qs7m has restarted 22 times
 
 View details with 'oc describe <resource>/<name>' or list everything with 'oc get all'.
 ----
@@ -1034,16 +1036,17 @@ hello-openshift-1-x6snq   1/1       Running   0          1m
 ----
 
 Expose the service and create a route for the application.
-Please change `GUID` to your GUID.
+*Please change `GUID` to your GUID.*
 ----
 [root@workstation-835d~]# oc expose service hello-openshift --hostname=explore.apps-GUID.generic.opentlc.com
 
 route "hello-openshift" exposed
 ----
 
-Check if the route works fine:
+Check if the route works fine.
+*Please change `GUID` to your GUID.*
 ----
-[andrew@master ~]$ curl http://explore.cloudapps.example.com
+[root@workstation-835d ~]# curl http://explore.apps-GUID.generic.opentlc.com
 
 Hello OpenShift!
 ----
@@ -1053,19 +1056,20 @@ Now it works without the ssh, because we have an external route to the container
 In a later section, you explore the `docker-registry` container. To save time, start an S2I build now to push an image into the registry:
 
 ----
-[andrew@master ~]$ oc new-app https://github.com/openshift/sinatra-example -l "todelete=yes"
+[root@workstation-835d ~]# oc new-app https://github.com/openshift/sinatra-example -l "todelete=yes"
 
---> Found image 27e89d9 (4 weeks old) in image stream "ruby" in project "openshift" under tag "2.3" for "ruby"
+--> Found image 644f40d (3 months old) in image stream "openshift/ruby" under tag "2.4" for "ruby"
 
-    Ruby 2.3
-    --------
-    Platform for building and running Ruby 2.3 applications
+    Ruby 2.4 
+    -------- 
+    Ruby 2.4 available as container is a base platform for building and running various Ruby 2.4 applications and frameworks. Ruby is the interpreted scripting language for quick and easy object-oriented programming. It has many features to process text files and to do system management tasks (as in Perl). It is simple, straight-forward, and extensible.
 
-    Tags: builder, ruby, ruby23, rh-ruby23
+    Tags: builder, ruby, ruby24, rh-ruby24
 
     * The source repository appears to match: ruby
     * A source build using source code from https://github.com/openshift/sinatra-example will be created
       * The resulting image will be pushed to image stream "sinatra-example:latest"
+      * Use 'start-build' to trigger a new build
     * This image will be deployed in deployment config "sinatra-example"
     * Port 8080/tcp will be load balanced by service "sinatra-example"
       * Other containers can access this service through the hostname "sinatra-example"
@@ -1077,36 +1081,63 @@ In a later section, you explore the `docker-registry` container. To save time, s
     service "sinatra-example" created
 --> Success
     Build scheduled, use 'oc logs -f bc/sinatra-example' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/sinatra-example' 
     Run 'oc status' to view your app.
 ----
 
 ===== Connect to Default Router Container
 
-Get back to root:
-----
-[andrew@master ~]$ exit
-----
-
-. As `root`, make sure to use the default project. Open a Shell into the container with `oc rsh`
+Make sure to use the `default` project as `admin` user. Open a Shell into the container with `oc rsh`
  command along with the default router's pod name.
+----
+[root@workstation-835d ~]# oc login
+
+Authentication required for https://master-prod.example.com:8443 (openshift)
+Username: admin
+Password: 
+Login successful.
+
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    default
+  * explore-example
+    kube-public
+    kube-service-catalog
+    kube-system
+    logging
+    management-infra
+    openshift
+    openshift-ansible-service-broker
+    openshift-infra
+    openshift-node
+    openshift-template-service-broker
+    openshift-web-console
+    svcslab
+
+Using project "explore-example".
+----
 
 ----
-[root@master ~]# oc project default
+[root@workstation-835d ~]# oc project default
 
-Now using project "default" on server "https://master.example.com:8443".
+Now using project "default" on server "https://master-prod.example.com:8443".
 ----
 
+Lets look for the pod name of the router.
 ----
-[root@master ~]# oc get pods
+[root@workstation-835d ~]# oc get pods
 
-NAME                      READY     STATUS    RESTARTS   AGE
-docker-registry-1-26xs7    1/1       Running   9          28d
-registry-console-1-tbwwj   1/1       Running   5          8d
-router-1-xq3r6             1/1       Running   12         28d
-----
+NAME                       READY     STATUS    RESTARTS   AGE
+docker-registry-1-59t4j    1/1       Running   0          27m
+registry-console-1-sr4jw   1/1       Running   0          27m
+router-1-5qs7m             1/1       Running   22         58d
 
 ----
-[root@master ~]# oc rsh router-1-xq3r6 
+
+Login into your router pod.
+----
+[root@workstation-835d ~]# oc rsh router-1-5qs7m
 ----
 
 This prompt is displayed:
@@ -1125,7 +1156,7 @@ You are now running `bash` inside the container.
 ----
 sh-4.2$ id
 
-uid=1000020000 gid=0(root) groups=0(root),1000020000
+uid=1000000000 gid=0(root) groups=0(root),1000000000
 ----
 +
 ----
@@ -1137,25 +1168,24 @@ sh-4.2$ pwd
 ----
 sh-4.2$ ls
 
-cert_config.map		 os_edge_http_be.map	     os_sni_passthrough.map
-default_pub_keys.pem	 os_http_be.map		     os_tcp_be.map
-error-page-503.http	 os_reencrypt.map	     os_wildcard_domain.map
-haproxy-config.template  os_route_http_expose.map
-haproxy.config		 os_route_http_redirect.map
+cert_config.map       haproxy-config.template  os_http_be.map		 os_route_http_redirect.map  os_wildcard_domain.map
+default_pub_keys.pem  haproxy.config	       os_reencrypt.map		 os_sni_passthrough.map
+error-page-503.http   os_edge_http_be.map      os_route_http_expose.map  os_tcp_be.map
 ----
 +
 ----
 sh-4.2$ grep hello-openshift haproxy.config 
 
-backend be_http_explore-example_hello-openshift
+backend be_http:explore-example:hello-openshift
+  server pod:hello-openshift-1-cbj67:hello-openshift:10.128.0.32:8080 10.128.0.32:8080 cookie aec891a1968640037700c7ee813141ed weight 256 check inter 5000ms
 
 sh-4.2$ ps -ef
 
 UID         PID   PPID  C STIME TTY          TIME CMD
-1000020+      1      0  0 21:33 ?        00:00:02 /usr/bin/openshift-router
-1000020+    294      1  0 22:09 ?        00:00:00 /usr/sbin/haproxy -f /var/lib/
-1000020+    298      0  0 22:09 ?        00:00:00 /bin/sh
-1000020+    305    298  0 22:10 ?        00:00:00 ps -ef
+1000000+      1      0  0 12:48 ?        00:01:46 /usr/bin/openshift-router
+1000000+    659      1  0 21:53 ?        00:00:00 /usr/sbin/haproxy -f /var/lib/haproxy/conf/haproxy.config -p /var/lib/haproxy/ru
+1000000+    663      0  0 21:57 ?        00:00:00 /bin/sh
+1000000+    672    663  0 21:59 ?        00:00:00 ps -ef
 ----
 .. Examine the haproxy.config more closely. This could look something like this like this:
 +
@@ -1163,7 +1193,7 @@ UID         PID   PPID  C STIME TTY          TIME CMD
 ----
 sh-4.2$ grep -A 40 hello-openshift haproxy.config | sed '/^ *$/d'
 
-backend be_http_explore-example_hello-openshift
+backend be_http:explore-example:hello-openshift
   mode http
   option redispatch
   option forwardfor
@@ -1173,55 +1203,82 @@ backend be_http_explore-example_hello-openshift
   http-request set-header X-Forwarded-Port %[dst_port]
   http-request set-header X-Forwarded-Proto http if !{ ssl_fc }
   http-request set-header X-Forwarded-Proto https if { ssl_fc }
-  cookie 7cf54b74789cba0ee0faded0db7f5e0f insert indirect nocache httponly
   http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)]
-pass:quotes[  *server*] 456a8f857d60f0a14165ad58cff18e10 10.128.2.32:8080 check inter 5000ms cookie 456a8f857d60f0a14165ad58cff18e10 weight 100
+  cookie 221fb72041e5cd15282358ec8d8c82b9 insert indirect nocache httponly
+  server pod:hello-openshift-1-cbj67:hello-openshift:10.128.0.32:8080 10.128.0.32:8080 cookie aec891a1968640037700c7ee813141ed weight 256 check inter 5000ms
+# Secure backend, pass through
+backend be_tcp:kube-service-catalog:apiserver
+  balance source
+  hash-type consistent
+  timeout check 5000ms
+  server pod:apiserver-wdzlt:apiserver:10.131.0.128:6443 10.131.0.128:6443 weight 256
+# Secure backend which requires re-encryption
+backend be_secure:openshift-ansible-service-broker:asb-1338
+  mode http
+  option redispatch
+  option forwardfor
+  balance leastconn
+  timeout check 5000ms
+  http-request set-header X-Forwarded-Host %[req.hdr(host)]
+  http-request set-header X-Forwarded-Port %[dst_port]
+  http-request set-header X-Forwarded-Proto http if !{ ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)]
+  cookie 89a6d633054ded194d4e1360cdc1fbef insert indirect nocache httponly secure
+  server pod:asb-14-7dmvq:asb:10.128.0.30:1338 10.128.0.30:1338 cookie 00f845fa98ecc009367efd1503621909 weight 256 ssl verifyhost asb.openshift-ansible-service-broker.svc verify required ca-file /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
 ----
 +
 You see that you have only one endpoint defined. (The line which starts with server)
 +
-.. Exit the bash in the container to return to the root@master shell
+.. Exit the bash in the container to return to the root@workstation-GUID shell
 +
 ----
 sh-4.2$ exit
 
-[root@master ~]# _
+[root@workstation-835d ~]# _
 ----
-. As `andrew`, scale `hello-openshift` to have five replicas of its pod:
+. As `student`, scale `hello-openshift` to have five replicas of its pod:
 +
 ----
-[root@master ~]# su - andrew
+[root@workstation-835d ~]# oc login -u student
 ----
 +
 ----
-[andrew@master ~]$ oc get deploymentconfig
+[root@workstation-835d ~]# oc get deploymentconfig
 
-NAME              REVISION   REPLICAS   TRIGGERED BY
-hello-openshift   1          1          config,image(hello-openshift:v1.5.1)
-sinatra-example   1          1          config,image(sinatra-example:latest)
+NAME              REVISION   DESIRED   CURRENT   TRIGGERED BY
+hello-openshift   1          1         1         config,image(hello-openshift:v1.5.1)
+sinatra-example   1          1         1         config,image(sinatra-example:latest)
 ----
 +
 ----
-[andrew@master ~]$ oc scale dc hello-openshift --replicas=5
+[root@workstation-835d ~]# oc scale dc hello-openshift --replicas=5
 
 deploymentconfig "hello-openshift" scaled
 ----
 
-. As `root` go back to the router container and view the `haproxy.config` file again:
+. As `admin` go back to the router container and view the `haproxy.config` file again:
 +
 [subs=+macros]
 ----
-[andrew@master ~]$ exit
+[root@workstation-835d ~]$ oc login -u admin
+
+...
+
+[root@workstation-835d ~]# oc project default
+
+Now using project "default" on server "https://master-prod.example.com:8443".
 ----
 +
+Login into your router pod. Get the name with `oc get pods`.
 ----
-[root@master ~]# oc rsh router-1-xq3r6
+[root@workstation-835d ~]# oc rsh router-1-5qs7m
 ----
 +
 ----
 sh-4.2$ grep -A 70 hello-openshift haproxy.config | sed '/^ *$/d'
 
-backend be_http_explore-example_hello-openshift
+backend be_http:explore-example:hello-openshift
   mode http
   option redispatch
   option forwardfor
@@ -1231,226 +1288,133 @@ backend be_http_explore-example_hello-openshift
   http-request set-header X-Forwarded-Port %[dst_port]
   http-request set-header X-Forwarded-Proto http if !{ ssl_fc }
   http-request set-header X-Forwarded-Proto https if { ssl_fc }
-  cookie 7cf54b74789cba0ee0faded0db7f5e0f insert indirect nocache httponly
   http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)]
-pass:quotes[  *server* 456a8f857d60f0a14165ad58cff18e10 10.128.2.32:8080 check inter 5000ms cookie 456a8f857d60f0a14165ad58cff18e10 weight 100
-  *server* 465c8af937146549fb2d68aa3adfde77 10.128.2.36:8080 check inter 5000ms cookie 465c8af937146549fb2d68aa3adfde77 weight 100
-  *server* a19dc1b5f57a5cfe76f752ad8aa6c3a5 10.130.0.20:8080 check inter 5000ms cookie a19dc1b5f57a5cfe76f752ad8aa6c3a5 weight 100
-  *server* 111eec0d645bb0897b3a9425563167b9 10.131.0.18:8080 check inter 5000ms cookie 111eec0d645bb0897b3a9425563167b9 weight 100
-  *server*] aa8e80663b91a03be37ee9d33c3bc9c5 10.131.0.19:8080 check inter 5000ms cookie aa8e80663b91a03be37ee9d33c3bc9c5 weight 100
+  cookie 221fb72041e5cd15282358ec8d8c82b9 insert indirect nocache httponly
+  server pod:hello-openshift-1-cbj67:hello-openshift:10.128.0.32:8080 10.128.0.32:8080 cookie aec891a1968640037700c7ee813141ed weight 256 check inter 5000ms
+  server pod:hello-openshift-1-gss9j:hello-openshift:10.129.0.43:8080 10.129.0.43:8080 cookie 7b3ce237d79ca81f1aad237c3e287c53 weight 256 check inter 5000ms
+  server pod:hello-openshift-1-p249k:hello-openshift:10.129.0.44:8080 10.129.0.44:8080 cookie de43cd4369068b269cb5401ccf2f3754 weight 256 check inter 5000ms
+  server pod:hello-openshift-1-bkv72:hello-openshift:10.130.0.26:8080 10.130.0.26:8080 cookie 3495ab1d4cb844eca01dcaa40a71016c weight 256 check inter 5000ms
+  server pod:hello-openshift-1-wppvm:hello-openshift:10.130.0.27:8080 10.130.0.27:8080 cookie 51f51c10daaac187de4d697f4999699c weight 256 check inter 5000ms
+# Secure backend, pass through
+backend be_tcp:kube-service-catalog:apiserver
+  balance source
+  hash-type consistent
+  timeout check 5000ms
+  server pod:apiserver-wdzlt:apiserver:10.131.0.128:6443 10.131.0.128:6443 weight 256
+# Secure backend which requires re-encryption
+backend be_secure:openshift-ansible-service-broker:asb-1338
+  mode http
+  option redispatch
+  option forwardfor
+  balance leastconn
+  timeout check 5000ms
+  http-request set-header X-Forwarded-Host %[req.hdr(host)]
+  http-request set-header X-Forwarded-Port %[dst_port]
+  http-request set-header X-Forwarded-Proto http if !{ ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  http-request set-header Forwarded for=%[src];host=%[req.hdr(host)];proto=%[req.hdr(X-Forwarded-Proto)]
+  cookie 89a6d633054ded194d4e1360cdc1fbef insert indirect nocache httponly secure
+  server pod:asb-14-7dmvq:asb:10.128.0.30:1338 10.128.0.30:1338 cookie 00f845fa98ecc009367efd1503621909 weight 256 ssl verifyhost asb.openshift-ansible-service-broker.svc verify required ca-file /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
 ----
 
 * All of your pods within the `haproxy` configuration are listed.
 
 NOTE: Remember, the router routes proxy connections to the pods directly and not through the service. The router uses the service only to obtain a list of the pod endpoints (IP addresses).
 
-Leave the container an switch to andrew:
+Leave the container an switch to `student`.
 ----
 sh-4.2$ exit
 
 exit
-[root@master ~]# su - andrew
+[root@workstation-835d ~]# oc login -u student
 ----
 
-==== Explore Registry Container
+==== Explore Logs with the cli
 
-There are two containers that deal with registry related services. There is the docker-registry and there is the registry-console. We are looking at the docker-registry in this section. We will take a quick look at the https://registry-console-default.cloudapps.example.com[Registry-Console^] at a later time.
-
-Please ensure that your build from earlier is complete.
-
-. As user `*andrew*`, check the logs of the build that we stared a while back:
+. As user `student`, check the logs of the build that we stared a while back:
 +
 ----
-
-[andrew@master ~]$ oc logs builds/sinatra-example-1
+[root@workstation-835d ~]# oc logs builds/sinatra-example-1
 
 Cloning "https://github.com/openshift/sinatra-example" ...
 	Commit:	ff65a82271fffc60d4129bccde9c42ded49a199d (Merge pull request #11 from corey112358/patch-1)
 	Author:	Ben Parees <bparees@users.noreply.github.com>
 	Date:	Wed Jul 22 00:20:36 2015 -0400
-
 ---> Installing application source ...
 ---> Building your Ruby application from source ...
----> Running 'bundle install --deployment --without development:test' ...
-Fetching gem metadata from https://rubygems.org/..........
-Fetching version metadata from https://rubygems.org/..
+---> Running 'bundle install --retry 2 --deployment --without development:test' ...
+Fetching gem metadata from https://rubygems.org/.........
+Fetching version metadata from https://rubygems.org/.
 Installing rack 1.6.0
-Installing rack-protection 1.5.3
 Installing tilt 1.4.1
+Using bundler 1.13.7
+Installing rack-protection 1.5.3
 Installing sinatra 1.4.5
-Using bundler 1.10.6
 Bundle complete! 1 Gemfile dependency, 5 gems now installed.
 Gems in the groups development and test were not installed.
 Bundled gems are installed into ./bundle.
 ---> Cleaning up unused ruby gems ...
+Running `bundle clean   --verbose` with bundler 1.13.7
+Found no changes, using resolution from the lockfile
 
-
-Pushing image 172.30.17.242:5000/explore-example/sinatra-example:latest ...
-Pushed 0/5 layers, 3% complete
-Pushed 1/5 layers, 24% complete
-Pushed 2/5 layers, 43% complete
-Pushed 3/5 layers, 75% complete
-Pushed 3/5 layers, 98% complete
-Pushed 4/5 layers, 98% complete
-Pushed 5/5 layers, 100% complete
+Pushing image docker-registry.default.svc:5000/explore-example/sinatra-example:latest ...
+Pushed 0/6 layers, 6% complete
+Pushed 1/6 layers, 28% complete
+Pushed 2/6 layers, 40% complete
+Pushed 3/6 layers, 55% complete
+Pushed 4/6 layers, 71% complete
+Pushed 5/6 layers, 100% complete
+Pushed 6/6 layers, 100% complete
 Push successful
 ----
 +
 Notice the last few lines here. The *Push successful* indicates that the new container image was put into your internal registry.
-+
-. As `root`, start a shell inside the Container Context by running `oc rsh` along with the `docker-registry` pod name:
-+
-----
-[root@master ~]# oc rsh docker-registry-1-<your registry id>
-----
 
-. Do the following:
-.. Run `id`.
-.. Run `pwd` and `ls` and note the directory you are in.
-.. Run `cat config.yml`  to verify your configuration file.
-+
+Look with `oc get pods` for the sinatra-example-1 pod.
 ----
-sh-4.2$ id
-
-uid=1000010000 gid=0(root) groups=0(root),1000010000
-----
-+
-----
-sh-4.2$ pwd
-
-/
-----
-+
-----
-sh-4.2$ ls
-
-bin   config.yml  etc	lib    media  opt   registry  run   srv  tmp  var
-boot  dev	  home	lib64  mnt    proc  root      sbin  sys  usr
-----
-+
-----
-sh-4.2$ cat config.yml
-
-version: 0.1
-log:
-  level: debug
-http:
-  addr: :5000
-storage:
-  cache:
-    blobdescriptor: inmemory
-  filesystem:
-    rootdirectory: /registry
-  delete:
-    enabled: true
-auth:
-  openshift:
-    realm: openshift
-
-    # tokenrealm is a base URL to use for the token-granting registry endpoint.
-    # If unspecified, the scheme and host for the token redirect are determined from the incoming request.
-    # If specified, a scheme and host must be chosen that all registry clients can resolve and access:
-    #
-    # tokenrealm: https://example.com:5000
-middleware:
-  registry:
-    - name: openshift
-  repository:
-    - name: openshift
-      options:
-        acceptschema2: false
-        pullthrough: true
-	mirrorpullthrough: true
-        enforcequota: false
-        projectcachettl: 1m
-        blobrepositorycachettl: 10m
-  storage:
-    - name: openshift
-----
-+
-. View the repositories and images that are available:
-+
-----
-sh-4.2$ cd /registry/docker/registry/v2/repositories
-----
-+
-----
-sh-4.2$ ls
-
-explore-example
-----
-+
-----
-sh-4.2$ ls explore-example/sinatra-example/_layers/
-
-sha256
-----
-+
-----
-sh-4.2$ ls explore-example/sinatra-example/_layers/sha256/
-
-02cbff0982e427fee158df11d35632f38410ee7e8b48212e681ecf3e60660ce4
-5a865e48f2fdb4c48700b9aa800ecd8d0aff8611bec51fb4ab0f70ba09a0fb8e
-89af3ab0c8b470502e9ed73ce6fa83f97e89a033f2553e9ba4e8a153c52a6373
-9cc048a8a74a05eabd2f114d56d759435b8e2d76091e40edbff1d137b08de613
-a778b52f148e84ec73f4ad7f7a1e67690dd0a36ddf1ed2926ad223901d196bf7
-d65e4475a277c626c504de9433b98c30350e4cb940feb858b8563a6031e809a5
-----
-+
-. As user `andrew`, look at one of the pods you started earlier:
-+
-----
-[andrew@master ~]$ oc get pods
+[root@workstation-835d ~]# oc get pods
 
 NAME                      READY     STATUS      RESTARTS   AGE
-hello-openshift-1-4ywxh   1/1       Running     0          7m
-hello-openshift-1-5vsyl   1/1       Running     0          7m
-hello-openshift-1-9ivns   1/1       Running     0          19m
-hello-openshift-1-byte3   1/1       Running     0          7m
-hello-openshift-1-riupx   1/1       Running     0          7m
-sinatra-example-1-build   0/1       Completed   0          17m
-sinatra-example-1-ebuiu   1/1       Running     0          14m
+hello-openshift-1         1/1       Running     0          14m
+hello-openshift-1-bkv72   1/1       Running     0          12m
+hello-openshift-1-cbj67   1/1       Running     0          39m
+hello-openshift-1-gss9j   1/1       Running     0          12m
+hello-openshift-1-p249k   1/1       Running     0          12m
+hello-openshift-1-wppvm   1/1       Running     0          12m
+hello-openshift-2         1/1       Running     0          14m
+hello-openshift-3         1/1       Running     0          14m
+hello-openshift-4         1/1       Running     0          14m
+sinatra-example-1-build   0/1       Completed   0          30m
+sinatra-example-1-jm7nm   1/1       Running     0          29m
 ----
 
-. Connect to the container:
-+
+Look for the pod log:
 ----
-[andrew@master ~]$ oc exec -ti sinatra-example-1-ebuiu "/bin/bash"
+[root@workstation-835d ~]# oc logs pods/sinatra-example-1-jm7nm
 
-bash-4.2$
-----
-
-. Explore the container:
-.. Run `id`.
-.. Run `pwd` and `ls` and note the directory you are in.
-.. Run `ps -ef` to see what processes are running.
-+
+You might consider adding 'puma' into your Gemfile.
+/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
+/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
+/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
+[2018-06-01 21:53:43] INFO  WEBrick 1.3.1
+[2018-06-01 21:53:43] INFO  ruby 2.4.2 (2017-09-14) [x86_64-linux]
+[2018-06-01 21:53:43] INFO  WEBrick::HTTPServer#start: pid=1 port=8080
 ----
 
-bash-4.2$ id
-
-uid=1000060000 gid=0(root) groups=0(root),1000060000
-
-bash-4.2$ pwd
-
-/opt/app-root/src
-
-bash-4.2$ ls
-
-Gemfile       README.md  config.ru	  example-mustache	 public
-Gemfile.lock  app.rb	 example-model	  example-views		 tmp
-README	      bundle	 example-modular  example-views-modular
-
-bash-4.2$ ps -ef
-
-UID         PID   PPID  C STIME TTY          TIME CMD
-1000050+      1      0  0 22:41 ?        00:00:01 ruby /opt/app-root/src/bundle/
-1000050+     33      0  0 22:51 ?        00:00:00 /bin/bash
-1000050+     62     33  0 22:51 ?        00:00:00 ps -ef
+Las but not least we look into the deployment log:
 ----
-+
-[NOTE]
-Your pod names and output differ slightly.
+[root@workstation-835d ~]# oc logs sinatra-example-1-jm7nm
+
+You might consider adding 'puma' into your Gemfile.
+/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
+/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
+/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
+[2018-06-01 21:53:43] INFO  WEBrick 1.3.1
+[2018-06-01 21:53:43] INFO  ruby 2.4.2 (2017-09-14) [x86_64-linux]
+[2018-06-01 21:53:43] INFO  WEBrick::HTTPServer#start: pid=1 port=8080
+----
+
+You can also look into all the logs through the OpenShift Webinterface.
 
 === Creating Applications Lab
 
