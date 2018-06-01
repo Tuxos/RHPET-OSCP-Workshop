@@ -69,15 +69,15 @@ $ oc <command>
 
 The `oc login` command is the best way to initially set up the CLI, and it serves as the entry point for most users. The interactive flow helps you establish a session to an OpenShift Container Platform server with the provided credentials. The information is automatically saved in a CLI configuration file that is then used for subsequent commands.
 
-Login into OpenShift Dev environment as `admin` user with the password `openshift` (master-dev.example.com is the FQDN from the masternode of the OpenShift Dev enivronment. Look into the <<Appendix: Lab Environment Information>> for more information on IP addresses and FQDNs):
+Login into OpenShift Dev environment as `admin` user with the password `openshift` (master-prod.example.com is the FQDN from the masternode of the OpenShift Prod enivronment. Look into the <<Appendix: Lab Environment Information>> for more information on IP addresses and FQDNs):
 ----
-[root@workstation-6180 ~]# oc login https://master-dev.example.com:8443
+[root@workstation-6180 ~]# oc login https://master-prod.example.com:8443
 
 The server uses a certificate signed by an unknown authority.
 You can bypass the certificate check, but any data you send to the server could be intercepted by others.
 Use insecure connections? (y/n): y
 
-Authentication required for https://master-dev.example.com:8443 (openshift)
+Authentication required for https://master-prod.example.com:8443 (openshift)
 Username: admin
 Password: 
 Login successful.
@@ -117,21 +117,21 @@ Most oc commands run in the context of a project. The `oc login` selects a defau
 ----
 [root@workstation-6180 ~]# oc project
 
-Using project "default" on server "https://master-dev.example.com:8443".
+Using project "default" on server "https://master-prod.example.com:8443".
 ----
 
 If you have access to multiple projects, use the following syntax to switch to a particular project by specifying the project name:
 ----
 [root@workstation-6180 ~]# oc project default
 
-Already on project "default" on server "https://master-dev.example.com:8443".
+Already on project "default" on server "https://master-prod.example.com:8443".
 ----
 
 The `oc status` command shows a high level overview of the project currently in use, with its components and their relationships, as shown in the following example:
 ----
 [root@workstation-6180 ~]# oc status
 
-In project default on server https://master-dev.example.com:8443
+In project default on server https://master-prod.example.com:8443
 
 https://docker-registry-default.devapps-6180.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
   dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.9.14 
@@ -161,10 +161,10 @@ Run `oc get nodes` to check the status of your OpenShift Dev environment hosts:
 [root@workstation-6180 ~]# oc get nodes
 
 NAME                     STATUS    ROLES     AGE       VERSION
-master-dev.example.com   Ready     master    56d       v1.9.1+a0ce1bc657
-node01dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
-node02dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
-node03dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
+master-prod.example.com   Ready     master    56d       v1.9.1+a0ce1bc657
+node01prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
+node02prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
+node03prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
 ----
 
 Check with `oc get pods` if the installer has deployed the router and the registry containers:
@@ -210,10 +210,10 @@ Check the labels of the nodes:
 ----
 [root@workstation-6180 ~]# oc get nodes --show-labels
 NAME                     STATUS    ROLES     AGE       VERSION             LABELS
-master-dev.example.com   Ready     master    56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=master-dev.example.com,node-role.kubernetes.io/master=true,openshift-infra=apiserver,region=infra,zone=default
-node01dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node01dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
-node02dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node02dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
-node03dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node03dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
+master-prod.example.com   Ready     master    56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=master-dev.example.com,node-role.kubernetes.io/master=true,openshift-infra=apiserver,region=infra,zone=default
+node01prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node01dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
+node02prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node02dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
+node03prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node03dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
 ----
 
 You have a running OpenShift environment across four hosts with one master and three nodes, divided into two regions: infra and primary and two zones: default and main.
@@ -223,9 +223,9 @@ Check where the registry, registry-console and router is running: (please keep i
 [root@workstation-6180 ~]# oc get pods -o wide
 
 NAME                       READY     STATUS    RESTARTS   AGE       IP             NODE
-docker-registry-1-gjm5v    1/1       Running   21         56d       10.128.0.117   master-dev.example.com
-registry-console-1-gwdpv   1/1       Running   20         56d       10.129.0.107   node02dev.example.com
-router-1-pdrms             1/1       Running   22         56d       192.168.1.10   master-dev.example.com
+docker-registry-1-gjm5v    1/1       Running   21         56d       10.128.0.117   master-prod.example.com
+registry-console-1-gwdpv   1/1       Running   20         56d       10.129.0.107   node02prod.example.com
+router-1-pdrms             1/1       Running   22         56d       192.168.1.10   master-prod.example.com
 ----
 
 If you want all infrastructure pods are running on a special infranode, you must configure a default node selector for this.
@@ -250,7 +250,7 @@ To check the URL of the docker registry run `oc status`:
 ----
 [root@workstation-6180 ~]# oc status -v
 
-In project default on server https://master-dev.example.com:8443
+In project default on server https://master-prod.example.com:8443
 
 https://docker-registry-default.devapps-6180.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
   dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.9.14 
@@ -479,7 +479,7 @@ NOTE: You are running commands as `root` in a lab environment. It is unusual to 
 ** *Password*: `openshift`
 +
 ----
-[root@workstation-6180 ~]$ oc login https://master-dev.example.com:8443 -u student
+[root@workstation-6180 ~]$ oc login https://master-prod.example.com:8443 -u student
 ----
 
 * The output is as follows:
@@ -501,7 +501,7 @@ Using project "cicd".
 ----
 [root@workstation-6180 ~]# oc project resourcemanagement
 
-Now using project "resourcemanagement" on server "https://master-dev.example.com:8443".
+Now using project "resourcemanagement" on server "https://master-prod.example.com:8443".
 ----
 
 NOTE: This lab shows you the manual, step-by-step method of creating each object. This is done only for educational purpose. There are easier ways to create deployments and all the required objects. The most powerful way to create apps on OpenShift is the `oc new-app` command, which is covered later in this lab.
@@ -632,7 +632,7 @@ Test that your pod is responding with `Hello OpenShift`: (note that the root pas
 ----
 Then please use your IP address to check that the app is doing what it should:
 ----
-[root@workstation-6180 ~]# ssh master-dev.example.com 'curl -s http://10.131.0.108:8080'
+[root@workstation-6180 ~]# ssh master-prod.example.com 'curl -s http://10.131.0.108:8080'
 
 Hello OpenShift!
 ----
@@ -861,7 +861,7 @@ As `student`, create a project called `scvslab`:
 ----
 [root@workstation-6180 ~]# oc new-project svcslab --display-name="Services Lab" --description="This is the project we use to learn about services"
 
-Now using project "svcslab" on server "https://master-dev.example.com:8443".
+Now using project "svcslab" on server "https://master-prod.example.com:8443".
 
 You can add applications to this project with the 'new-app' command. For example, try:
 
@@ -973,7 +973,7 @@ Test that your service is working:
 
 Please use your hello-service IP address to check if the service is running fine:
 ----
-[root@workstation-6180 ~]# ssh master-dev.example.com 'curl -s http://172.30.69.150:8888'
+[root@workstation-6180 ~]# ssh master-prod.example.com 'curl -s http://172.30.69.150:8888'
 
 Hello OpenShift!
 ----
@@ -988,7 +988,7 @@ As `student`, create a project called `explore-example`:
 ----
 [root@workstation-6180 ~]# oc new-project explore-example --display-name="Explore Example" --description="This is the project we use to learn about connecting to pods"
 
-Now using project "explore-example" on server "https://master-dev.example.com:8443".
+Now using project "explore-example" on server "https://master-prod.example.com:8443".
 
 You can add applications to this project with the 'new-app' command. For example, try:
 
@@ -1035,9 +1035,10 @@ NAME                      READY     STATUS    RESTARTS   AGE
 hello-openshift-1-x6snq   1/1       Running   0          1m
 ----
 
-Expose the service and create a route for the application:
+Expose the service and create a route for the application.
+Please change `GUID` to your GUID.
 ----
-[andrew@master ~]$ oc expose service hello-openshift --hostname=explore.cloudapps.example.com
+[root@workstation-6180 ~]# oc expose service hello-openshift --hostname=explore.apps-GUID.generic.opentlc.com
 
 route "hello-openshift" exposed
 ----
@@ -1733,7 +1734,9 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 | student | openshift | Developer & GIT User 
 |=== 
 
-Wildcard FQDN for apps: *.apps-6180.generic.opentlc.com
+*Wildcard FQDN for apps in the OpenShift Prod environment:* `*.apps-GUID.generic.opentlc.com`
+
+NOTE: *There is no DNS resolution for the OpenShift Dev environmen.*
 
 === Additional Services
 
