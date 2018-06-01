@@ -1736,7 +1736,7 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 
 *Wildcard FQDN for apps in the OpenShift Prod environment:* `*.apps-GUID.generic.opentlc.com`
 
-WARING: There is no DNS resolution for the OpenShift Dev environment.
+WARNING: There is no DNS resolution for the OpenShift Dev environment.
 
 === Additional Services
 
