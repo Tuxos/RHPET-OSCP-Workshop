@@ -505,6 +505,7 @@ Now using project "resourcemanagement" on server "https://master-dev.example.com
 ----
 +
 This lab shows you the manual, step-by-step method of creating each object. This is done only for educational purpose. There are easier ways to create deployments and all the required objects. The most powerful way to create apps on OpenShift is the `oc new-app` command, which is covered later in this lab.
++
 . Create the `hello-pod.json` pod definition file:
 ----
 [root@workstation-6180 ~]$ cat <<EOF > hello-pod.json
