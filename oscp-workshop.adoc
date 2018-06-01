@@ -181,7 +181,7 @@ router-1-pdrms             1/1       Running   22         56d
 
 In this section, you check the labels and do some intial configuration.
 
-=== Labels
+==== Labels
 
 Labels are used to organize, group, or select API objects. For example, pods are "tagged" with labels, and then services use label selectors to identify the pods they proxy to. This makes it possible for services to reference groups of pods, even treating pods with potentially different containers as related entities.
 
@@ -202,7 +202,7 @@ Consider:
 
 A service or replication controller that is defined to use pods with the *role=webserver* label treats both of these pods as part of the same group.
 
-=== Check Regions and Zones
+==== Check Regions and Zones
 
 We already labeled your nodes.
 
@@ -216,7 +216,7 @@ node02dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.
 node03dev.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=node03dev.example.com,node-role.kubernetes.io/compute=true,region=primary,zone=main
 ----
 
-You now have a running OpenShift environment across four hosts with one master and three nodes, divided into two regions: infra and primary and two zones: default and main.
+You have a running OpenShift environment across four hosts with one master and three nodes, divided into two regions: infra and primary and two zones: default and main.
 
 Check where the registry, registry-console and router is running: (please keep in mind: in a normal OpenShift environment you will have an own infranode for that and not running infrastructure components on the master or app nodes):
 ----
@@ -628,32 +628,26 @@ Events:
 
 Test that your pod is responding with `Hello OpenShift`: (note that the root password for node1 is also `r3dh4t1!`)
 ----
-[andrew@master ~]$ oc describe pod hello-openshift|grep IP:|awk '{print $2}'
+[root@workstation-6180 ~]# oc describe pod hello-openshift|grep IP:|awk '{print $2}'
 
-10.130.0.4
-
-[andrew@master ~]# ssh root@node1 'curl -s http://10.130.0.4:8080'
-
-root@node1's password: r3dh4t1!
+10.131.0.108
 ----
-
-* This output denotes a correct response:
-+
+Then please use your IP adsress to check that the app is doing what it should:
 ----
+[root@workstation-6180 ~]# ssh master-dev.example.com 'curl -s http://10.131.0.108:8080'
+
 Hello OpenShift!
 ----
-
-We must ssh into an other node, because we don´t have direct access to the pod network on the master node.
+We must ssh into the master node, because the ssh gateway has no direct network connection to the pod network.
 
 Delete all the objects in your `hello-pod.json` definition file, which, at this point, is the pod only:
-
 ----
-[andrew@master ~]$ oc delete -f hello-pod.json
+[root@workstation-6180 ~]# oc delete -f hello-pod.json
 
 pod "hello-openshift" deleted
 ----
 
-TIP: You can also delete a pod using the following command format: #oc delete pod <PODNAME>.
+TIP: You can also delete a pod using the following command format: `oc delete pod <PODNAME>`.
 
 Create a new definition file that launches four `hello-openshift` pods:
 
