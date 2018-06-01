@@ -89,60 +89,6 @@ Password for the Proxy is: `r3dh4t1!`
 
 The proxy works fine if you see the https://master.example.com:8443/[OpenShift login screen^]. Please accept the selfsigned certificate.
 
-== OpenShift Introduction
-
-=== What is OpenShift ?
-
-OpenShift Online is Red Hat’s public cloud application development and hosting platform that automates the provisioning, management and scaling of applications so that you can focus on writing the code for your business, startup, or big idea.
-
-Here is a Videos explaining OpenShift: +
-https://youtu.be/D_Lj0rObunI[Introduction into OpenShift^] +
-https://www.youtube.com/watch?v=aZ40GobvA1c[What is PaaS?^]
-
-Official documentation for https://docs.openshift.com/container-platform/3.5/welcome/index.html[OpenShift Container Platform^]
-
-=== Overview
-
-OpenShift v3 is a layered system designed to expose underlying Docker-formatted container image and Kubernetes concepts as accurately as possible, with a focus on easy composition of applications by a developer. For example, install Ruby, push code, and add MySQL.
-
-Unlike OpenShift v2, more flexibility of configuration is exposed after creation in all aspects of the model. The concept of an application as a separate object is removed in favor of more flexible composition of "services", allowing two web containers to reuse a database or expose a database directly to the edge of the network.
-
-=== What are the Layers?
-
-The Docker service provides the abstraction for packaging and creating Linux-based, lightweight container images. Kubernetes provides the cluster management and orchestrates containers on multiple hosts.
-
-OpenShift Container Platform adds:
-
-* Source code management, builds, and deployments for developers
-
-* Managing and promoting images at scale as they flow through your system
-
-* Application management at scale
-
-* Team and user tracking for organizing a large developer organization
-
-image::http://www.rhpet.de/pictures/OpenShift-Architecture.png[OpenShift Architecture]
-
-=== Core Concepts
-
-The following topics provide high-level, architectural information on core concepts and objects you will encounter when using OpenShift Container Platform. Many of these objects come from Kubernetes, which is extended by OpenShift Container Platform to provide a more feature-rich development lifecycle platform.
-
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/containers_and_images.html#architecture-core-concepts-containers-and-images[Containers and images^] are the building blocks for deploying your applications.
-
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/pods_and_services.html[Pods and services^] allow for containers to communicate with each other and proxy connections.
-
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/projects_and_users.html[Projects and users^] provide the space and means for communities to organize and manage their content together.
-
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/builds_and_image_streams.html[Builds and image streams^] allow you to build working images and react to new images.
-
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/deployments.html[Deployments^] add expanded support for the software development and deployment lifecycle.
-
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/routes.html[Routes^] announce your service to the world.
-
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/templates.html[Templates^] allow for many objects to be created at once based on customized parameters.
-
-Click on the links above if you want more information about the respective topic.
-
 == Getting started with the OpenShift CLI and the Webinterface
 
 With the OpenShift Container Platform command line interface (CLI), you can create applications and manage OpenShift Container Platform projects from a terminal. The CLI is ideal in situations where you are:
@@ -2984,3 +2930,59 @@ The CloudForms https://access.redhat.com/documentation/en-us/red_hat_cloudforms/
 Thanks a lot for attending the *OpenShift Container Platform Workshop*, we hope you enjoyed it.
 
 Have a good day :-)
+
+== Appendix: OpenShift Introduction
+
+=== What is OpenShift ?
+
+OpenShift Online is Red Hat’s public cloud application development and hosting platform that automates the provisioning, management and scaling of applications so that you can focus on writing the code for your business, startup, or big idea.
+
+Here is a Videos explaining OpenShift: +
+https://youtu.be/D_Lj0rObunI[Introduction into OpenShift^] +
+https://www.youtube.com/watch?v=aZ40GobvA1c[What is PaaS?^]
+
+Official documentation for https://docs.openshift.com/container-platform/3.5/welcome/index.html[OpenShift Container Platform^]
+
+=== Overview
+
+OpenShift v3 is a layered system designed to expose underlying Docker-formatted container image and Kubernetes concepts as accurately as possible, with a focus on easy composition of applications by a developer. For example, install Ruby, push code, and add MySQL.
+
+Unlike OpenShift v2, more flexibility of configuration is exposed after creation in all aspects of the model. The concept of an application as a separate object is removed in favor of more flexible composition of "services", allowing two web containers to reuse a database or expose a database directly to the edge of the network.
+
+=== What are the Layers?
+
+The Docker service provides the abstraction for packaging and creating Linux-based, lightweight container images. Kubernetes provides the cluster management and orchestrates containers on multiple hosts.
+
+OpenShift Container Platform adds:
+
+* Source code management, builds, and deployments for developers
+
+* Managing and promoting images at scale as they flow through your system
+
+* Application management at scale
+
+* Team and user tracking for organizing a large developer organization
+
+image::http://www.rhpet.de/pictures/OpenShift-Architecture.png[OpenShift Architecture]
+
+=== Core Concepts
+
+The following topics provide high-level, architectural information on core concepts and objects you will encounter when using OpenShift Container Platform. Many of these objects come from Kubernetes, which is extended by OpenShift Container Platform to provide a more feature-rich development lifecycle platform.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/containers_and_images.html#architecture-core-concepts-containers-and-images[Containers and images^] are the building blocks for deploying your applications.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/pods_and_services.html[Pods and services^] allow for containers to communicate with each other and proxy connections.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/projects_and_users.html[Projects and users^] provide the space and means for communities to organize and manage their content together.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/builds_and_image_streams.html[Builds and image streams^] allow you to build working images and react to new images.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/deployments.html[Deployments^] add expanded support for the software development and deployment lifecycle.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/routes.html[Routes^] announce your service to the world.
+
+* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/templates.html[Templates^] allow for many objects to be created at once based on customized parameters.
+
+Click on the links above if you want more information about the respective topic.
+
+== Appendix: Lab Environment Info
