@@ -26,6 +26,7 @@ Login into the ssh gateway with the user `root` and the password you finde in th
 
 ----
 [user@yourhost ~]$ ssh root@<your SSH Gateway IP adress>
+
 The authenticity of host '129.213.14.33 (129.213.14.33)' can't be established.
 ECDSA key fingerprint is SHA256:ztRJAqdV6iu+yRrrP42PaGm107SEMPdYVjGXZuL3EAo.
 ECDSA key fingerprint is MD5:23:22:d1:14:fa:1d:84:29:ea:dd:02:9f:94:b8:a8:87.
@@ -44,11 +45,10 @@ Your GUID: 6180
 OCP WEB UI access via IP: https://masterprod-6180.generic.opentlc.com:8443
 Wildcard FQDN for apps: *.apps-6180.generic.opentlc.com
 
-
 [root@workstation-6180 ~]# 
 ----
 
-You can connect to the OpenShift Webinterface with a click on the OpenShift Webinterface Link on the http://seats.rhpet.de[Seats to GUID page^]. Please accept the selfsigned certificate.
+You can connect to the OpenShift Webinterface with a click on the OpenShift Webinterface Link on the http://seats.rhpet.de[Seats to GUID^] page. Please accept the selfsigned certificate.
 
 == Getting started with the OpenShift CLI and the Webinterface
 
@@ -72,6 +72,7 @@ The `oc login` command is the best way to initially set up the CLI, and it serve
 Login into OpenShift Dev environment as `admin` user with the password `openshift` (master-dev.example.com is the FQDN from the masternode of the OpenShift Dev enivronment. Look into the <<Appendix: Lab Environment Information>> for more information on IP addresses and FQDNs):
 ----
 [root@workstation-6180 ~]# oc login https://master-dev.example.com:8443
+
 The server uses a certificate signed by an unknown authority.
 You can bypass the certificate check, but any data you send to the server could be intercepted by others.
 Use insecure connections? (y/n): y
