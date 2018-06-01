@@ -12,9 +12,9 @@ image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
 
 In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface and how to deploy an application.
 
-Please see <<Appendix: OpenShift Introduction>> if you are not aware of the architecture of OpenShift and how OpenShift works.
+Please see <<Appendix: OpenShift Introduction>> if you are not aware of the architecture of OpenShift and how OpenShift stick all components together.
 
-Please see <<Appendix: Lab Environment Information>> Iif you need more information about the Lab evironment.
+Please see <<Appendix: Lab Environment Information>> if you need more information about the Lab evironment, like passwords, IP adresses and so on.
 
 Have fun and we hope you enjoy the Lab :-)
 
@@ -1689,9 +1689,9 @@ After the build is complete and both frontend and database are up and running, v
 [NOTE]
 Be sure to use HTTP and _not_ HTTPS. HTTPS does not work for this example because the form submission was coded with HTTP links.
 
-== The End
+*And that is the Endof the Lab.*
 
-Thanks a lot for attending the *OpenShift Container Platform Workshop*, we hope you enjoyed it.
+Thanks a lot for attending the *First steps in OpenShift Hands-on Lab*, we hope you enjoyed it.
 
 Have a good day :-)
 
@@ -1705,7 +1705,7 @@ Here is a Videos explaining OpenShift: +
 https://youtu.be/D_Lj0rObunI[Introduction into OpenShift^] +
 https://www.youtube.com/watch?v=aZ40GobvA1c[What is PaaS?^]
 
-Official documentation for https://docs.openshift.com/container-platform/3.5/welcome/index.html[OpenShift Container Platform^]
+Official documentation for https://docs.openshift.com/container-platform/3.9/welcome/index.html[OpenShift Container Platform^]
 
 === Overview
 
@@ -1733,19 +1733,19 @@ image::http://www.rhpet.de/pictures/OpenShift-Architecture.png[OpenShift Archite
 
 The following topics provide high-level, architectural information on core concepts and objects you will encounter when using OpenShift Container Platform. Many of these objects come from Kubernetes, which is extended by OpenShift Container Platform to provide a more feature-rich development lifecycle platform.
 
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/containers_and_images.html#architecture-core-concepts-containers-and-images[Containers and images^] are the building blocks for deploying your applications.
+* https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/containers_and_images.html#architecture-core-concepts-containers-and-images[Containers and images^] are the building blocks for deploying your applications.
 
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/pods_and_services.html[Pods and services^] allow for containers to communicate with each other and proxy connections.
+* https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/pods_and_services.html[Pods and services^] allow for containers to communicate with each other and proxy connections.
 
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/projects_and_users.html[Projects and users^] provide the space and means for communities to organize and manage their content together.
+* https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/projects_and_users.html[Projects and users^] provide the space and means for communities to organize and manage their content together.
 
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/builds_and_image_streams.html[Builds and image streams^] allow you to build working images and react to new images.
+* https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/builds_and_image_streams.html[Builds and image streams^] allow you to build working images and react to new images.
 
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/deployments.html[Deployments^] add expanded support for the software development and deployment lifecycle.
+* https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/deployments.html[Deployments^] add expanded support for the software development and deployment lifecycle.
 
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/routes.html[Routes^] announce your service to the world.
+* https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/routes.html[Routes^] announce your service to the world.
 
-* https://docs.openshift.com/container-platform/3.5/architecture/core_concepts/templates.html[Templates^] allow for many objects to be created at once based on customized parameters.
+* https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/templates.html[Templates^] allow for many objects to be created at once based on customized parameters.
 
 Click on the links above if you want more information about the respective topic.
 
