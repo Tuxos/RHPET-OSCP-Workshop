@@ -12,35 +12,11 @@ image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
 
 In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface and how to deploy an application.
 
+See <<Appendix: OpenShift Introduction>> if you are not aware of the architecture of OpenShift and how OpenShift works.
+
+If you need more information about the Lab evironment, please see <<Appendix: Lab Environment Information>>.
+
 Have fun and enjoy the Lab :-)
-
-=== Lab Reference
-
-You have seven VMs for your own use. Only the Gateway VM is reachable from the internet. All others are behind a reverse proxy or can only be accessed through the ssh gateway.
-
-To get your GUID and external IP address for the Gateway VM, please goto the http://seats.rhpet.de[Seat-to-GUID overview Page^] and search your Seat-id.
-
-[cols="3*", options="header"]
-|===
-| VM Name| internal FQDN | internal IP
-| SSH Gateway & Proxy Server | gw.example.com | 192.168.0.250, Ports 22&80&443 are open
-| Master | master.example.com | 192.168.0.100, Port 8443 is open
-| Infranode | infranode.example.com | 192.168.0.101
-| App Node 1 | node1.example.com | 192.168.0.102
-| App Node 2 | node2.example.com | 192.168.0.103
-| App Node 3 | node3.example.com | 192.168.0.104
-| CloudForms | cf.example.com | 192.168.0.200, Port 80&443 are open
-|===
-
-[cols="3*", options="header"]
-|===
-| Name | Password | Role
-| rhpet | ask the instructor | ssh user to connect to the gateway VM
-| root | r3dh4t1! | root user for all VMs
-| admin | r3dh4t1! | OSCP & CloudForms Administrator & Auth user for the Proxy
-| marina | r3dh4t1! | Developer/User
-| andrew  | r3dh4t1! | Developer/User
-|=== 
 
 === How to access the Lab Environment
 
@@ -2985,4 +2961,31 @@ The following topics provide high-level, architectural information on core conce
 
 Click on the links above if you want more information about the respective topic.
 
-== Appendix: Lab Environment Info
+== Appendix: Lab Environment Information
+
+You have seven VMs for your own use. Only the Gateway VM is reachable from the internet. All others are behind a reverse proxy or can only be accessed through the ssh gateway.
+
+To get your GUID and external IP address for the Gateway VM, please goto the http://seats.rhpet.de[Seat-to-GUID overview Page^] and search your Seat-id.
+
+[cols="3*", options="header"]
+|===
+| VM Name| internal FQDN | internal IP
+| SSH Gateway & Proxy Server | gw.example.com | 192.168.0.250, Ports 22&80&443 are open
+| Master | master.example.com | 192.168.0.100, Port 8443 is open
+| Infranode | infranode.example.com | 192.168.0.101
+| App Node 1 | node1.example.com | 192.168.0.102
+| App Node 2 | node2.example.com | 192.168.0.103
+| App Node 3 | node3.example.com | 192.168.0.104
+| CloudForms | cf.example.com | 192.168.0.200, Port 80&443 are open
+|===
+
+[cols="3*", options="header"]
+|===
+| Name | Password | Role
+| rhpet | ask the instructor | ssh user to connect to the gateway VM
+| root | r3dh4t1! | root user for all VMs
+| admin | r3dh4t1! | OSCP & CloudForms Administrator & Auth user for the Proxy
+| marina | r3dh4t1! | Developer/User
+| andrew  | r3dh4t1! | Developer/User
+|=== 
+
