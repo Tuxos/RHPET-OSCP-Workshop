@@ -14,7 +14,7 @@ In this Lab you will get a first impression of the OpenShift Container Platform.
 
 Please see <<Appendix: OpenShift Introduction>> if you are not aware of the architecture of OpenShift and how OpenShift stick all components together.
 
-Please see <<Appendix: Lab Environment Information>> if you need more information about the Lab evironment, like passwords, IP adresses and so on.
+Please have a look into the <<Appendix: Lab Environment Information>> for more information about the Lab evironment, like passwords, IP adresses and so on.
 
 Have fun and we hope you enjoy the Lab :-)
 
@@ -1736,7 +1736,7 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 
 *Wildcard FQDN for apps in the OpenShift Prod environment:* `*.apps-GUID.generic.opentlc.com`
 
-WARNING: There is no DNS resolution for the OpenShift Dev environment.
+WARNING: There is no public DNS resolution for apps for the OpenShift Dev environment.
 
 === Additional Services
 
