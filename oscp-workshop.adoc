@@ -71,9 +71,9 @@ $ oc <command>
 
 The `oc login` command is the best way to initially set up the CLI, and it serves as the entry point for most users. The interactive flow helps you establish a session to an OpenShift Container Platform server with the provided credentials. The information is automatically saved in a CLI configuration file that is then used for subsequent commands.
 
-Login into OpenShift Dev environment as `admin` user with the password `openshift` (master-prod.example.com is the FQDN from the masternode of the OpenShift Prod enivronment. Look into the <<Appendix: Lab Environment Information>> for more information on IP addresses and FQDNs):
+Login into OpenShift Prod environment as `admin` user with the password `openshift`:
 ----
-[root@workstation-835d~]# oc login https://master-prod.example.com:8443
+[root@workstation-835d ~]# oc login https://master-prod.example.com:8443
 
 The server uses a certificate signed by an unknown authority.
 You can bypass the certificate check, but any data you send to the server could be intercepted by others.
@@ -81,18 +81,15 @@ Use insecure connections? (y/n): y
 
 Authentication required for https://master-prod.example.com:8443 (openshift)
 Username: admin
-Password: 
+Password: opensift
 Login successful.
 
 You have access to the following projects and can switch between them with 'oc project <projectname>':
 
-    cicd
   * default
-    dev
     kube-public
     kube-service-catalog
     kube-system
-    lab-infra
     logging
     management-infra
     openshift
@@ -101,7 +98,6 @@ You have access to the following projects and can switch between them with 'oc p
     openshift-node
     openshift-template-service-broker
     openshift-web-console
-    stage
 
 Using project "default".
 ----
