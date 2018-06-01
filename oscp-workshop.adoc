@@ -1716,7 +1716,7 @@ You have nine VMs for your own use. Only the SSH Gateway and the Masternodes are
 
 To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP address for the SSH Gateway VM, please goto the http://seats.rhpet.de[Seat-to-GUID overview Page^] and search your Seat-ID.
 
-[cols="2,3,3,2", options="header"]
+[cols="2,3,2,2", options="header"]
 |===
 | VM Name| external FQDN | internal FQDN | internal IP
 | SSH Gateway | workstation-GUID.generic.opentlc.com | none | 192.168.0.5 & 192.168.1.5
@@ -1735,6 +1735,19 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 | Name | Password | Role
 | root | r3dh4t1! | root user for all VMs
 | admin | openshift | OSCP Administrator
-| student | openshift | Developer/User
+| student | openshift | Developer & GIT User 
 |=== 
 
+Additional Services (don`t forget to replace the GUID string with your GUID from http://seats.rhpet.de[here^]):
+
+
+GIT SERVER
+
+Web: http://gogs-lab-infra.devapps-GUID.generic.opentlc.com
+
+Username: `student`
+Password: `openshift`
+
+NEXUS MAVEN REPOSITORY
+
+Web: http://nexus-lab-infra.devapps-GUID.generic.opentlc.com
