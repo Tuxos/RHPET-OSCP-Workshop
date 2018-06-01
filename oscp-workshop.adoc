@@ -946,7 +946,7 @@ pod "hello-openshift-4" created
 
 Wait a few seconds and check the service again.
 
-* The pods that share the label `name=hello-openshift` are all listed:
+The pods that share the label `name=hello-openshift` are all listed:
 ----
 [root@workstation-835d~]# oc describe service hello-service
 
@@ -1273,9 +1273,7 @@ Now using project "default" on server "https://master-prod.example.com:8443".
 Login into your router pod. Get the name with `oc get pods`.
 ----
 [root@workstation-835d ~]# oc rsh router-1-5qs7m
-----
-+
-----
+
 sh-4.2$ grep -A 70 hello-openshift haproxy.config | sed '/^ *$/d'
 
 backend be_http:explore-example:hello-openshift
@@ -1317,7 +1315,7 @@ backend be_secure:openshift-ansible-service-broker:asb-1338
   server pod:asb-14-7dmvq:asb:10.128.0.30:1338 10.128.0.30:1338 cookie 00f845fa98ecc009367efd1503621909 weight 256 ssl verifyhost asb.openshift-ansible-service-broker.svc verify required ca-file /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
 ----
 
-* All of your pods within the `haproxy` configuration are listed.
+All of your pods within the `haproxy` configuration are listed.
 
 NOTE: Remember, the router routes proxy connections to the pods directly and not through the service. The router uses the service only to obtain a list of the pod endpoints (IP addresses).
 
@@ -1331,8 +1329,7 @@ exit
 
 ==== Explore Logs with the cli
 
-. As user `student`, check the logs of the build that we stared a while back:
-+
+As user `student`, check the logs of the build that we stared a while back:
 ----
 [root@workstation-835d ~]# oc logs builds/sinatra-example-1
 
