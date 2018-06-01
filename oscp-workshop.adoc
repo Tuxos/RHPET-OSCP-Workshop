@@ -1704,7 +1704,7 @@ The following topics provide high-level, architectural information on core conce
 
 * https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/deployments.html[Deployments^] add expanded support for the software development and deployment lifecycle.
 
-* https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/routes.html[Routes^] announce your service to the world.
+* https://docs.openshift.com/container-platform/3.9/architecture/networking/routes.html[Routes^] announce your service to the world.
 
 * https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/templates.html[Templates^] allow for many objects to be created at once based on customized parameters.
 
@@ -1712,29 +1712,29 @@ Click on the links above if you want more information about the respective topic
 
 == Appendix: Lab Environment Information
 
-You have seven VMs for your own use. Only the Gateway VM is reachable from the internet. All others are behind a reverse proxy or can only be accessed through the ssh gateway.
+You have nine VMs for your own use. Only the SSH Gateway and the Masternodes are reachable from the internet. All others can only be accessed through the SSH Gateway.
 
-To get your GUID and external IP address for the Gateway VM, please goto the http://seats.rhpet.de[Seat-to-GUID overview Page^] and search your Seat-id.
+To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP address for the SSH Gateway VM, please goto the http://seats.rhpet.de[Seat-to-GUID overview Page^] and search your Seat-ID.
 
-[cols="3*", options="header"]
+[cols="4*", options="header"]
 |===
-| VM Name| internal FQDN | internal IP
-| SSH Gateway & Proxy Server | gw.example.com | 192.168.0.250, Ports 22&80&443 are open
-| Master | master.example.com | 192.168.0.100, Port 8443 is open
-| Infranode | infranode.example.com | 192.168.0.101
-| App Node 1 | node1.example.com | 192.168.0.102
-| App Node 2 | node2.example.com | 192.168.0.103
-| App Node 3 | node3.example.com | 192.168.0.104
-| CloudForms | cf.example.com | 192.168.0.200, Port 80&443 are open
+| VM Name| external FQDN | internal FQDN | internal IP
+| SSH Gateway | workstation-GUID.generic.opentlc.com | none | 192.168.0.5 & 192.168.1.5
+| Dev Master | masterdev-GUID.generic.opentlc.com | master-dev.example.com | 192.168.1.10
+| Dev App Node 1 | none | node01dev.example.com | 192.168.1.11
+| Dev App Node 2 | none | node02dev.example.com | 192.168.1.12
+| Dev App Node 3 | none | node03dev.example.com | 192.168.1.13
+| Prod Master | masterprod-GUID.generic.opentlc.com | master-prod.example.com | 192.168.0.10
+| Prod App Node 1 | none | node01prod.example.com | 192.168.0.11
+| Prod App Node 2 | none | node02prod.example.com | 192.168.0.12
+| Prod App Node 3 | none | node03prod.example.com | 192.168.0.13
 |===
 
 [cols="3*", options="header"]
 |===
 | Name | Password | Role
-| rhpet | ask the instructor | ssh user to connect to the gateway VM
 | root | r3dh4t1! | root user for all VMs
-| admin | r3dh4t1! | OSCP & CloudForms Administrator & Auth user for the Proxy
-| marina | r3dh4t1! | Developer/User
-| andrew  | r3dh4t1! | Developer/User
+| admin | openshift | OSCP Administrator
+| student | openshift | Developer/User
 |=== 
 
