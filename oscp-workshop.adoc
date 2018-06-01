@@ -622,7 +622,6 @@ Events:
   Normal  Pulled                 2m    kubelet, node01dev.example.com  Successfully pulled image "openshift/hello-openshift:v1.5.1"
   Normal  Created                2m    kubelet, node01dev.example.com  Created container
   Normal  Started                2m    kubelet, node01dev.example.com  Started container
-
 ----
 
 Test that your pod is responding with `Hello OpenShift`: (note that the root password for node1 is also `r3dh4t1!`)
@@ -631,7 +630,7 @@ Test that your pod is responding with `Hello OpenShift`: (note that the root pas
 
 10.131.0.108
 ----
-Then please use your IP adsress to check that the app is doing what it should:
+Then please use your IP address to check that the app is doing what it should:
 ----
 [root@workstation-6180 ~]# ssh master-dev.example.com 'curl -s http://10.131.0.108:8080'
 
@@ -649,9 +648,8 @@ pod "hello-openshift" deleted
 TIP: You can also delete a pod using the following command format: `oc delete pod <PODNAME>`.
 
 Create a new definition file that launches four `hello-openshift` pods:
-
 ----
-[andrew@master ~]$ cat << EOF > hello-many-pods.json
+[root@workstation-6180 ~]$ cat << EOF > hello-many-pods.json
 {
   "metadata":{
     "name":"quota-pod-deployment-test"
@@ -833,9 +831,8 @@ EOF
 ----
 
 Create the items in the `hello-many-pods.json` file:
-
 ----
-[andrew@master ~]$ oc create -f hello-many-pods.json
+[root@workstation-6180 ~]# oc create -f hello-many-pods.json
 
 pod "hello-openshift-1" created
 pod "hello-openshift-2" created
@@ -847,9 +844,8 @@ Error from server (Forbidden): pods "hello-openshift-4" is forbidden: exceeded q
 Because you defined a quota before, `oc create` created three pods only instead of four.
 
 Delete the object in the `hello-many-pods.json` definition file:
-
 ----
-[andrew@master ~]$ oc delete -f hello-many-pods.json
+[root@workstation-6180 ~]# oc delete -f hello-many-pods.json
 
 pod "hello-openshift-1" deleted
 pod "hello-openshift-2" deleted
@@ -859,29 +855,24 @@ Error from server (NotFound): pods "hello-openshift-4" not found
 
 ==== Create Services and Routes
 
-As `andrew`, create a project called `scvslab`:
+NOTE: With `oc whoami` you can check with which user you are logged in.
 
+As `student`, create a project called `scvslab`:
 ----
+[root@workstation-6180 ~]# oc new-project svcslab --display-name="Services Lab" --description="This is the project we use to learn about services"
 
-[andrew@master ~]$ oc new-project svcslab --display-name="Services Lab" --description="This is the project we use to learn about services"
-----
-
-The output looks like this:
-
-----
-Now using project "svcslab" on server "https://master.example.com:8443".
+Now using project "svcslab" on server "https://master-dev.example.com:8443".
 
 You can add applications to this project with the 'new-app' command. For example, try:
 
-    $ oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-hello-world.git
+    oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-ex.git
 
-to build a new hello-world application in Ruby.
+to build a new example application in Ruby.
 ----
 
 Create the `hello-service.json` file:
-
 ----
-[andrew@master ~]$ cat <<EOF > hello-service.json
+[root@workstation-6180 ~]$ cat <<EOF > hello-service.json
 {
   "kind": "Service",
   "apiVersion": "v1",
@@ -908,20 +899,18 @@ EOF
 ----
 
 Create the `hello-service` service:
-
 ----
-[andrew@master ~]$ oc create -f hello-service.json
+[root@workstation-6180 ~]$ oc create -f hello-service.json
 
 service "hello-service" created
 ----
 
 Display the services that are running in the current project:
-
 ----
-[andrew@master ~]$ oc get services
+[root@workstation-6180 ~]# oc get services
 
-NAME            CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-hello-service   172.30.213.165   <none>        8888/TCP   5s
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+hello-service   ClusterIP   172.30.69.150   <none>        8888/TCP   34s
 ----
 
 Examine the details of your service. Note the following:
@@ -929,24 +918,25 @@ Examine the details of your service. Note the following:
 ** *Endpoints*: Displays all the pods that are currently listed (none in your current project).
 
 ----
-[andrew@master ~]$ oc describe service hello-service
+[root@workstation-6180 ~]# oc describe service hello-service
 
-Name:			hello-service
-Namespace:		svcslab
-Labels:			name=hello-openshift
-Selector:		name=hello-openshift
-Type:			ClusterIP
-IP:			172.30.213.165
-Port:			<unset>	8888/TCP
-Endpoints:		<none>
-Session Affinity:	None
-No events.
+Name:              hello-service
+Namespace:         svcslab
+Labels:            name=hello-openshift
+Annotations:       <none>
+Selector:          name=hello-openshift
+Type:              ClusterIP
+IP:                172.30.69.150
+Port:              <unset>  8888/TCP
+TargetPort:        8080/TCP
+Endpoints:         <none>
+Session Affinity:  None
+Events:            <none>
 ----
 
 Create pods according to the `hello-many-pods.json` definition file:
-
 ----
-[andrew@master ~]$ oc create -f hello-many-pods.json
+[root@workstation-6180 ~]# oc create -f hello-many-pods.json
 
 pod "hello-openshift-1" created
 pod "hello-openshift-2" created
@@ -957,33 +947,33 @@ pod "hello-openshift-4" created
 Wait a few seconds and check the service again.
 
 * The pods that share the label `name=hello-openshift` are all listed:
-
 ----
-[andrew@master ~]$ oc describe service hello-service
+[root@workstation-6180 ~]# oc describe service hello-service
 
-Name:			hello-service
-Namespace:		svcslab
-Labels:			name=hello-openshift
-Selector:		name=hello-openshift
-Type:			ClusterIP
-IP:			172.30.213.165
-Port:			<unset>	8888/TCP
-Endpoints:		10.1.2.2:8080,10.1.2.3:8080,10.1.3.2:8080 + 1 more...
-Session Affinity:	None
-No events.
+Name:              hello-service
+Namespace:         svcslab
+Labels:            name=hello-openshift
+Annotations:       <none>
+Selector:          name=hello-openshift
+Type:              ClusterIP
+IP:                172.30.69.150
+Port:              <unset>  8888/TCP
+TargetPort:        8080/TCP
+Endpoints:         10.129.0.113:8080,10.130.0.97:8080,10.130.0.98:8080 + 1 more...
+Session Affinity:  None
+Events:            <none>
 ----
 
 Test that your service is working:
+----
+[root@workstation-6180 ~]# oc describe service hello-service|grep IP:|awk '{print $2}'
 
+172.30.69.150
 ----
 
-[andrew@master ~]$ oc describe service hello-service|grep IP:|awk '{print $2}'
-
-172.30.18.176
-
-[andrew@master ~]$ ssh root@node1 'curl -s http://172.30.18.176:8888'
-
-root@node1's password: r3dh4t1!
+Please use your hello-service IP address to check if the service is running fine:
+----
+[root@workstation-6180 ~]# ssh master-dev.example.com 'curl -s http://172.30.69.150:8888'
 
 Hello OpenShift!
 ----
@@ -994,11 +984,11 @@ Next, take a look at the route and registry containers.
 
 ===== Create Applications As Examples
 
-As `andrew`, create a project called `explore-example`:
+As `student`, create a project called `explore-example`:
 ----
-[andrew@master ~]$ oc new-project explore-example --display-name="Explore Example" --description="This is the project we use to learn about connecting to pods"
+[root@workstation-6180 ~]# oc new-project explore-example --display-name="Explore Example" --description="This is the project we use to learn about connecting to pods"
 
-Now using project "explore-example" on server "https://master.example.com:8443".
+Now using project "explore-example" on server "https://master-dev.example.com:8443".
 
 You can add applications to this project with the 'new-app' command. For example, try:
 
@@ -1009,9 +999,9 @@ to build a new example application in Ruby.
 
 Applying the same image as before, run `oc new-app` to deploy `hello-openshift`:
 ----
-[andrew@master ~]$ oc new-app --docker-image=openshift/hello-openshift:v1.5.1 -l "todelete=yes"
+[root@workstation-6180 ~]# oc new-app --docker-image=openshift/hello-openshift:v1.5.1 -l "todelete=yes"
 
---> Found Docker image fb15b0b (4 weeks old) from Docker Hub for "openshift/hello-openshift:v1.5.1"
+--> Found Docker image fb15b0b (12 months old) from Docker Hub for "openshift/hello-openshift:v1.5.1"
 
     * An image stream will be created as "hello-openshift:v1.5.1" that will track this image
     * This image will be deployed in deployment config "hello-openshift"
@@ -1024,25 +1014,25 @@ Applying the same image as before, run `oc new-app` to deploy `hello-openshift`:
     deploymentconfig "hello-openshift" created
     service "hello-openshift" created
 --> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/hello-openshift' 
     Run 'oc status' to view your app.
 ----
 
 Verify that `oc new-app` has created a pod and the service.
-
 ----
-[andrew@master ~]$ oc get svc
+[root@workstation-6180 ~]# oc get svc
 
-NAME              CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-hello-openshift   172.30.24.220   <none>        8080/TCP,8888/TCP   37s
+NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+hello-openshift   ClusterIP   172.30.182.169   <none>        8080/TCP,8888/TCP   35s
 ----
 
-Wait until the Conatiner Status is Running. (it takes minute)
+Wait until the Conatiner Status is Running.
 ----
-[andrew@master ~]$ oc get pods
+[root@workstation-6180 ~]# oc get pods
 
 NAME                      READY     STATUS    RESTARTS   AGE
-hello-openshift-1-g3xow   1/1       Running   0          2m
-
+hello-openshift-1-x6snq   1/1       Running   0          1m
 ----
 
 Expose the service and create a route for the application:
@@ -1742,6 +1732,8 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 | admin | openshift | OSCP Administrator
 | student | openshift | Developer & GIT User 
 |=== 
+
+Wildcard FQDN for apps: *.apps-6180.generic.opentlc.com
 
 === Additional Services
 
