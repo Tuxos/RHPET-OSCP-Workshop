@@ -1741,13 +1741,13 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 Additional Services (don`t forget to replace the GUID string with your GUID from http://seats.rhpet.de[here^]):
 
 
-GIT SERVER
+*GIT Server*
 
 Web: http://gogs-lab-infra.devapps-GUID.generic.opentlc.com
 
-Username: `student`
+Username: `student`  
 Password: `openshift`
 
-NEXUS MAVEN REPOSITORY
+*Nexus Maven Repository*
 
 Web: http://nexus-lab-infra.devapps-GUID.generic.opentlc.com
