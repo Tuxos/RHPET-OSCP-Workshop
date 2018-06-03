@@ -1424,51 +1424,47 @@ Here, you connect to and become familiar with the web console, create a project 
 
 . Log in as `student` with the password `openshift`.
 
-. Take a few minutes to browse your projects.
+. Take a few minutes to look around.
 
 ===== Create New Project
 
-. Click *Projects* and select *View all projects* to return to the Projects view.
-
-. Click the blue *New Project* button in the top right corner.
+. Click the blue *Create Project* button in the top right corner.
 
 . Give the new project a name, display name, and description:
 * *Name*: `my-ruby-project`
 * *Display Name*: `My Ruby Example Project`
 * *Description*: An explanation of your choice
+. Click on the blue *Create* button.
 
-Once the project is in place, the *Add to Project* screen is displayed.
+Once the project is in place, click on your new project `My Ruby Example Project`.
 
 ==== Create New Application
 
-. In the *Add to Project* screen, type `ruby` in the search field of the *Browse Catalog* Tab to filter the available instant apps, templates, and builder images.
+. In the *Project* screen, click on the *Browse Catalog* button to get the overview of all possible builder images.
 
-. We choose the plain Ruby Application here
+. We choose `Ruby` here and click on *next*.
 . Set the version to `2.2` 
-. Click "Select"
 
 . Specify the name and Git repository URL:
 * *Name*: `my-ruby-hello-world`.
 * *Git Repository URL*: `https://github.com/openshift/ruby-hello-world`.
 
-. Click *Show advanced options for source, routes, builds, and deployments.* and select the following options:
+. Click on *advanced options* and select the following options:
 .. Notice that you get a route per default for your application.
 .. Note that you can decide if Builds or Deployments should start automatically.
-.. Change the scaling parameter to 3.
-.. Create a label for app by the name of `environment` and the value of `dev`.
+.. Change the scaling parameter to 3 replicas.
+.. Add a label with the name `environment` and the value of `dev`.
 
-. Accept and create the application.
+. Click the blue *Create* button to create the application.
 
 . Click *Continue to Overview* to go to the application's *Overview* screen.
 
-. Click *View Log* to verify that a build is in progress. (this needs some time)
+. Click *View Full Log* to verify that a build is in progress.
 
 . Review the log as the build progresses.
 
-. Wait for the build to complete and use a browser to navigate to the
- application route: http://my-ruby-hello-world-my-ruby-project.cloudapps.example.com[http://my-ruby-hello-world-my-ruby-project.cloudapps.example.com^]
-//.. The database for our application isn't running, so expect to see the web
-// page mention that.
+. Wait for the build to complete and use a browser to navigate to the overview page and click the `Routes - External Traffic`.
+.. The database for our application isn't running, so expect to see the webpage mention that.
 +
 [TIP]
 ====
@@ -1492,6 +1488,8 @@ Once the project is in place, the *Add to Project* screen is displayed.
 
 === Templates Lab
 
+You can create a list of objects from a template using the CLI or, if a template has been uploaded to your project or the global template library, using the web console. For a curated set of templates, see the OpenShift Image Streams and Templates library. 
+
 This lab includes the following sections:
 
 * *Create and Upload Template*
@@ -1505,7 +1503,7 @@ In this section, you create two separate template instances in two separate proj
 [NOTE] 
 .Templates are a complex 
 ====
-Templates allow an easy way to define all the required objects of an complex to be sepcified together and made available in Catalogs. Please see our link:https://access.redhat.com/documentation/en-us/openshift_container_platform/3.5/html-single/developer_guide/#dev-guide-templates[OpenShift Documentation on Templates^] for more information.
+Templates allow an easy way to define all the required objects of an complex to be sepcified together and made available in Catalogs. Please see our https://access.redhat.com/documentation/en-us/openshift_container_platform/3.9/html-single/developer_guide/#dev-guide-templates[OpenShift Documentation on Templates^] for more information.
 ====
 
 ==== Create and Upload Template
@@ -1516,16 +1514,21 @@ The example in this section shows an application and a service with two pods: a 
 
 This example is, in effect, a "quick start" -- a predefined application that comes in a template and that you can immediately use or customize.
 
-. As `root` on the master host, download the template's definition file:
+. As `root` on the ssh gateway, download the template's definition file:
 +
 ----
-[root@master ~]# wget http://people.redhat.com/~llange/yaml/Template_Example.yml
+[root@workstation-835d ~]# wget http://www.rhpet.de/ocp-workshop/Template_Example.yml
+----
+
+If not already, please login with `oc` as `admin`.
+----
+[root@workstation-835d ~]# oc login https://master-prod.example.com:8443 -u admin -p openshift
 ----
 
 . Create the template object in the shared `openshift` project. This is also referred to as _uploading_ the template.
 +
 ----
-[root@master ~]# oc create -f Template_Example.yml -n openshift
+[root@workstation-835d ~]# oc create -f Template_Example.yml -n openshift
 
 template "a-quickstart-keyvalue-application" created
 ----
@@ -1534,50 +1537,50 @@ NOTE: The `Template_Example.yml` file defines a template. You just added it to t
 The OpenShift Container Platform comes with a long list of preconfigured templates available for usage. You can take a look at the installed list with the following `oc` command. This list had 117 entries, that is why we did not include the output here. 
 
 ----
-[root@master ~]# oc get templates -n openshift 
+[root@workstation-835d ~]# oc get templates -n openshift 
 
 ... <many lines> ...
-sso70-postgresql-persistent                     Application template for SSO 7.0 PostgreSQL applications with persistent storage   33 (17 blank)     8
+
+sso71-postgresql-persistent                     Application template for SSO 7.0 PostgreSQL applications with persistent storage   33 (17 blank)     9
 ----
 
-Do not be alarmed by the complexity of Templates. You can even create templates from existing Objects. Please see our Documentation on 
-link:https://access.redhat.com/documentation/en-us/openshift_container_platform/3.5/html-single/developer_guide/#export-as-template[How to Create a Template from existing Objects^].
+Do not be alarmed by the complexity of Templates. You can even create templates from existing Objects. Please see our Documentation on https://access.redhat.com/documentation/en-us/openshift_container_platform/3.9/html-single/developer_guide/#export-as-template[How to Create a Template from existing Objects^].
 
 ===== Create Instant App from Template
 
 . On your browser, connect to the OpenShift web console at `https://master.example.com:8443[https://master.example.com:8443]`:
-.. Log in as `andrew` with the password `r3dh4t1!`.
+.. Log in as `student` with the password `openshift`.
 
-. Click the blue *New Project* button in the top right corner.
+. Click the blue *Create Project* button in the top right corner.
 
 . Specify the project name, display name, and description:
 * *Name*: `instant-app`
 * *Display Name*: `instant app example project`
 * *Description*: `A demonstration of an instant app or template`.
+* Click on the blue *Create* button.
 +
 [TIP]
 ====
 Alternatively, perform this step from the command line:
 ----
-[root@master ~]# oadm new-project instant-app --display-name="instant app example project" --description='A demonstration of an instant-app/template' --node-selector='region=primary' --admin=andrew
+[root@workstation-835d ~]# oc adm new-project instant-app --display-name="instant app example project" --description='A demonstration of an instant-app/template' --node-selector='region=primary' --admin=student
 ----
 ====
 
-. From the `instant-app` project's *Overview* screen, click *Add to project*.
+. From the `instant-app` project's *Overview* screen, click *Browse Catalog*.
 +
-. Click the `ruby` tile to display ruby based applications and builder images
+Here you find the instant applications, a special kind of template with the `instant-app` tag. The idea behind an instant application is that, when you create a template instance, you already have a fully functional application. In this example, your instant application is just a simple web page for key-value storage and retrieval.
 +
-[NOTE]
-Here you find the instant application, a special kind of template with the `instant-app` tag. The idea behind an instant application is that, when you create a template instance, you already have a fully functional application. In this example, your instant application is just a simple web page for key-value storage and retrieval.
-+
-. Select *a-quickstart-keyvalue-application*.
+. Select *a-quickstart-keyvalue-application* and click on `Next`.
 +
 The template configuration screen is displayed. Here, you can specify certain options for instantiating the application components:
 +
+.. Set the `ADMIN_USERNAME` to `admin`.
 .. Set the `ADMIN_PASSWORD` parameter to your favorite password.
-.. Add a label named `version` with the value `1`.
 
-. Click *Create* to instantiate the services, pods, replication controllers, etc.
+. Click on `Next` and choosse `Do not bind at this time`.
+
+. Click *Create* to instantiate the services, pods, replication controllers, etc. and then click on the `Continue to the project overview` link.
 
 * The build starts immediately.
 . Wait for the build to finish. You can browse the build logs to follow the progress.
@@ -1587,12 +1590,16 @@ Our Application is currently still missing heath checks for all containers. You 
 
 ===== Use Application
 
-After the build is complete and both frontend and database are up and running, visit your application at `http://example-route-instant-app.cloudapps.example.com/[http://example-route-instant-app.cloudapps.example.com/^]`.
+After the build is complete and both frontend and database are up and running, visit your application at the `Routes - External Traffic` from the frontend deployment config. It should look like: `http://example-route-instant-app.apps-GUID.generic.opentlc.com`
 
 [NOTE]
 Be sure to use HTTP and _not_ HTTPS. HTTPS does not work for this example because the form submission was coded with HTTP links.
 
+You see the same Frontend like in the lab before, but with a running database :-)
+
 Thanks a lot for attending the *First steps in OpenShift Hands-on Lab*, we hope you enjoyed it.
+
+For more cool, always accessible hands-on labs for OpenShift, please visit https://learn.openshift.com[https://learn.openshift.com^].
 
 Have a good day :-)
 
