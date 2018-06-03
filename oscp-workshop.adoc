@@ -152,9 +152,9 @@ If you want to learn more about the `oc` command, please look at the following d
 https://docs.openshift.com/container-platform/3.9/cli_reference/basic_cli_operations.html[Developer CLI Operations^] +
 https://docs.openshift.com/container-platform/3.9/cli_reference/admin_cli_operations.html[Administrator CLI Operations^]
 
-=== Verify Your OpenShift Environment
+=== Verify Your Environment
 
-Run `oc get nodes` to check the status of your OpenShift Dev environment hosts:
+Run `oc get nodes` to check the status of your OpenShift Prod environment hosts:
 ----
 [root@workstation-835d~]# oc get nodes
 
@@ -1615,10 +1615,6 @@ Have a good day :-)
 
 OpenShift Online is Red Hat’s public cloud application development and hosting platform that automates the provisioning, management and scaling of applications so that you can focus on writing the code for your business, startup, or big idea.
 
-Here is a Videos explaining OpenShift: +
-https://youtu.be/D_Lj0rObunI[Introduction into OpenShift^] +
-https://www.youtube.com/watch?v=aZ40GobvA1c[What is PaaS?^]
-
 Official documentation for https://docs.openshift.com/container-platform/3.9/welcome/index.html[OpenShift Container Platform^]
 
 === Overview
@@ -1643,7 +1639,7 @@ OpenShift Container Platform adds:
 
 image::http://www.rhpet.de/pictures/OpenShift-Architecture.png[OpenShift Architecture]
 
-=== What Is the OpenShift Container Platform Architecture?
+=== What is the OCP Architecture?
 
 OpenShift Container Platform has a microservices-based architecture of smaller, decoupled units that work together. It runs on top of a https://docs.openshift.com/container-platform/3.9/architecture/infrastructure_components/kubernetes_infrastructure.html#architecture-infrastructure-components-kubernetes-infrastructure[Kubernetes cluster^], with data about the objects stored in https://docs.openshift.com/container-platform/3.9/architecture/infrastructure_components/kubernetes_infrastructure.html#master[etcd^], a reliable clustered key-value store. Those services are broken down by function:
 
