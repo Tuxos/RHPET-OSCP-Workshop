@@ -52,7 +52,7 @@ Wildcard FQDN for apps: *.apps-835d.generic.opentlc.com
 
 You can connect to the OpenShift Webinterface with a click on the OpenShift Webinterface Link on the http://seats.rhpet.de[Seats to GUID^] page. Please accept the selfsigned certificate.
 
-If you want to know if your Webbrowser is supported by OpenShift, please look https://access.redhat.com/articles/2176281[here^].
+If you want to know if your Webbrowser is supported by OpenShift, please have a look on the https://access.redhat.com/articles/2176281[OpenShift Container Platform Tested Integrations^] page.
 
 == Getting started with the OpenShift CLI and the Webinterface
 
