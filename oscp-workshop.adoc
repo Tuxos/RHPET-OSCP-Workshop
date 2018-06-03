@@ -1364,7 +1364,7 @@ Pushed 5/6 layers, 100% complete
 Pushed 6/6 layers, 100% complete
 Push successful
 ----
-+
+
 Notice the last few lines here. The *Push successful* indicates that the new container image was put into your internal registry.
 
 Look with `oc get pods` for the sinatra-example-1 pod.
@@ -1398,20 +1398,7 @@ You might consider adding 'puma' into your Gemfile.
 [2018-06-01 21:53:43] INFO  WEBrick::HTTPServer#start: pid=1 port=8080
 ----
 
-Las but not least we look into the deployment log:
-----
-[root@workstation-835d ~]# oc logs sinatra-example-1-jm7nm
-
-You might consider adding 'puma' into your Gemfile.
-/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
-/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
-/opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
-[2018-06-01 21:53:43] INFO  WEBrick 1.3.1
-[2018-06-01 21:53:43] INFO  ruby 2.4.2 (2017-09-14) [x86_64-linux]
-[2018-06-01 21:53:43] INFO  WEBrick::HTTPServer#start: pid=1 port=8080
-----
-
-You can also look into all the logs through the OpenShift Webinterface.
+You can also look into all logs through the OpenShift Webinterface.
 
 === Creating Applications Lab
 
@@ -1433,9 +1420,9 @@ Here, you connect to and become familiar with the web console, create a project 
 
 ===== Connect To and Explore Web Console
 
-. Use your browser to go to the OpenShift web console at `https://master.example.com:8443[https://master.example.com:8443^]`.
+. Use your browser to go to the OpenShift web console. If not already, use the link in the http://seats.rhpet.de[Seat-to-GUID^] page.
 
-. Log in as `andrew` with the password `r3dh4t1!`.
+. Log in as `student` with the password `openshift`.
 
 . Take a few minutes to browse your projects.
 
