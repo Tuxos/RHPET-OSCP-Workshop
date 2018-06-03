@@ -52,6 +52,8 @@ Wildcard FQDN for apps: *.apps-835d.generic.opentlc.com
 
 You can connect to the OpenShift Webinterface with a click on the OpenShift Webinterface Link on the http://seats.rhpet.de[Seats to GUID^] page. Please accept the selfsigned certificate.
 
+If you want to know if your Webbrowser is supported by OpenShift, please look https://access.redhat.com/articles/2176281[here^].
+
 == Getting started with the OpenShift CLI and the Webinterface
 
 With the OpenShift Container Platform command line interface (CLI), you can create applications and manage OpenShift Container Platform projects from a terminal. The CLI is ideal in situations where you are:
