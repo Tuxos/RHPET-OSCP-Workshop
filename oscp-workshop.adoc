@@ -22,7 +22,7 @@ Have fun and we hope you enjoy the Lab :-)
 
 To obtain your IP address from the SSH gateway please look for your Seat ID http://seats.rhpet.de[here^].
 
-Login into the ssh gateway with the user `root` and the password you finde in the <<Appendix: Lab Environment Information>>.
+Login into the ssh gateway with the user `root` and the password you will find in the <<Appendix: Lab Environment Information>>.
 
 ----
 [ddeiterm@p50 ~]$ ssh root@129.213.15.244
