@@ -12,7 +12,7 @@ image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
 
 In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface and how to deploy an application.
 
-Please see <<Appendix: OpenShift Introduction>> if you are not aware of the architecture of OpenShift and how OpenShift stick all components together.
+Please see <<Appendix: OpenShift Introduction>> if you are not aware of the architecture of OpenShift and how OpenShift stick all components together. *You should read this first if you are not familiar with OpenShift!*
 
 Please have a look into the <<Appendix: Lab Environment Information>> for more information about the Lab evironment, like passwords, IP addresses and so on.
 
