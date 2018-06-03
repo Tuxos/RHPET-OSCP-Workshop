@@ -102,7 +102,7 @@ You have access to the following projects and can switch between them with 'oc p
 Using project "default".
 ----
 
-You will see a lot of projects already installed. Normally you see much fewer projects in a fresh installed OpenShift environment.
+You will see a lot of projects already installed. Normally you see fewer projects in a fresh installed OpenShift environment.
 
 You can log out of CLI using the `oc logout` command. But we don't do this now.
 
@@ -1676,7 +1676,7 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 | Name| external FQDN | internal FQDN | internal IP
 | SSH Gateway | workstation-GUID.generic.opentlc.com | none | 192.168.0.5 & 192.168.1.5
 | Dev Master | masterdev-GUID.generic.opentlc.com | master-dev.example.com | 192.168.1.10
-| Dev App Node 1 | none | node01dev.example.com | 192.168.1.11
+| Dev Compute Node 1 | none | node01dev.example.com | 192.168.1.11
 | Dev App Node 2 | none | node02dev.example.com | 192.168.1.12
 | Dev App Node 3 | none | node03dev.example.com | 192.168.1.13
 | Prod Master | masterprod-GUID.generic.opentlc.com | master-prod.example.com | 192.168.0.10
