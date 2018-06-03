@@ -1605,8 +1605,6 @@ After the build is complete and both frontend and database are up and running, v
 [NOTE]
 Be sure to use HTTP and _not_ HTTPS. HTTPS does not work for this example because the form submission was coded with HTTP links.
 
-*And that is the Endof the Lab.*
-
 Thanks a lot for attending the *First steps in OpenShift Hands-on Lab*, we hope you enjoyed it.
 
 Have a good day :-)
@@ -1631,19 +1629,33 @@ Unlike OpenShift v2, more flexibility of configuration is exposed after creation
 
 === What are the Layers?
 
-The Docker service provides the abstraction for packaging and creating Linux-based, lightweight container images. Kubernetes provides the cluster management and orchestrates containers on multiple hosts.
+The Docker service provides the abstraction for packaging and creating Linux-based, lightweight https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/containers_and_images.html#containers[container images^]. Kubernetes provides the https://docs.openshift.com/container-platform/3.9/architecture/infrastructure_components/kubernetes_infrastructure.html#architecture-infrastructure-components-kubernetes-infrastructure[cluster management^] and orchestrates containers on multiple hosts.
 
 OpenShift Container Platform adds:
 
-* Source code management, builds, and deployments for developers
+* Source code management, https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/builds_and_image_streams.html#builds[builds^], and https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/deployments.html#architecture-core-concepts-deployments[deployments^] for developers
 
-* Managing and promoting images at scale as they flow through your system
+* Managing and promoting https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/containers_and_images.html#docker-images[images^] at scale as they flow through your system
 
 * Application management at scale
 
 * Team and user tracking for organizing a large developer organization
 
 image::http://www.rhpet.de/pictures/OpenShift-Architecture.png[OpenShift Architecture]
+
+=== What Is the OpenShift Container Platform Architecture?
+
+OpenShift Container Platform has a microservices-based architecture of smaller, decoupled units that work together. It runs on top of a https://docs.openshift.com/container-platform/3.9/architecture/infrastructure_components/kubernetes_infrastructure.html#architecture-infrastructure-components-kubernetes-infrastructure[Kubernetes cluster^], with data about the objects stored in https://docs.openshift.com/container-platform/3.9/architecture/infrastructure_components/kubernetes_infrastructure.html#master[etcd^], a reliable clustered key-value store. Those services are broken down by function:
+
+* https://docs.openshift.com/container-platform/3.9/rest_api/index.html#rest-api-index[REST APIs^], which expose each of the https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/index.html#architecture-core-concepts-index[core objects^].
+
+* Controllers, which read those APIs, apply changes to other objects, and report status or write back to the object.
+
+Users make calls to the REST API to change the state of the system. Controllers use the REST API to read the user’s desired state, and then try to bring the other parts of the system into sync. For example, when a user requests a https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/builds_and_image_streams.html#builds[build^] they create a "build" object. The build controller sees that a new build has been created, and runs a process on the cluster to perform that build. When the build completes, the controller updates the build object via the REST API and the user sees that their build is complete.
+
+The controller pattern means that much of the functionality in OpenShift Container Platform is extensible. The way that builds are run and launched can be customized independently of how images are managed, or how https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/deployments.html#architecture-core-concepts-deployments[deployments^] happen. The controllers are performing the "business logic" of the system, taking user actions and transforming them into reality. By customizing those controllers or replacing them with your own logic, different behaviors can be implemented. From a system administration perspective, this also means the API can be used to script common administrative actions on a repeating schedule. Those scripts are also controllers that watch for changes and take action. OpenShift Container Platform makes the ability to customize the cluster in this way a first-class behavior.
+
+To make this possible, controllers leverage a reliable stream of changes to the system to sync their view of the system with what users are doing. This event stream pushes changes from etcd to the REST API and then to the controllers as soon as changes occur, so changes can ripple out through the system very quickly and efficiently. However, since failures can occur at any time, the controllers must also be able to get the latest state of the system at startup, and confirm that everything is in the right state. This resynchronization is important, because it means that even if something goes wrong, then the operator can restart the affected components, and the system double checks everything before continuing. The system should eventually converge to the user’s intent, since the controllers can always bring the system into sync.
 
 === Core Concepts
 
@@ -1663,6 +1675,8 @@ The following topics provide high-level, architectural information on core conce
 
 * https://docs.openshift.com/container-platform/3.9/architecture/core_concepts/templates.html[Templates^] allow for many objects to be created at once based on customized parameters.
 
+* https://docs.openshift.com/container-platform/3.9/architecture/additional_concepts/storage.html[Persistent Storage^] allow to save permanent data in a container.
+
 Click on the links above if you want more information about the respective topic.
 
 == Appendix: Lab Environment Information
@@ -1677,12 +1691,12 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 | SSH Gateway | workstation-GUID.generic.opentlc.com | none | 192.168.0.5 & 192.168.1.5
 | Dev Master | masterdev-GUID.generic.opentlc.com | master-dev.example.com | 192.168.1.10
 | Dev Compute Node 1 | none | node01dev.example.com | 192.168.1.11
-| Dev App Node 2 | none | node02dev.example.com | 192.168.1.12
-| Dev App Node 3 | none | node03dev.example.com | 192.168.1.13
+| Dev Compute Node 2 | none | node02dev.example.com | 192.168.1.12
+| Dev Compute Node 3 | none | node03dev.example.com | 192.168.1.13
 | Prod Master | masterprod-GUID.generic.opentlc.com | master-prod.example.com | 192.168.0.10
-| Prod App Node 1 | none | node01prod.example.com | 192.168.0.11
-| Prod App Node 2 | none | node02prod.example.com | 192.168.0.12
-| Prod App Node 3 | none | node03prod.example.com | 192.168.0.13
+| Prod Compute Node 1 | none | node01prod.example.com | 192.168.0.11
+| Prod Compute Node 2 | none | node02prod.example.com | 192.168.0.12
+| Prod Compute Node 3 | none | node03prod.example.com | 192.168.0.13
 |===
 
 [cols="3*", options="header"]
