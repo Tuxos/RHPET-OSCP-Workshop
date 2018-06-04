@@ -108,6 +108,8 @@ You will see a lot of projects already installed. Normally you see fewer project
 
 You can log out of CLI using the `oc logout` command. But we don't do this now.
 
+NOTE: You are running commands as `root` in this lab environment. It is unusual to use the `oc` command as root. It is common to install `oc` on your workstation or notebook. You can get the OpenShift client tools for your operating system https://docs.openshift.com/container-platform/3.9/cli_reference/get_started_cli.html[here^].
+
 === Projects
 
 A project in OpenShift Container Platform contains multiple objects to make up a logical application.
@@ -474,8 +476,6 @@ Container   memory    5Mi  750Mi  100Mi            100Mi          -
 
 ==== Test Quota and Limit Settings
 
-NOTE: You are running commands as `root` in a lab environment. It is unusual to use the `oc` command as root. It is common to install `oc` on your workstation or notebook. You can get the OpenShift client tools for your operating system https://docs.openshift.com/container-platform/3.9/cli_reference/get_started_cli.html[here^].
-
 . Now we switch to the the OpenShift user `student`. 
 
 .. When prompted, type the username and password:
@@ -501,7 +501,7 @@ You have access to the following projects and can switch between them with 'oc p
 Using project "cicd".
 ----
 +
-. Change to the project resourcemanagement:
+. Change to the project resourcemanagement if not already:
 ----
 [root@workstation-835d~]# oc project resourcemanagement
 
@@ -1095,7 +1095,7 @@ In a later section, you explore the `docker-registry` container. To save time, s
 Make sure to use the `default` project as `admin` user. Open a Shell into the container with `oc rsh`
  command along with the default router's pod name.
 ----
-[root@workstation-835d ~]# oc login
+[root@workstation-835d ~]# oc login -u admin
 
 Authentication required for https://master-prod.example.com:8443 (openshift)
 Username: admin
@@ -1389,7 +1389,7 @@ sinatra-example-1-build   0/1       Completed   0          30m
 sinatra-example-1-jm7nm   1/1       Running     0          29m
 ----
 
-Look for the pod log:
+Look for the pod log with your pod name `sinatra-example-1-<your own name from oc get pods>`:
 ----
 [root@workstation-835d ~]# oc logs pods/sinatra-example-1-jm7nm
 
