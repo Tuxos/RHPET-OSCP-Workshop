@@ -1606,7 +1606,7 @@ Thanks a lot for attending the *First steps in OpenShift Hands-on Lab*, we hope 
 For more cool, always accessible hands-on labs for OpenShift, please visit https://learn.openshift.com[https://learn.openshift.com^].
 
 If you are interested into a CI/CD hands-on lab, you can use your actual GUID for this http://devops-rhsummit.b9ad.pro-us-east-1.openshiftapps.com/index.html#/workshop/devops/module/devops-intro[Labguide^].
-Please be aware that this Labguide is not completely tested with the environment, but it should work.
+Please be aware that this Labguide is not tested with the environment, but it should work. Your environment will be up and running until 9pm today.
 
 == Appendix: OpenShift Introduction
 
