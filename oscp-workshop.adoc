@@ -1599,6 +1599,8 @@ Be sure to use HTTP and _not_ HTTPS. HTTPS does not work for this example becaus
 
 You see the same Frontend like in the lab before, but with a running database :-)
 
+For more informations about the powerfull template function, please look into the https://docs.openshift.com/container-platform/3.9/dev_guide/templates.html[template documentation^].
+
 Thanks a lot for attending the *First steps in OpenShift Hands-on Lab*, we hope you enjoyed it.
 
 For more cool, always accessible hands-on labs for OpenShift, please visit https://learn.openshift.com[https://learn.openshift.com^].
