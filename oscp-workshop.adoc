@@ -1037,9 +1037,9 @@ hello-openshift-1-x6snq   1/1       Running   0          1m
 ----
 
 Expose the service and create a route for the application.
-*Please change `GUID` to your GUID.*
+*Please change `<GUID>` to your GUID.*
 ----
-[root@workstation-<GUID>~]# oc expose service hello-openshift --hostname=explore.apps-GUID.generic.opentlc.com
+[root@workstation-<GUID>~]# oc expose service hello-openshift --hostname=explore.apps-<GUID>.generic.opentlc.com
 
 route "hello-openshift" exposed
 ----
@@ -1229,14 +1229,14 @@ backend be_secure:openshift-ansible-service-broker:asb-1338
   server pod:asb-14-7dmvq:asb:10.128.0.30:1338 10.128.0.30:1338 cookie 00f845fa98ecc009367efd1503621909 weight 256 ssl verifyhost asb.openshift-ansible-service-broker.svc verify required ca-file /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
 ----
 +
-You see that you have only one endpoint defined. (The line which starts with server)
+You see that you have only one endpoint defined. (The line which starts with `server pod`)
 +
 .. Exit the bash in the container to return to the root@workstation-GUID shell
 +
 ----
 sh-4.2$ exit
 
-[root@workstation-<GUID> ~]# _
+[root@workstation-<GUID> ~]#
 ----
 . As `student`, scale `hello-openshift` to have five replicas of its pod:
 +
@@ -1316,7 +1316,7 @@ backend be_secure:openshift-ansible-service-broker:asb-1338
   server pod:asb-14-7dmvq:asb:10.128.0.30:1338 10.128.0.30:1338 cookie 00f845fa98ecc009367efd1503621909 weight 256 ssl verifyhost asb.openshift-ansible-service-broker.svc verify required ca-file /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
 ----
 
-All of your pods within the `haproxy` configuration are listed.
+All of your `server pods` within the `haproxy` configuration are listed.
 
 NOTE: Remember, the router routes proxy connections to the pods directly and not through the service. The router uses the service only to obtain a list of the pod endpoints (IP addresses).
 
@@ -1570,6 +1570,8 @@ Do not be alarmed by the complexity of Templates. You can even create templates 
 Now we create a new project for the template based instant-app:
 ----
 [root@workstation-<GUID> ~]# oc adm new-project instant-app --display-name="instant app example project" --description='A demonstration of an instant-app/template' --node-selector='region=primary' --admin=student
+
+Created project instant-app
 ----
 
 . On your browser, connect to the OpenShift web console as `student` with the password `openshift`, if not already.
