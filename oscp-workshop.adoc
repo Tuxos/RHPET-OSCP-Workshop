@@ -1417,7 +1417,7 @@ In this section, you deploy an application from a code repository and follow the
 
 ==== Deploy Application on Web Console
 
-Here, you connect to and become familiar with the web console, create a project and an application, and scale a deployment and the topology view.
+Here, you connect to and become familiar with the web console, create a project and an application, and scale a deployment.
 
 ===== Connect To and Explore Web Console
 
@@ -1439,7 +1439,7 @@ Here, you connect to and become familiar with the web console, create a project 
 
 Once the project is in place, click on your new project `My Ruby Example Project`.
 
-==== Create New Application
+==== Create New Application From Source Code
 
 . In the *Project* screen, click on the *Browse Catalog* button to get the overview of all possible builder images.
 
@@ -1496,6 +1496,33 @@ Once the project is in place, click on your new project `My Ruby Example Project
 
 . Go back to your application's *Overview* screen by clicking *Overview* again.
 
+==== Create New Application through an Image
+
+. As `student`, if you are not on the welcome screen, please click on the `OpenShift Container Platform` banner at the top left side.
+
+. Click the blue *Create Project* button in the top right corner.
+
+. Give the new project a name, display name, and description:
+* *Name*: `parksmap`
+* *Display Name*: `My Parksmap`
+* *Description*: An interactive map.
+. Click on the blue *Create* button.
+
+Once the project is in place, click on your new project `My Parksmap`.
+
+. Click on `Deploy Image`.
+
+. Select `Image Name`.
+
+. Use `openshiftroadshow/parksmap-katacoda:1.0.0` as image name and click on the magnifying glass.
+
+. Click on `Deploy` and then on `Close`.
+
+. Click on `Create Route` and then on `Create` for generating an external route to our new application.
+
+. After that you can click on the link to our new app. It looks like `http://parksmap-katacoda-parksmap.apps-<GUID>.generic.opentlc.com`.
+
+These are all the steps you need to run to get a "vanilla" Docker-formatted image deployed on OpenShift. This should work with any Docker-formatted image that follows best practices, such as defining the port any service is exposed on, not needing to run specifically as the root user or other dedicated user, and which embeds a default command for running the application.
 
 === Templates Lab
 
