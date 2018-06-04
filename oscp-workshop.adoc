@@ -491,14 +491,9 @@ Container   memory    5Mi  750Mi  100Mi            100Mi          -
 ----
 Login successful.
 
-You have access to the following projects and can switch between them with 'oc project <projectname>':
+You have one project on this server: "resourcemanagement"
 
-  * cicd
-    dev
-    resourcemanagement
-    stage
-
-Using project "cicd".
+Using project "resourcemanagement".
 ----
 +
 . Change to the project resourcemanagement if not already:
