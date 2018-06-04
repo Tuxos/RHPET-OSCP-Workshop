@@ -1534,9 +1534,9 @@ This example is, in effect, a "quick start" -- a predefined application that com
 [root@workstation-835d ~]# wget http://www.rhpet.de/ocp-workshop/Template_Example.yml
 ----
 
-If not already, please login with `oc` as `student`.
+If not already, please login with `oc` as `admin`.
 ----
-[root@workstation-835d ~]# oc login https://master-prod.example.com:8443 -u student -p openshift
+[root@workstation-835d ~]# oc login https://master-prod.example.com:8443 -u admin -p openshift
 ----
 
 . Create the template object in the shared `openshift` project. This is also referred to as _uploading_ the template.
