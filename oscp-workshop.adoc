@@ -1588,7 +1588,7 @@ The template configuration screen is displayed. Here, you can specify certain op
 . Wait for the build to finish. You can browse the build logs to follow the progress.
 
 [NOTE]
-Our Application is currently still missing heath checks for all containers. You will deal with health checks later in this lab. If you are an experienced OpenShift User feel free to build a template with health checks included.
+Our Application is currently still missing heath checks for all containers. If you are an experienced OpenShift User feel free to build a template with health checks included.
 
 ===== Use Application
 
