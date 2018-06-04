@@ -1489,6 +1489,14 @@ Once the project is in place, click on your new project `My Ruby Example Project
 
 . Go to *Applications* and select *Pods* to take a look at your new pods.
 
+. Click on the name of one of your running *Pods*.
+
+. Click on `Logs` to see the log for this Pod.
+
+. Click on `Terminal` to open a shell console insde the Pod right in your webbrowser.
+
+. Click on `Events` to see the last actions of this Pod.
+
 . Go back to your application's *Overview* screen by clicking *Overview* again.
 
 
