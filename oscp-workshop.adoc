@@ -8,11 +8,11 @@ Dennis Deitermann (dennis@redhat.com)
 
 image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
 
-== Introduction into the Lab
+== Introduction
 
-In this Lab you will get a first impression of the OpenShift Container Platform. You will learn to use the CLI, the Webinterface and how to deploy an application.
+In this Lab you will get a hands-on introduction to the OpenShift Container Platform. You will learn to use the CLI, the Webinterface and how to deploy an application.
 
-Please see <<Appendix: OpenShift Introduction>> if you are not aware of the architecture of OpenShift and how OpenShift stick all components together. *You should read this first if you are not familiar with OpenShift!*
+Please see <<Appendix: OpenShift Introduction>> if you are not aware of the architecture and components of OpenShift. *You should read this first if you are not familiar with OpenShift!*
 
 Please have a look into the <<Appendix: Lab Environment Information>> for more information about the Lab evironment, like passwords, IP addresses and so on.
 
@@ -25,7 +25,7 @@ To obtain your IP address from the SSH gateway please look for your Seat ID http
 Login into the ssh gateway with the user `root` and the password you will find in the <<Appendix: Lab Environment Information>>.
 
 ----
-[ddeiterm@p50 ~]$ ssh root@129.213.15.244
+[user@host ~]$ ssh root@<your IP address from the seat to GUID page>
 
 The authenticity of host '129.213.15.244 (129.213.15.244)' can't be established.
 ECDSA key fingerprint is SHA256:ztRJAqdV6iu+yRrrP42PaGm107SEMPdYVjGXZuL3EAo.
@@ -43,20 +43,22 @@ Last login: Tue May 29 15:17:13 2018 from 24.134.87.109
 #####################################################################################
 Information about Your current environment:
 
-Your GUID: 835d
-OCP WEB UI access via IP: https://masterprod-835d.generic.opentlc.com:8443
-Wildcard FQDN for apps: *.apps-835d.generic.opentlc.com
+Your GUID: <GUID>
+OCP WEB UI access via IP: https://masterprod-<GUID>.generic.opentlc.com:8443
+Wildcard FQDN for apps: *.apps-<GUID>.generic.opentlc.com
 
-[root@workstation-835d ~]# 
+[root@workstation-<GUID> ~]# 
 ----
 
-You can connect to the OpenShift Webinterface with a click on the OpenShift Webinterface Link on the http://seats.rhpet.de[Seats to GUID^] page. Please accept the selfsigned certificate.
+==== Accessing the OpenShift Web Console
 
-If you want to know if your Webbrowser is supported by OpenShift, please have a look on the https://access.redhat.com/articles/2176281[OpenShift Container Platform Tested Integrations^] page.
+You can connect to the OpenShift web UI by clicking the link on the http://seats.rhpet.de[Seats to GUID^] page. Please accept the self-signed certificate.
+
+If you want to know if your Webbrowser is supported by OpenShift, please have a look at https://access.redhat.com/articles/2176281[OpenShift Container Platform Tested Integrations^].
 
 == Getting started with the OpenShift CLI and the Webinterface
 
-With the OpenShift Container Platform command line interface (CLI), you can create applications and manage OpenShift Container Platform projects from a terminal. The CLI is ideal in situations where you are:
+Using the OpenShift Container Platform command line interface (CLI), you can create applications and manage OpenShift Container Platform projects from a terminal. The CLI is ideal in situations where you are:
 
 * Working directly with project source code.
 
@@ -75,7 +77,7 @@ The `oc login` command is the best way to initially set up the CLI, and it serve
 
 Login into OpenShift Prod environment as `admin` user with the password `openshift`:
 ----
-[root@workstation-835d ~]# oc login https://master-prod.example.com:8443
+[root@workstation-<GUID> ~]# oc login https://master-prod.example.com:8443
 
 The server uses a certificate signed by an unknown authority.
 You can bypass the certificate check, but any data you send to the server could be intercepted by others.
@@ -104,9 +106,9 @@ You have access to the following projects and can switch between them with 'oc p
 Using project "default".
 ----
 
-You will see a lot of projects already installed. Normally you see fewer projects in a fresh installed OpenShift environment.
+You will notice a lot of projects already. There will be less projects in a freshly installed OpenShift environment.
 
-You can log out of CLI using the `oc logout` command. But we don't do this now.
+You can log out of the CLI using the `oc logout` command. But we don't do this now.
 
 NOTE: You are running commands as `root` in this lab environment. It is unusual to use the `oc` command as root. It is common to install `oc` on your workstation or notebook. You can get the OpenShift client tools for your operating system https://docs.openshift.com/container-platform/3.9/cli_reference/get_started_cli.html[here^].
 
@@ -117,31 +119,31 @@ A project in OpenShift Container Platform contains multiple objects to make up a
 Most oc commands run in the context of a project. The `oc login` selects a default project during initial setup to be used with subsequent commands. Use the following command to display the project currently in use:
 
 ----
-[root@workstation-835d~]# oc project
+[root@workstation-<GUID>~]# oc project
 
 Using project "default" on server "https://master-prod.example.com:8443".
 ----
 
-If you have access to multiple projects, use the following syntax to switch to a particular project by specifying the project name:
+If you have access to multiple projects, use the following syntax to switch between projects by specifying the project name:
 ----
-[root@workstation-835d~]# oc project default
+[root@workstation-<GUID>~]# oc project default
 
 Already on project "default" on server "https://master-prod.example.com:8443".
 ----
 
 The `oc status` command shows a high level overview of the project currently in use, with its components and their relationships, as shown in the following example:
 ----
-[root@workstation-835d ~]# oc status
+[root@workstation-<GUID> ~]# oc status
 
 In project default on server https://master-prod.example.com:8443
 
-https://docker-registry-default.apps-835d.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
+https://docker-registry-default.apps-<GUID>.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
   dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.9.14 
     deployment #1 deployed 8 weeks ago - 1 pod
 
 svc/kubernetes - 172.30.0.1 ports 443->8443, 53->8053, 53->8053
 
-http://registry-console-default.apps-835d.generic.opentlc.com to pod port registry-console (svc/registry-console)
+http://registry-console-default.apps-<GUID>.generic.opentlc.com to pod port registry-console (svc/registry-console)
   dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:v3.9 
     deployment #1 deployed 8 weeks ago - 1 pod
 
@@ -152,7 +154,7 @@ svc/router - 172.30.38.74 ports 80, 443, 1936
 3 warnings identified, use 'oc status -v' to see details.
 ----
 
-If you want to learn more about the `oc` command, please look at the following documentation: +
+If you want to learn more about the `oc` command, please look at the documentation: +
 https://docs.openshift.com/container-platform/3.9/cli_reference/basic_cli_operations.html[Developer CLI Operations^] +
 https://docs.openshift.com/container-platform/3.9/cli_reference/admin_cli_operations.html[Administrator CLI Operations^]
 
@@ -160,7 +162,7 @@ https://docs.openshift.com/container-platform/3.9/cli_reference/admin_cli_operat
 
 Run `oc get nodes` to check the status of your OpenShift Prod environment hosts:
 ----
-[root@workstation-835d~]# oc get nodes
+[root@workstation-<GUID>~]# oc get nodes
 
 NAME                     STATUS    ROLES     AGE       VERSION
 master-prod.example.com   Ready     master    56d       v1.9.1+a0ce1bc657
@@ -171,7 +173,7 @@ node03prod.example.com    Ready     compute   56d       v1.9.1+a0ce1bc657
 
 Check with `oc get pods` if the installer has deployed the router and the registry containers:
 ----
-[root@workstation-835d~]# oc get pods
+[root@workstation-<GUID>~]# oc get pods
 
 NAME                       READY     STATUS    RESTARTS   AGE
 docker-registry-1-gjm5v    1/1       Running   21         56d
@@ -210,7 +212,7 @@ We already labeled your nodes.
 
 Check the labels of the nodes:
 ----
-[root@workstation-835d ~]# oc get nodes --show-labels
+[root@workstation-<GUID> ~]# oc get nodes --show-labels
 
 NAME                      STATUS    ROLES     AGE       VERSION             LABELS
 master-prod.example.com   Ready     master    58d       v1.9.1+a0ce1bc657   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=master-prod.example.com,node-role.kubernetes.io/master=true,openshift-infra=apiserver,region=infra,zone=default
@@ -223,9 +225,9 @@ You have a running OpenShift environment across four hosts with one master and t
 
 Check where the registry, registry-console and router is running:
 [NOTE]
-Please keep in mind: in a normal OpenShift environment you will have an own infranode for that and not running infrastructure components on the master or app nodes.
+In a production OpenShift environment you will have dedicated infrastructure nodes so you will not run infrastructure components on the master or app nodes.
 ----
-[root@workstation-835d~]# oc get pods -o wide
+[root@workstation-<GUID>~]# oc get pods -o wide
 
 NAME                       READY     STATUS    RESTARTS   AGE       IP             NODE
 docker-registry-1-gjm5v    1/1       Running   21         56d       10.128.0.117   master-prod.example.com
@@ -249,21 +251,19 @@ Whenever a new image is pushed to OCR, the registry notifies OpenShift Container
 
 ==== Check integrated Registry
 
-In this lab scenario, infranode is the target for both the registry and the default router.
-
 To check the URL of the docker registry run `oc status`:
 ----
-[root@workstation-835d ~]# oc status -v
+[root@workstation-<GUID> ~]# oc status -v
 
 In project default on server https://master-prod.example.com:8443
 
-https://docker-registry-default.apps-835d.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
+https://docker-registry-default.apps-<GUID>.generic.opentlc.com (passthrough) to pod port 5000-tcp (svc/docker-registry)
   dc/docker-registry deploys docker.io/openshift3/ose-docker-registry:v3.9.14 
     deployment #1 deployed 8 weeks ago - 1 pod
 
 svc/kubernetes - 172.30.0.1 ports 443->8443, 53->8053, 53->8053
 
-http://registry-console-default.apps-835d.generic.opentlc.com to pod port registry-console (svc/registry-console)
+http://registry-console-default.apps-<GUID>.generic.opentlc.com to pod port registry-console (svc/registry-console)
   dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:v3.9 
     deployment #1 deployed 8 weeks ago - 1 pod
 
@@ -303,7 +303,7 @@ In this section, you run commands within active pods and explore the `docker-reg
 
 On the master host, run `oc adm` to create and assign the administrative user `student` to the project:
 ----
-[root@workstation-835d~]# oc adm new-project resourcemanagement --display-name="Resources Management" --description="This is the project we use to learn about resource management" --admin=student  --node-selector='region=primary'
+[root@workstation-<GUID>~]# oc adm new-project resourcemanagement --display-name="Resources Management" --description="This is the project we use to learn about resource management" --admin=student  --node-selector='region=primary'
 
 Created project resourcemanagement
 ----
@@ -338,7 +338,7 @@ A resource quota, defined by a ResourceQuota object, provides constraints that l
 . Create a quota definition file:
 +
 ----
-[root@workstation-835d~]# cat << EOF > quota.json
+[root@workstation-<GUID>~]# cat << EOF > quota.json
 {
   "apiVersion": "v1",
   "kind": "ResourceQuota",
@@ -362,7 +362,7 @@ EOF
 . Run `oc create` to apply the file you just created:
 +
 ----
-[root@workstation-835d~]# oc create -f quota.json --namespace=resourcemanagement
+[root@workstation-<GUID>~]# oc create -f quota.json --namespace=resourcemanagement
 
 resourcequota "test-quota" created
 ----
@@ -370,7 +370,7 @@ resourcequota "test-quota" created
 .. Verify that the quota exists:
 +
 ----
-[root@workstation-835d~]# oc get quota -n resourcemanagement
+[root@workstation-<GUID>~]# oc get quota -n resourcemanagement
 
 NAME         AGE
 test-quota   47s
@@ -380,7 +380,7 @@ test-quota   47s
 +
 [tabsize=8]
 ----
-[root@workstation-835d~]# oc describe quota test-quota -n resourcemanagement
+[root@workstation-<GUID>~]# oc describe quota test-quota -n resourcemanagement
 
 Name:                   test-quota
 Namespace:              resourcemanagement
@@ -408,7 +408,7 @@ For quotas to be effective, you must create _limit ranges_. They allocate the ma
 . Create the `limits.json` file:
 +
 ----
-[root@workstation-835d~]# cat << EOF > limits.json
+[root@workstation-<GUID>~]# cat << EOF > limits.json
 {
     "kind": "LimitRange",
     "apiVersion": "v1",
@@ -454,7 +454,7 @@ EOF
  `resourcemanagement` project:
 +
 ----
-[root@workstation-835d~]# oc create -f limits.json --namespace=resourcemanagement
+[root@workstation-<GUID>~]# oc create -f limits.json --namespace=resourcemanagement
 
 limitrange "limits" created
 ----
@@ -462,7 +462,7 @@ limitrange "limits" created
 . Review your limit ranges:
 +
 ----
-[root@workstation-835d~]# oc describe limitranges limits -n resourcemanagement
+[root@workstation-<GUID>~]# oc describe limitranges limits -n resourcemanagement
 
 Name:       limits
 Namespace:  resourcemanagement
@@ -483,7 +483,7 @@ Container   memory    5Mi  750Mi  100Mi            100Mi          -
 ** *Password*: `openshift`
 +
 ----
-[root@workstation-835d~]$ oc login https://master-prod.example.com:8443 -u student
+[root@workstation-<GUID>~]$ oc login https://master-prod.example.com:8443 -u student
 ----
 
 * The output is as follows:
@@ -503,7 +503,7 @@ Using project "cicd".
 +
 . Change to the project resourcemanagement if not already:
 ----
-[root@workstation-835d~]# oc project resourcemanagement
+[root@workstation-<GUID>~]# oc project resourcemanagement
 
 Now using project "resourcemanagement" on server "https://master-prod.example.com:8443".
 ----
@@ -512,7 +512,7 @@ NOTE: This lab shows you the manual, step-by-step method of creating each object
 
 . Create the `hello-pod.json` pod definition file:
 ----
-[root@workstation-835d~]$ cat <<EOF > hello-pod.json
+[root@workstation-<GUID>~]$ cat <<EOF > hello-pod.json
 {
   "kind": "Pod",
   "apiVersion": "v1",
@@ -560,13 +560,13 @@ Here, you create a simple pod without a _route_ or _service_:
 
 Create and verify the `hello-openshift` pod:
 ----
-[root@workstation-835d~]$ oc create -f hello-pod.json
+[root@workstation-<GUID>~]$ oc create -f hello-pod.json
 
 pod "hello-openshift" created
 ----
 Wait a few seconds until the pod is up and running. (~20 seconds are needed) You can use `oc get pods -w` to see it directly when the status is changing.
 ----
-[root@workstation-835d~]# oc get pods
+[root@workstation-<GUID>~]# oc get pods
 
 NAME              READY     STATUS    RESTARTS   AGE
 hello-openshift   1/1       Running   0          20s
@@ -574,7 +574,7 @@ hello-openshift   1/1       Running   0          20s
 
 Run `oc describe` for details on your pod:
 ----
-[root@workstation-835d~]# oc describe pod hello-openshift
+[root@workstation-<GUID>~]# oc describe pod hello-openshift
 
 Name:         hello-openshift
 Namespace:    resourcemanagement
@@ -628,23 +628,25 @@ Events:
   Normal  Started                2m    kubelet, node01dev.example.com  Started container
 ----
 
-Test that your pod is responding with `Hello OpenShift`:
-----
-[root@workstation-835d~]# oc describe pod hello-openshift|grep IP:|awk '{print $2}'
+Test that the application in your pod is responding with `Hello OpenShift`.
 
-10.131.0.108
+First get the IP address:
 ----
-Then please use your IP address to check that the app is doing what it should:
+[root@workstation-<GUID>~]# oc describe pod hello-openshift|grep IP:|awk '{print $2}'
+
+<IP ADDRESS>
 ----
-[root@workstation-835d~]# ssh master-prod.example.com 'curl -s http://10.131.0.108:8080'
+Then use the IP address to check that the app is doing what it should:
+----
+[root@workstation-<GUID>~]# ssh master-prod.example.com 'curl -s http://<IP ADDRESS>:8080'
 
 Hello OpenShift!
 ----
-We must ssh into the master node, because the ssh gateway has no direct network connection to the pod network.
+NOTE: We must ssh into the master node, because the ssh gateway has no direct network connection to the pod network.
 
 Delete all the objects in your `hello-pod.json` definition file, which, at this point, is the pod only:
 ----
-[root@workstation-835d~]# oc delete -f hello-pod.json
+[root@workstation-<GUID>~]# oc delete -f hello-pod.json
 
 pod "hello-openshift" deleted
 ----
@@ -653,7 +655,7 @@ TIP: You can also delete a pod using the following command format: `oc delete po
 
 Create a new definition file that launches four `hello-openshift` pods:
 ----
-[root@workstation-835d~]$ cat << EOF > hello-many-pods.json
+[root@workstation-<GUID>~]$ cat << EOF > hello-many-pods.json
 {
   "metadata":{
     "name":"quota-pod-deployment-test"
@@ -836,7 +838,7 @@ EOF
 
 Create the items in the `hello-many-pods.json` file:
 ----
-[root@workstation-835d~]# oc create -f hello-many-pods.json
+[root@workstation-<GUID>~]# oc create -f hello-many-pods.json
 
 pod "hello-openshift-1" created
 pod "hello-openshift-2" created
@@ -849,7 +851,7 @@ Because you defined a quota before, `oc create` created three pods only instead 
 
 Delete the object in the `hello-many-pods.json` definition file:
 ----
-[root@workstation-835d~]# oc delete -f hello-many-pods.json
+[root@workstation-<GUID>~]# oc delete -f hello-many-pods.json
 
 pod "hello-openshift-1" deleted
 pod "hello-openshift-2" deleted
@@ -863,7 +865,7 @@ NOTE: With `oc whoami` you can check with which user you are logged in.
 
 As `student`, create a project called `scvslab`:
 ----
-[root@workstation-835d~]# oc new-project svcslab --display-name="Services Lab" --description="This is the project we use to learn about services"
+[root@workstation-<GUID>~]# oc new-project svcslab --display-name="Services Lab" --description="This is the project we use to learn about services"
 
 Now using project "svcslab" on server "https://master-prod.example.com:8443".
 
@@ -876,7 +878,7 @@ to build a new example application in Ruby.
 
 Create the `hello-service.json` file:
 ----
-[root@workstation-835d~]$ cat <<EOF > hello-service.json
+[root@workstation-<GUID>~]$ cat <<EOF > hello-service.json
 {
   "kind": "Service",
   "apiVersion": "v1",
@@ -904,14 +906,14 @@ EOF
 
 Create the `hello-service` service:
 ----
-[root@workstation-835d~]$ oc create -f hello-service.json
+[root@workstation-<GUID>~]$ oc create -f hello-service.json
 
 service "hello-service" created
 ----
 
 Display the services that are running in the current project:
 ----
-[root@workstation-835d~]# oc get services
+[root@workstation-<GUID>~]# oc get services
 
 NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 hello-service   ClusterIP   172.30.69.150   <none>        8888/TCP   34s
@@ -922,7 +924,7 @@ Examine the details of your service. Note the following: +
 *Endpoints*: Displays all the pods that are currently listed (none in your current project).
 
 ----
-[root@workstation-835d~]# oc describe service hello-service
+[root@workstation-<GUID>~]# oc describe service hello-service
 
 Name:              hello-service
 Namespace:         svcslab
@@ -940,7 +942,7 @@ Events:            <none>
 
 Create pods according to the `hello-many-pods.json` definition file:
 ----
-[root@workstation-835d~]# oc create -f hello-many-pods.json
+[root@workstation-<GUID>~]# oc create -f hello-many-pods.json
 
 pod "hello-openshift-1" created
 pod "hello-openshift-2" created
@@ -952,7 +954,7 @@ Wait a few seconds and check the service again.
 
 The pods that share the label `name=hello-openshift` are all listed:
 ----
-[root@workstation-835d~]# oc describe service hello-service
+[root@workstation-<GUID>~]# oc describe service hello-service
 
 Name:              hello-service
 Namespace:         svcslab
@@ -970,14 +972,14 @@ Events:            <none>
 
 Test that your service is working:
 ----
-[root@workstation-835d~]# oc describe service hello-service|grep IP:|awk '{print $2}'
+[root@workstation-<GUID>~]# oc describe service hello-service|grep IP:|awk '{print $2}'
 
-172.30.69.150
+<IP ADDRESS>
 ----
 
 Please use your hello-service IP address to check if the service is running fine:
 ----
-[root@workstation-835d~]# ssh master-prod.example.com 'curl -s http://172.30.69.150:8888'
+[root@workstation-<GUID>~]# ssh master-prod.example.com 'curl -s http://<IP ADRESS>:8888'
 
 Hello OpenShift!
 ----
@@ -990,7 +992,7 @@ Next, take a look at the router and registry containers.
 
 As `student`, create a project called `explore-example`:
 ----
-[root@workstation-835d~]# oc new-project explore-example --display-name="Explore Example" --description="This is the project we use to learn about connecting to pods"
+[root@workstation-<GUID>~]# oc new-project explore-example --display-name="Explore Example" --description="This is the project we use to learn about connecting to pods"
 
 Now using project "explore-example" on server "https://master-prod.example.com:8443".
 
@@ -1003,7 +1005,7 @@ to build a new example application in Ruby.
 
 Applying the same image as before, run `oc new-app` to deploy `hello-openshift`:
 ----
-[root@workstation-835d~]# oc new-app --docker-image=openshift/hello-openshift:v1.5.1 -l "todelete=yes"
+[root@workstation-<GUID>~]# oc new-app --docker-image=openshift/hello-openshift:v1.5.1 -l "todelete=yes"
 
 --> Found Docker image fb15b0b (12 months old) from Docker Hub for "openshift/hello-openshift:v1.5.1"
 
@@ -1025,7 +1027,7 @@ Applying the same image as before, run `oc new-app` to deploy `hello-openshift`:
 
 Verify that `oc new-app` has created a pod and the service.
 ----
-[root@workstation-835d~]# oc get svc
+[root@workstation-<GUID>~]# oc get svc
 
 NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
 hello-openshift   ClusterIP   172.30.182.169   <none>        8080/TCP,8888/TCP   35s
@@ -1033,7 +1035,7 @@ hello-openshift   ClusterIP   172.30.182.169   <none>        8080/TCP,8888/TCP  
 
 Wait until the Conatiner Status is Running.
 ----
-[root@workstation-835d~]# oc get pods
+[root@workstation-<GUID>~]# oc get pods
 
 NAME                      READY     STATUS    RESTARTS   AGE
 hello-openshift-1-x6snq   1/1       Running   0          1m
@@ -1042,7 +1044,7 @@ hello-openshift-1-x6snq   1/1       Running   0          1m
 Expose the service and create a route for the application.
 *Please change `GUID` to your GUID.*
 ----
-[root@workstation-835d~]# oc expose service hello-openshift --hostname=explore.apps-GUID.generic.opentlc.com
+[root@workstation-<GUID>~]# oc expose service hello-openshift --hostname=explore.apps-GUID.generic.opentlc.com
 
 route "hello-openshift" exposed
 ----
@@ -1050,7 +1052,7 @@ route "hello-openshift" exposed
 Check if the route works fine.
 *Please change `GUID` to your GUID.*
 ----
-[root@workstation-835d ~]# curl http://explore.apps-GUID.generic.opentlc.com
+[root@workstation-<GUID> ~]# curl http://explore.apps-GUID.generic.opentlc.com
 
 Hello OpenShift!
 ----
@@ -1060,7 +1062,7 @@ Now it works without the ssh, because we have an external route to the container
 In a later section, you explore the `docker-registry` container. To save time, start an S2I build now to push an image into the registry:
 
 ----
-[root@workstation-835d ~]# oc new-app https://github.com/openshift/sinatra-example -l "todelete=yes"
+[root@workstation-<GUID> ~]# oc new-app https://github.com/openshift/sinatra-example -l "todelete=yes"
 
 --> Found image 644f40d (3 months old) in image stream "openshift/ruby" under tag "2.4" for "ruby"
 
@@ -1095,7 +1097,7 @@ In a later section, you explore the `docker-registry` container. To save time, s
 Make sure to use the `default` project as `admin` user. Open a Shell into the container with `oc rsh`
  command along with the default router's pod name.
 ----
-[root@workstation-835d ~]# oc login -u admin
+[root@workstation-<GUID> ~]# oc login -u admin
 
 Authentication required for https://master-prod.example.com:8443 (openshift)
 Username: admin
@@ -1123,14 +1125,14 @@ Using project "explore-example".
 ----
 
 ----
-[root@workstation-835d ~]# oc project default
+[root@workstation-<GUID> ~]# oc project default
 
 Now using project "default" on server "https://master-prod.example.com:8443".
 ----
 
 Lets look for the pod name of the router.
 ----
-[root@workstation-835d ~]# oc get pods
+[root@workstation-<GUID> ~]# oc get pods
 
 NAME                       READY     STATUS    RESTARTS   AGE
 docker-registry-1-59t4j    1/1       Running   0          27m
@@ -1141,7 +1143,7 @@ router-1-5qs7m             1/1       Running   22         58d
 
 Login into your router pod.
 ----
-[root@workstation-835d ~]# oc rsh router-1-5qs7m
+[root@workstation-<GUID> ~]# oc rsh router-1-5qs7m
 ----
 
 This prompt is displayed:
@@ -1239,16 +1241,16 @@ You see that you have only one endpoint defined. (The line which starts with ser
 ----
 sh-4.2$ exit
 
-[root@workstation-835d ~]# _
+[root@workstation-<GUID> ~]# _
 ----
 . As `student`, scale `hello-openshift` to have five replicas of its pod:
 +
 ----
-[root@workstation-835d ~]# oc login -u student
+[root@workstation-<GUID> ~]# oc login -u student
 ----
 +
 ----
-[root@workstation-835d ~]# oc get deploymentconfig
+[root@workstation-<GUID> ~]# oc get deploymentconfig
 
 NAME              REVISION   DESIRED   CURRENT   TRIGGERED BY
 hello-openshift   1          1         1         config,image(hello-openshift:v1.5.1)
@@ -1256,7 +1258,7 @@ sinatra-example   1          1         1         config,image(sinatra-example:la
 ----
 +
 ----
-[root@workstation-835d ~]# oc scale dc hello-openshift --replicas=5
+[root@workstation-<GUID> ~]# oc scale dc hello-openshift --replicas=5
 
 deploymentconfig "hello-openshift" scaled
 ----
@@ -1265,18 +1267,18 @@ deploymentconfig "hello-openshift" scaled
 +
 [subs=+macros]
 ----
-[root@workstation-835d ~]$ oc login -u admin
+[root@workstation-<GUID> ~]$ oc login -u admin
 
 ...
 
-[root@workstation-835d ~]# oc project default
+[root@workstation-<GUID> ~]# oc project default
 
 Now using project "default" on server "https://master-prod.example.com:8443".
 ----
 +
 Login into your router pod. Get the name with `oc get pods`.
 ----
-[root@workstation-835d ~]# oc rsh router-1-5qs7m
+[root@workstation-<GUID> ~]# oc rsh router-1-5qs7m
 
 sh-4.2$ grep -A 70 hello-openshift haproxy.config | sed '/^ *$/d'
 
@@ -1328,14 +1330,14 @@ Leave the container an switch to `student`.
 sh-4.2$ exit
 
 exit
-[root@workstation-835d ~]# oc login -u student
+[root@workstation-<GUID> ~]# oc login -u student
 ----
 
 ==== Explore Logs with the cli
 
 As user `student`, check the logs of the build that we stared a while back:
 ----
-[root@workstation-835d ~]# oc logs builds/sinatra-example-1
+[root@workstation-<GUID> ~]# oc logs builds/sinatra-example-1
 
 Cloning "https://github.com/openshift/sinatra-example" ...
 	Commit:	ff65a82271fffc60d4129bccde9c42ded49a199d (Merge pull request #11 from corey112358/patch-1)
@@ -1373,7 +1375,7 @@ Notice the last few lines here. The *Push successful* indicates that the new con
 
 Look with `oc get pods` for the sinatra-example-1 pod.
 ----
-[root@workstation-835d ~]# oc get pods
+[root@workstation-<GUID> ~]# oc get pods
 
 NAME                      READY     STATUS      RESTARTS   AGE
 hello-openshift-1         1/1       Running     0          14m
@@ -1391,7 +1393,7 @@ sinatra-example-1-jm7nm   1/1       Running     0          29m
 
 Look for the pod log with your pod name `sinatra-example-1-<your own name from oc get pods>`:
 ----
-[root@workstation-835d ~]# oc logs pods/sinatra-example-1-jm7nm
+[root@workstation-<GUID> ~]# oc logs pods/sinatra-example-1-jm7nm
 
 You might consider adding 'puma' into your Gemfile.
 /opt/app-root/src/bundle/ruby/2.4.0/gems/sinatra-1.4.5/lib/sinatra/base.rb:1217: warning: constant ::Fixnum is deprecated
@@ -1531,18 +1533,22 @@ This example is, in effect, a "quick start" -- a predefined application that com
 . As `root` on the ssh gateway, download the template's definition file:
 +
 ----
-[root@workstation-835d ~]# wget http://www.rhpet.de/ocp-workshop/Template_Example.yml
+[root@workstation-<GUID> ~]# wget http://www.rhpet.de/ocp-workshop/Template_Example.yml
 ----
 
-If not already, please login with `oc` as `admin`.
+If not already, please login with `oc` as `admin` and change into the `default` project.
 ----
-[root@workstation-835d ~]# oc login https://master-prod.example.com:8443 -u admin -p openshift
+[root@workstation-<GUID> ~]# oc login https://master-prod.example.com:8443 -u admin -p openshift
+
+...
+
+[root@workstation-<GUID> ~]# oc project default
 ----
 
 . Create the template object in the shared `openshift` project. This is also referred to as _uploading_ the template.
 +
 ----
-[root@workstation-835d ~]# oc create -f Template_Example.yml -n openshift
+[root@workstation-<GUID> ~]# oc create -f Template_Example.yml -n openshift
 
 template "a-quickstart-keyvalue-application" created
 ----
@@ -1551,7 +1557,7 @@ NOTE: The `Template_Example.yml` file defines a template. You just added it to t
 The OpenShift Container Platform comes with a long list of preconfigured templates available for usage. You can take a look at the installed list with the following `oc` command. This list over 100 entries, that is why we did not include the output here. 
 
 ----
-[root@workstation-835d ~]# oc get templates -n openshift 
+[root@workstation-<GUID> ~]# oc get templates -n openshift 
 
 NAME                                            DESCRIPTION                                                                        PARAMETERS        OBJECTS
 3scale-gateway                                  3scale API Gateway                                                                 15 (6 blank)      2
@@ -1568,14 +1574,16 @@ Do not be alarmed by the complexity of Templates. You can even create templates 
 
 Now we create a new project for the template based instant-app:
 ----
-[root@workstation-835d ~]# oc adm new-project instant-app --display-name="instant app example project" --description='A demonstration of an instant-app/template' --node-selector='region=primary' --admin=student
+[root@workstation-<GUID> ~]# oc adm new-project instant-app --display-name="instant app example project" --description='A demonstration of an instant-app/template' --node-selector='region=primary' --admin=student
 ----
 
 . On your browser, connect to the OpenShift web console as `student` with the password `openshift`, if not already.
 +
 . If you are not on the welcome screen, please click on the `OpenShift Container Platform` banner on the top left side.
 +
-. From the `instant-app` project's *Overview* screen, click *Browse Catalog*.
+. Click on the link for the `instant app example project` link on the top right.
++
+. From the `instant app example project` project's *Overview* screen, click *Browse Catalog*.
 +
 Here you find the instant applications, a special kind of template with the `instant-app` tag. The idea behind an instant application is that, when you create a template instance, you already have a fully functional application. In this example, your instant application is just a simple web page for key-value storage and retrieval.
 +
