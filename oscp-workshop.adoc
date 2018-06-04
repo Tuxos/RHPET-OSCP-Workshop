@@ -1597,7 +1597,7 @@ After the build is complete and both frontend and database are up and running, v
 [NOTE]
 Be sure to use HTTP and _not_ HTTPS. HTTPS does not work for this example because the form submission was coded with HTTP links.
 
-You see the same Frontend like in the lab before, but with a running database :-)
+You see the same Frontend like in the lab before, but now with a running database :-)
 
 For more informations about the powerfull template function, please look into the https://docs.openshift.com/container-platform/3.9/dev_guide/templates.html[template documentation^].
 
@@ -1605,7 +1605,8 @@ Thanks a lot for attending the *First steps in OpenShift Hands-on Lab*, we hope 
 
 For more cool, always accessible hands-on labs for OpenShift, please visit https://learn.openshift.com[https://learn.openshift.com^].
 
-Have a good day :-)
+If you are interested into a CI/CD hands-on lab, you can use your actual GUID for this http://devops-rhsummit.b9ad.pro-us-east-1.openshiftapps.com/index.html#/workshop/devops/module/devops-intro[Labguide^].
+Please be aware that this Labguide is not completely tested with the environment, but it should work.
 
 == Appendix: OpenShift Introduction
 
