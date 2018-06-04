@@ -982,7 +982,7 @@ Hello OpenShift!
 
 ==== Explore Containers and Routes
 
-Next, take a look at the route and registry containers.
+Next, take a look at the router and registry containers.
 
 ===== Create Applications As Examples
 
@@ -1550,7 +1550,7 @@ Do not be alarmed by the complexity of Templates. You can even create templates 
 
 ===== Create Instant App from Template
 
-. On your browser, connect to the OpenShift web console at `https://master.example.com:8443[https://master.example.com:8443]`:
+. On your browser, connect to the OpenShift web console from the http://seats.rhpet.de[Seat ID to GUID^] page.
 .. Log in as `student` with the password `openshift`.
 
 . Click the blue *Create Project* button in the top right corner.
