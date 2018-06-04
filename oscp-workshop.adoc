@@ -33,9 +33,9 @@ ECDSA key fingerprint is MD5:23:22:d1:14:fa:1d:84:29:ea:dd:02:9f:94:b8:a8:87.
 Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added '129.213.15.244' (ECDSA) to the list of known hosts.
 root@129.213.15.244's password: 
-Last failed login: Fri Jun  1 15:29:21 EDT 2018 from 68.64.160.198 on ssh:notty
+Last failed login: Fri Jun  1 15:29:21 EDT 2018 from 63.24.140.28 on ssh:notty
 There were 8 failed login attempts since the last successful login.
-Last login: Tue May 29 15:17:13 2018 from 24.134.87.109
+Last login: Tue May 29 15:17:13 2018 from 44.234.187.19
 #####################################################################################
 ##                                                                                 ##
 ##          Welcome to Red Hat Openshift Container Platform 3.9 workshop           ##
