@@ -324,7 +324,7 @@ Please get sure that the Link the the one from *your* Seat ID.
 ** *Username*: `student`
 ** *Password*: `openshift`
 
-. In the web console, click the *Resources Management* project link in the top right corner unter `My Projects`..
+. In the web console, click the *Resources Management* project link in the top right corner unter `My Projects`.
 +
 [NOTE]
 The project is empty because it has no apps. You change that as part of this lab. 
@@ -395,7 +395,7 @@ services                0     5
 
 . On the web console, click the *Resource Management* project.
 
-. Click the *Resources* tab
+. Go to the *Resources* tab
 
 . Click *Quota* for information about the quota set.
 
