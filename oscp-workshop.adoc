@@ -1481,6 +1481,8 @@ Once the project is in place, click on your new project `My Ruby Example Project
 
 . Go back to your application's *Overview* screen by clicking *Overview* at the upper left side.
 
+. Click on the little `>` to expand the `deployment config`. 
+
 . Observe the circle that shows the current number of pods, which is 3. You can increase that number by clicking the `^` button next to it.
 
 . Click the `^` button twice to increase the number of replicas to 5.
