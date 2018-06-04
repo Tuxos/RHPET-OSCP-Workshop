@@ -14,7 +14,7 @@ In this Lab you will get a hands-on introduction to the OpenShift Container Plat
 
 Please see <<Appendix: OpenShift Introduction>> if you are not aware of the architecture and components of OpenShift. *You should read this first if you are not familiar with OpenShift!*
 
-Please have a look into the <<Appendix: Lab Environment Information>> for more information about the Lab evironment, like passwords, IP addresses and so on.
+Please have a look into the <<Appendix: Lab Environment Information>> for more information about the Lab environment, like passwords, IP addresses and so on.
 
 Have fun and we hope you enjoy the Lab :-)
 
