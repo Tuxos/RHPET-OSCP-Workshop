@@ -1553,6 +1553,10 @@ The OpenShift Container Platform comes with a long list of preconfigured templat
 ----
 [root@workstation-835d ~]# oc get templates -n openshift 
 
+NAME                                            DESCRIPTION                                                                        PARAMETERS        OBJECTS
+3scale-gateway                                  3scale API Gateway                                                                 15 (6 blank)      2
+a-quickstart-keyvalue-application               This is an example of a Ruby and MySQL application on OpenShift 3                  5 (4 generated)   8
+
 ... <many lines> ...
 
 sso71-postgresql-persistent                     Application template for SSO 7.0 PostgreSQL applications with persistent storage   33 (17 blank)     9
