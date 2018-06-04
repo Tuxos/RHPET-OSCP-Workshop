@@ -1450,8 +1450,8 @@ Once the project is in place, click on your new project `My Ruby Example Project
 . Set the version to `2.2` 
 
 . Specify the name and Git repository URL:
-* *Name*: `my-ruby-hello-world`.
-* *Git Repository URL*: `https://github.com/openshift/ruby-hello-world`.
+* *Name*: `my-ruby-hello-world`
+* *Git Repository URL*: `https://github.com/openshift/ruby-hello-world`
 
 . Click on *advanced options* and select the following options:
 .. Notice that you get a route per default for your application.
