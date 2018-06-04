@@ -219,7 +219,7 @@ node03prod.example.com    Ready     compute   58d       v1.9.1+a0ce1bc657   beta
 
 You have a running OpenShift environment across four hosts with one master and three nodes, divided into two regions: infra and primary and two zones: default and main.
 
-Check where the registry, registry-console and router is running.
+Check where the registry, registry-console and router is running:
 [NOTE]
 Please keep in mind: in a normal OpenShift environment you will have an own infranode for that and not running infrastructure components on the master or app nodes.
 ----
@@ -232,7 +232,7 @@ router-1-pdrms             1/1       Running   22         56d       192.168.1.10
 ----
 
 If you want all infrastructure pods are running on a special infranode, you must configure a default node selector for this.
-Please have a look https://blog.openshift.com/deploying-applications-to-specific-nodes/[here^] if you want to have more information about this. In our ab, this is already done for you.
+Please have a look https://blog.openshift.com/deploying-applications-to-specific-nodes/[here^] if you want to have more information about this.
 
 === Registry
 
@@ -324,7 +324,7 @@ Please get sure that the Link the the one from *your* Seat ID.
 ** *Username*: `student`
 ** *Password*: `openshift`
 
-. In the web console, click the *Resources Management* project.
+. In the web console, click the *Resources Management* project link in the top right corner unter `My Projects`..
 +
 [NOTE]
 The project is empty because it has no apps. You change that as part of this lab. 
