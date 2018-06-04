@@ -1045,9 +1045,9 @@ route "hello-openshift" exposed
 ----
 
 Check if the route works fine.
-*Please change `GUID` to your GUID.*
+*Please change `<GUID>` to your GUID.*
 ----
-[root@workstation-<GUID> ~]# curl http://explore.apps-GUID.generic.opentlc.com
+[root@workstation-<GUID> ~]# curl http://explore.apps-<GUID>.generic.opentlc.com
 
 Hello OpenShift!
 ----
@@ -1138,7 +1138,7 @@ router-1-5qs7m             1/1       Running   22         58d
 
 Login into your router pod.
 ----
-[root@workstation-<GUID> ~]# oc rsh router-1-5qs7m
+[root@workstation-<GUID> ~]# oc rsh router-1-<your id>
 ----
 
 This prompt is displayed:
