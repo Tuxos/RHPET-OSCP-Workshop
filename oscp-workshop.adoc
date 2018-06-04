@@ -1463,11 +1463,11 @@ Once the project is in place, click on your new project `My Ruby Example Project
 
 . Click *Continue to Overview* to go to the application's *Overview* screen.
 
-. Click *View Full Log* to verify that a build is in progress.
+. Click the *View Full Log* link on the right side to verify that a build is in progress.
 
 . Review the log as the build progresses.
 
-. Wait for the build to complete and use a browser to navigate to the overview page and click the `Routes - External Traffic`.
+. Wait for the build to complete and go back to the overview page and click the blue external route link on the right side. It should look like `http://my-ruby-hello-world-my-ruby-project.apps-GUID.generic.opentlc.com`
 .. The database for our application isn't running, so expect to see the webpage mention that.
 +
 [TIP]
