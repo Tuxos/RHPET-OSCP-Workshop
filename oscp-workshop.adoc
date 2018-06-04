@@ -219,7 +219,9 @@ node03prod.example.com    Ready     compute   58d       v1.9.1+a0ce1bc657   beta
 
 You have a running OpenShift environment across four hosts with one master and three nodes, divided into two regions: infra and primary and two zones: default and main.
 
-Check where the registry, registry-console and router is running: (please keep in mind: in a normal OpenShift environment you will have an own infranode for that and not running infrastructure components on the master or app nodes):
+Check where the registry, registry-console and router is running.
+[NOTE]
+Please keep in mind: in a normal OpenShift environment you will have an own infranode for that and not running infrastructure components on the master or app nodes.
 ----
 [root@workstation-835d~]# oc get pods -o wide
 
