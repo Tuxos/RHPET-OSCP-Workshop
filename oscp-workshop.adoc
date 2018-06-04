@@ -1537,7 +1537,7 @@ If not already, please login with `oc` as `admin` and change into the `default` 
 
 ...
 
-[root@workstation-<GUID> ~]# oc project default
+[root@workstation-<GUID> ~]# oc project openshift
 ----
 
 . Create the template object in the shared `openshift` project. This is also referred to as _uploading_ the template.
@@ -1547,7 +1547,7 @@ If not already, please login with `oc` as `admin` and change into the `default` 
 
 template "a-quickstart-keyvalue-application" created
 ----
-NOTE: The `Template_Example.yml` file defines a template. You just added it to the openshift project. This make your template available throughout your OpenShift cluster. If you want to just have this temlate available for certain projects, put it directly into the project namespace and refrain from adding it to the `openshift` project.
+NOTE: The `Template_Example.yml` file defines a template. You just added it to the openshift project. This make your template available throughout your OpenShift cluster. If you want to just have this template available for certain projects, put it directly into the project namespace and refrain from adding it to the `openshift` project.
 
 The OpenShift Container Platform comes with a long list of preconfigured templates available for usage. You can take a look at the installed list with the following `oc` command. This list over 100 entries, that is why we did not include the output here. 
 
@@ -1614,7 +1614,7 @@ For more informations about the powerfull template function, please look into th
 
 Thanks a lot for attending the *First steps in OpenShift Hands-on Lab*, we hope you enjoyed it.
 
-For more cool, always accessible hands-on labs for OpenShift, please visit https://learn.openshift.com[https://learn.openshift.com^].
+For more cool, always accessible, hands-on labs for OpenShift, please visit https://learn.openshift.com[https://learn.openshift.com^].
 
 If you are interested into a CI/CD hands-on lab, you can use your actual GUID for this http://devops-rhsummit.b9ad.pro-us-east-1.openshiftapps.com/index.html#/workshop/devops/module/devops-intro[Labguide^].
 Please be aware that this Labguide is not tested with the environment, but it should work. Your environment will be up and running until 9pm today.
