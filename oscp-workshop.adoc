@@ -1566,26 +1566,15 @@ Do not be alarmed by the complexity of Templates. You can even create templates 
 
 ===== Create Instant App from Template
 
-. On your browser, connect to the OpenShift web console as `student` with the password `openshift`, if not already.
-
-. If you are not on the welcome screen, please click on the `OpenShift Container Platform` banner on the top left side.
-
-. Click the blue *Create Project* button in the top right corner.
-
-. Specify the project name, display name, and description:
-* *Name*: `instant-app`
-* *Display Name*: `instant app example project`
-* *Description*: `A demonstration of an instant app or template`.
-* Click on the blue *Create* button.
-+
-[TIP]
-====
-Alternatively, perform this step from the command line:
+Now we create a new project for the template based instant-app:
 ----
 [root@workstation-835d ~]# oc adm new-project instant-app --display-name="instant app example project" --description='A demonstration of an instant-app/template' --node-selector='region=primary' --admin=student
 ----
-====
 
+. On your browser, connect to the OpenShift web console as `student` with the password `openshift`, if not already.
++
+. If you are not on the welcome screen, please click on the `OpenShift Container Platform` banner on the top left side.
++
 . From the `instant-app` project's *Overview* screen, click *Browse Catalog*.
 +
 Here you find the instant applications, a special kind of template with the `instant-app` tag. The idea behind an instant application is that, when you create a template instance, you already have a fully functional application. In this example, your instant application is just a simple web page for key-value storage and retrieval.
