@@ -1545,14 +1545,14 @@ Created project instant-app
 [root@workstation-<GUID> ~]# wget http://www.rhpet.de/ocp-workshop/Template_Example.yml
 ----
 
-. Create the template object in the shared `openshift` project. This is also referred to as _uploading_ the template.
+. Create the template object in the `instant-app` project. This is also referred to as _uploading_ the template.
 +
 ----
 [root@workstation-<GUID> ~]# oc create -f Template_Example.yml -n instant-app
 
 template "a-quickstart-keyvalue-application" created
 ----
-NOTE: The `Template_Example.yml` file defines a template. You just added it to the instant-app project. If you add the template to the `openshift` project it made your template available throughout your OpenShift cluster.
+NOTE: The `Template_Example.yml` file defines a template. You just added it to the instant-app project. If you add the template to the `openshift` project it made your template available throughout your OpenShift cluster for all projects.
 
 The OpenShift Container Platform comes with a long list of preconfigured templates available for usage. You can take a look at the installed list with the following `oc` command. This list over 100 entries, that is why we did not include the output here. 
 
@@ -1581,9 +1581,9 @@ Do not be alarmed by the complexity of Templates. You can even create templates 
 
 . On your browser, connect to the OpenShift web console as `student` with the password `openshift`, if not already.
 +
-. If you are not on the welcome screen, please click on the `OpenShift Container Platform` banner on the top left side.
+. If you are not on the welcome screen, please click on the `OpenShift Container Platform` banner at the top left side.
 +
-. Click on the link for the `instant app example project` link on the top right.
+. Click on the link for the `instant app example project` at the top right.
 +
 . From the `instant app example project` project's *Overview* screen, click *Browse Catalog*.
 +
@@ -1595,8 +1595,6 @@ The template configuration screen is displayed. Here, you can specify certain op
 +
 .. Set the `ADMIN_USERNAME` to `admin`.
 .. Set the `ADMIN_PASSWORD` parameter to your favorite password.
-
-. Click on `Next` and choosse `Do not bind at this time`.
 
 . Click *Create* to instantiate the services, pods, replication controllers, etc. and then click on the `Continue to the project overview` link.
 
