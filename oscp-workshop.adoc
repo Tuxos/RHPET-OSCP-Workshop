@@ -85,7 +85,7 @@ Use insecure connections? (y/n): y
 
 Authentication required for https://master-prod.example.com:8443 (openshift)
 Username: admin
-Password: opensift
+Password: openshift
 Login successful.
 
 You have access to the following projects and can switch between them with 'oc project <projectname>':
