@@ -1738,7 +1738,7 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 [cols="3*", options="header"]
 |===
 | Name | Password | Role
-| root | r3dh4t1! | root user for all VMs
+| root | <ask the instructor> | root user for all VMs
 | admin | openshift | OSCP Administrator
 | student | openshift | Developer & GIT User 
 |=== 
