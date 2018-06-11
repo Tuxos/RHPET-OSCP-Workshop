@@ -6,7 +6,7 @@ Dennis Deitermann (dennis@redhat.com)
 :numbered:
 :icons: font
 
-image::http://www.rhpet.de/pictures/devoteam-event.png[Devoteam Digital Days]
+image::http://www.rhpet.de/pictures/OpenShift-Workshop-banner.png[OpenShift-Workshop]
 
 == Introduction
 
