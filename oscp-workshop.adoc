@@ -16,8 +16,6 @@ Please see <<Appendix: OpenShift Introduction>> if you are not aware of the arch
 
 Please have a look into the <<Appendix: Lab Environment Information>> for more information about the Lab environment, like passwords, IP addresses and so on.
 
-Have fun and we hope you enjoy the Lab :-)
-
 === How to access the Lab Environment
 
 To obtain your IP address from the SSH gateway please look for your Seat ID http://seats.rhpet.de[here^].
