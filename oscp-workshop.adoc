@@ -18,12 +18,12 @@ Please have a look into the <<Appendix: Lab Environment Information>> for more i
 
 === How to access the Lab Environment
 
-To obtain your IP address from the SSH gateway please look for your Seat ID http://seats.rhpet.de[here^].
+Login into the ssh gateway with the user `root` and the for the password please ask the instructor.
 
-Login into the ssh gateway with the user `root` and the password you will find in the <<Appendix: Lab Environment Information>>.
+Your SSH Gateway: `workstation-<GUID>.generic.opentlc.com`
 
 ----
-[user@host ~]$ ssh root@<your IP address from the seat to GUID page>
+[user@host ~]$ ssh root@workstation-<GUID>.generic.opentlc.com
 
 The authenticity of host '129.213.15.244 (129.213.15.244)' can't be established.
 ECDSA key fingerprint is SHA256:ztRJAqdV6iu+yRrrP42PaGm107SEMPdYVjGXZuL3EAo.
@@ -50,7 +50,11 @@ Wildcard FQDN for apps: *.apps-<GUID>.generic.opentlc.com
 
 ==== Accessing the OpenShift Web Console
 
-You can connect to the OpenShift web UI by clicking the link on the http://seats.rhpet.de[Seats to GUID^] page. Please accept the self-signed certificate.
+You can connect to the OpenShift web UI by clicking the following links:
+masterprod-<GUID>.generic.opentlc.com[masterprod-<GUID>.generic.opentlc.com^]
+masterdev-<GUID>.generic.opentlc.com[masterdev-<GUID>.generic.opentlc.com^]
+
+Please accept the self-signed certificate.
 
 If you want to know if your Webbrowser is supported by OpenShift, please have a look at https://access.redhat.com/articles/2176281[OpenShift Container Platform Tested Integrations^].
 
@@ -1717,17 +1721,15 @@ Click on the links above if you want more information about the respective topic
 
 You have nine VMs for your own use. Only the SSH Gateway and the Masternodes are reachable from the internet. All others can only be accessed through the SSH Gateway.
 
-To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP address for the SSH Gateway VM, please goto the http://seats.rhpet.de[Seat-to-GUID overview Page^] and search your Seat-ID.
-
 [cols="2,3,2,2", options="header"]
 |===
 | Name| external FQDN | internal FQDN | internal IP
-| SSH Gateway | workstation-GUID.generic.opentlc.com | none | 192.168.0.5 & 192.168.1.5
-| Dev Master | masterdev-GUID.generic.opentlc.com | master-dev.example.com | 192.168.1.10
+| SSH Gateway | workstation-<GUID>.generic.opentlc.com | none | 192.168.0.5 & 192.168.1.5
+| Dev Master | masterdev-<GUID>.generic.opentlc.com | master-dev.example.com | 192.168.1.10
 | Dev Compute Node 1 | none | node01dev.example.com | 192.168.1.11
 | Dev Compute Node 2 | none | node02dev.example.com | 192.168.1.12
 | Dev Compute Node 3 | none | node03dev.example.com | 192.168.1.13
-| Prod Master | masterprod-GUID.generic.opentlc.com | master-prod.example.com | 192.168.0.10
+| Prod Master | masterprod-<GUID>.generic.opentlc.com | master-prod.example.com | 192.168.0.10
 | Prod Compute Node 1 | none | node01prod.example.com | 192.168.0.11
 | Prod Compute Node 2 | none | node02prod.example.com | 192.168.0.12
 | Prod Compute Node 3 | none | node03prod.example.com | 192.168.0.13
@@ -1741,21 +1743,19 @@ To get your GUID, external FQDN, Link to the OpenShift Webinterface and IP addre
 | student | openshift | Developer & GIT User 
 |=== 
 
-*Wildcard FQDN for apps in the OpenShift Prod environment:* `*.apps-GUID.generic.opentlc.com`
+*Wildcard FQDN for apps in the OpenShift Prod environment:* `*.apps-<GUID>.generic.opentlc.com`
 
 WARNING: There is no public DNS resolution for apps for the OpenShift Dev environment.
 
 === Additional Services
 
-Don't forget to replace the GUID string with your `GUID` from http://seats.rhpet.de[here^].
-
 *GIT Server*
 
-Web: http://gogs-lab-infra.devapps-GUID.generic.opentlc.com
+Web: http://gogs-lab-infra.devapps-<GUID>.generic.opentlc.com
 
 Username: `student` +
 Password: `openshift`
 
 *Nexus Maven Repository*
 
-Web: http://nexus-lab-infra.devapps-GUID.generic.opentlc.com
+Web: http://nexus-lab-infra.devapps-<GUID>.generic.opentlc.com
